@@ -14,9 +14,7 @@
     "egs": "^0.3.1",
     "ejs": "^2.4.1",
     "express": "~4.11.0",
-    "hbs": "^3.0.1",
     "httpinvoke": "^1.4.0",
-    "jade": "~1.9.0",
     "moment": "^2.9.0",
     "mongoose": "^4.4.17",
     "morgan": "~1.5.1",
@@ -25,7 +23,7 @@
     "underscore": "^1.8.2",
     "unirest": "^0.5.0"
   },
-  "description": "利用 express 和 MongoDB 编写的一个简易版的视频小网站",
+  "description": "挖牛",
   "main": "app.js",
   "devDependencies": {},
   "author": "sqrtthree@foxmail.com",
