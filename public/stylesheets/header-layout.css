@@ -1,0 +1,18 @@
+
+.navbar {
+  background-color: #595959;
+  border-radius: 0;
+}
+
+.navbar .navbar-brand {
+  margin-left: 200px;
+}
+
+.navbar .navbar-brand img {
+  width: 60px;
+}
+
+.navbar .header-title {
+  color: #FECF2D;
+  font-size: 1.8rem;
+}

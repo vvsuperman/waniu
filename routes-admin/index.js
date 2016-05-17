@@ -10,4 +10,8 @@ router.get('/waniuadmin', function (req, res) {
   res.render("admin/index");
 });
 
+router.get('/newjob', function (req, res) {
+  res.render("admin/newjob");
+});
+
 module.exports = router;
