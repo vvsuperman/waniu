@@ -26,7 +26,7 @@ router.put('/job', function (req, res) {
   res.send();
 });
 
-router.get('/job', function (req, res) {
+router.get('/job/:id', function (req, res) {
   res.send();
 });
 
