@@ -5,116 +5,128 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimal-ui"/>
   <title>发布职位 - 挖牛管理系统</title>
-  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" />
+  <!--<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">-->
+  <link rel="stylesheet" href="/bower_components/amazeui/dist/css/amazeui.min.css">
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/header-layout.css">
   <link rel="stylesheet" href="/stylesheets/newjob.css">
-  <style>
-  </style>
 </head>
 <body>
 <% include header-layout %>
 
-<div class="container newjob">
-  <div class="panel panel-default">
-    <div class="panel-heading newjob-header">
+<div class="am-container newjob">
+  <section class="am-panel am-panel-default">
+    <header class="am-panel-hd newjob-header">
       <img src="/images/newjob/table2x.png" class="">
       <span>发布新职位</span>
-    </div>
-    <div class="panel-body">
-      <ul class="list-group">
-        <li class="list-group-item">
-          <div class="row">
-            <div class="col-md-2">
+    </header>
+    <div class="am-panel-bd">
+      <ul class="am-list am-list-static">
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
               职位名称
             </div>
-            <div class="col-md-10">
-              <select class="form-control w300">
-                <option>前端</option>
-                <option>后端</option>
-                <option>数据库</option>
-                <option>运维</option>
-              </select>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="row">
-            <div class="col-md-2">
-              月薪范围
-            </div>
-            <div class="col-md-10">
-              <form class="form-inline">
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="最低月薪">
-                  <label >K</label>
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="最高月薪">
-                  <label>K</label>
-                  <label style="margin-left: 20px">只能输入整数,&nbsp;如:9</label>
-                </div>
+            <div class="am-u-sm-10">
+              <form class="am-form">
+                <select id="doc-select-1">
+                  <option>前端</option>
+                  <option>后端</option>
+                  <option>数据库</option>
+                  <option>运维</option>
+                </select>
               </form>
             </div>
           </div>
         </li>
-        <li class="list-group-item">
-          <div class="row">
-            <div class="col-md-2">
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
+              月薪范围
+            </div>
+            <div class="am-u-sm-10">
+              <form class="am-form-inline" role="form">
+                <div class="am-input-group">
+                  <input type="text" class="am-form-field" placeholder="最低月薪">
+                  <span class="am-input-group-label">K</span>
+                </div>
+                <div class="am-input-group">
+                  <input type="text" class="am-form-field" placeholder="最高月薪">
+                  <span class="am-input-group-label">K</span>
+                </div>
+
+                <label>
+                  只能输入整数,&nbsp;如:9
+                </label>
+              </form>
+            </div>
+          </div>
+        </li>
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
               工作城市
             </div>
-            <div class="col-md-10">
-              <input type="email" class="form-control w300" placeholder="请输入城市名">
+            <div class="am-u-sm-10">
+              <input type="text" class="am-form-field" placeholder="请输入城市名">
             </div>
           </div>
         </li>
-        <li class="list-group-item">
-          <div class="row">
-            <div class="col-md-2">
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
               学历要求
             </div>
-            <div class="col-md-10">
-              <input type="email" class="form-control w300" placeholder="请输入学历要求">
+            <div class="am-u-sm-10">
+              <input type="text" class="am-form-field" placeholder="请输入学历要求">
             </div>
           </div>
         </li>
-        <li class="list-group-item">
-          <div class="row">
-            <div class="col-md-2">
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
               职位诱惑
             </div>
-            <div class="col-md-10">
-              <input type="email" class="form-control w300" placeholder="请选择职位诱惑" disabled>
+            <div class="am-u-sm-10">
+              <input type="text" class="am-form-field" placeholder="请选择职位诱惑" disabled>
             </div>
           </div>
         </li>
-        <li class="list-group-item">
-          <div class="row">
-            <div class="col-md-2">
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
               职位描述
             </div>
-            <div class="col-md-10">
-              <div id="editor"></div>
+            <div class="am-u-sm-10">
+              <script id="editor" type="text/plain" style="width:100%;height:200px;"></script>
+            </div>
+          </div>
+        </li>
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
+            </div>
+            <div class="am-u-sm-10">
+              <button type="button" class="am-btn am-btn-default save">
+                保存
+              </button>
             </div>
           </div>
         </li>
       </ul>
     </div>
-  </div>
+  </section>
 </div>
 
 </body>
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="/javascripts/bootstrap-wysiwyg.min.js"></script>
+<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/bower_components/amazeui/dist/js/amazeui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/javascripts/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/javascripts/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/javascripts/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
   $(function () {
-    setTimeout(function () {
-      console.log('666');
-      $('#editor').wysiwyg();
-
-    },3000)
+    var ue = UE.getEditor('editor');
   });
 </script>
 </html>

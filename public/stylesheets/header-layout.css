@@ -1,18 +1,24 @@
 
-.navbar {
+.am-topbar {
   background-color: #595959;
   border-radius: 0;
 }
 
-.navbar .navbar-brand {
+.am-topbar .navbar-brand {
   margin-left: 200px;
 }
 
-.navbar .navbar-brand img {
+.am-topbar .logo {
   width: 60px;
 }
 
-.navbar .header-title {
+.am-topbar .header-title {
   color: #FECF2D;
   font-size: 1.8rem;
+}
+
+.am-topbar .topbar-title {
+  position: relative;
+  line-height: 50px;
+  padding: 0 10px;
 }
