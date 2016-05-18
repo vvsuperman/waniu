@@ -31,8 +31,37 @@ router.get('/', function (req, res) {
 
 
 
+//职位查询
+router.post('/job/find', function(req,res){
+
+	var pageNum = req.body.pageNum;
+
+	if(pageNum === undefined){
+		
+		res.json({
+				state:1,
+				msg:'页数不得为空'
+		});
+
+		return false;
+	}
+
+    Job.find({})
+       .skip((pageNum-1)*pageSize)
+       .limit(pageSize)
+       .exec(function(err,jobs){
+       	   if (err) console.log(err);		
+			
+			res.json({
+				state:0,
+				jobs:jobs
+			})
+       })
+
+})
+
 //增加或修改职位
-router.get('/job/add', function(req,res){
+router.post('/job/modify', function(req,res){
     var reqJob = req.body.job;
 
 
@@ -41,21 +70,22 @@ router.get('/job/add', function(req,res){
 
     //无id为新增
     if(reqJob.id === undefined){
-
+    
     	var job = new Job({
 			
 			jobTitle: reqJob.jobTitle ,          //职位id
 			minSalary: reqJob.minSalary,         //最小薪水
 			maxSalary: reqJob.maxSalary,         //最大薪水
-			city: req.city,           			 //期望城市
-		    degree: req.degree,	        	     //学历要求
-		    attraction:req.attraction,         	 //职位诱惑
-		    description:req.description,    
+			city: reqJob.city,           			 //期望城市
+		    degree: reqJob.degree,	        	     //学历要求
+		    attraction:reqJob.attraction,         	 //职位诱惑
+		    description:reqJob.description,    
 
 		});
 
-		zonePrice.save(function(error, pJob) {
+		job.save(function(error, pJob) {
 			if (error) console.log(error);		
+			
 			res.json({
 				state:0,
 				job:pJob
@@ -63,6 +93,7 @@ router.get('/job/add', function(req,res){
 		});	
 
     }else{
+   	
 
         Job.findById(reqJob.id, function(err, job){
         		
@@ -90,13 +121,16 @@ router.get('/job/add', function(req,res){
 
 })
 
-//查询职位名称
-router.get('jobTitle/find', function(req,res){
-      JobTitle.find({}).exec(
-      	function(err,jobTitles){
+//查询所有的职位名称
+router.get('/jobTitle/find', function(req,res){
+
+      JobTitle.find({},function(err,jobTitles){
+      		
+      		if (err) console.log(err);
+
 	      	res.json({
 					state:0,
-					job:pJob
+					jobTitles:jobTitles
 		    });
       });
 })
