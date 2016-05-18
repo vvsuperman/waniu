@@ -14,4 +14,20 @@ router.get('/newjob', function (req, res) {
   res.render("admin/newjob");
 });
 
+router.post('/job', function (req, res) {
+  res.send();
+});
+
+router.delete('/job', function (req, res) {
+  res.send();
+});
+
+router.put('/job', function (req, res) {
+  res.send();
+});
+
+router.get('/job', function (req, res) {
+  res.send();
+});
+
 module.exports = router;

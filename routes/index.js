@@ -32,108 +32,108 @@ router.get('/', function (req, res) {
 
 
 //职位查询
-router.post('/job/find', function(req,res){
+router.post('/job/find', function (req, res) {
 
-	var pageNum = req.body.pageNum;
+  var pageNum = req.body.pageNum;
 
-	if(pageNum === undefined){
-		
-		res.json({
-				state:1,
-				msg:'页数不得为空'
-		});
+  if (pageNum === undefined) {
 
-		return false;
-	}
+    res.json({
+      state: 1,
+      msg: '页数不得为空'
+    });
 
-    Job.find({})
-       .skip((pageNum-1)*pageSize)
-       .limit(pageSize)
-       .exec(function(err,jobs){
-       	   if (err) console.log(err);		
-			
-			res.json({
-				state:0,
-				jobs:jobs
-			})
-       })
+    return false;
+  }
 
-})
+  Job.find({})
+    .skip((pageNum - 1) * pageSize)
+    .limit(pageSize)
+    .exec(function (err, jobs) {
+      if (err) console.log(err);
+
+      res.json({
+        state: 0,
+        jobs: jobs
+      })
+    })
+
+});
 
 //增加或修改职位
-router.post('/job/modify', function(req,res){
-    var reqJob = req.body.job;
+router.post('/job/modify', function (req, res) {
+  var reqJob = req.body.job;
 
 
-    // if(reqJob===undefined || reqJob.jobTitle=== undefined || reqJob.minSalary === undefined
-    // 	|| reqJob.city === undefined )
+  // if(reqJob===undefined || reqJob.jobTitle=== undefined || reqJob.minSalary === undefined
+  // 	|| reqJob.city === undefined )
 
-    //无id为新增
-    if(reqJob.id === undefined){
-    
-    	var job = new Job({
-			
-			jobTitle: reqJob.jobTitle ,          //职位id
-			minSalary: reqJob.minSalary,         //最小薪水
-			maxSalary: reqJob.maxSalary,         //最大薪水
-			city: reqJob.city,           			 //期望城市
-		    degree: reqJob.degree,	        	     //学历要求
-		    attraction:reqJob.attraction,         	 //职位诱惑
-		    description:reqJob.description,    
+  //无id为新增
+  if (reqJob.id === undefined) {
 
-		});
+    var job = new Job({
 
-		job.save(function(error, pJob) {
-			if (error) console.log(error);		
-			
-			res.json({
-				state:0,
-				job:pJob
-			})
-		});	
+      jobTitle: reqJob.jobTitle,          //职位id
+      minSalary: reqJob.minSalary,         //最小薪水
+      maxSalary: reqJob.maxSalary,         //最大薪水
+      city: reqJob.city,           			 //期望城市
+      degree: reqJob.degree,	        	     //学历要求
+      attraction: reqJob.attraction,         	 //职位诱惑
+      description: reqJob.description,
 
-    }else{
-   	
+    });
 
-        Job.findById(reqJob.id, function(err, job){
-        		
-        		job.jobTitle = reqJob.jobTitle;
-        		job.minSalary = reqJob.minSalary;
-        		job.maxSalary = reqJob.maxSalary;
-        		job.city = reqJob.city;
-        		job.degree = reqJob.degree;
-        		job.attraction = reqJob.attraction;
-        		job.description = reqJob.description;
+    job.save(function (error, pJob) {
+      if (error) console.log(error);
 
-        		//是否可以直接存，通过id reqJob.save?
-        		job.save(function(error, pJob) {
-					if (error) console.log(error);	
-					res.json({
-						state:0,
-						job:pJob
-			        })	
-				});	
+      res.json({
+        state: 0,
+        job: pJob
+      })
+    });
 
+  } else {
+
+
+    Job.findById(reqJob.id, function (err, job) {
+
+      job.jobTitle = reqJob.jobTitle;
+      job.minSalary = reqJob.minSalary;
+      job.maxSalary = reqJob.maxSalary;
+      job.city = reqJob.city;
+      job.degree = reqJob.degree;
+      job.attraction = reqJob.attraction;
+      job.description = reqJob.description;
+
+      //是否可以直接存，通过id reqJob.save?
+      job.save(function (error, pJob) {
+        if (error) console.log(error);
+        res.json({
+          state: 0,
+          job: pJob
         })
+      });
 
-    }
-  
+    })
 
-})
+  }
+
+
+});
 
 //查询所有的职位名称
-router.get('/jobTitle/find', function(req,res){
+router.get('/jobTitle/find', function (req, res) {
 
-      JobTitle.find({},function(err,jobTitles){
-      		
-      		if (err) console.log(err);
+  JobTitle.find({}, function (err, jobTitles) {
 
-	      	res.json({
-					state:0,
-					jobTitles:jobTitles
-		    });
-      });
-})
+    if (err) console.log(err);
+
+    res.json({
+      state: 0,
+      jobTitles: jobTitles
+    });
+  });
+});
 
 
 router.get('/login', function (req, res, next) {
