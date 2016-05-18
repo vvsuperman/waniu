@@ -1,15 +1,9 @@
 var mongoose = require('mongoose');
-var mongoose = require('mongoose');
 
 
-var ZoneSchema = new mongoose.Schema({
-	city: String ,     //城市
-	district: String,  //行政区域，浦东
-	name: String,      //小区名字
-	x: Number,         //百度地图经度
-    y: Number,	       //百度地图纬度
-    priceRate:Number,     //房价增加速率
-    zonePrices:[],
+var degreeSchema = new mongoose.Schema({
+	
+    name:String,    							    //职位名称
 	
 	
 	meta: {
@@ -26,19 +20,19 @@ var ZoneSchema = new mongoose.Schema({
 });
 
 
-ZoneSchema.pre('save', function(next) {
+degreeSchema.pre('save', function(next) {
 	if (this.isNew) {
 		this.meta.createdAt = this.meta.updatedAt = Date.now();
 	} else {
 		this.meta.updatedAt = Date.now();
 	}
 
-	console.log("save zone...........");
+	console.log("save jobtitle...........");
 
 	next();
 })
 
-ZoneSchema.statics = {
+degreeSchema.statics = {
 	fetch: function(callback) {
 		return this.find({}).sort('meta.updatedAt').exec(callback);
 	},
@@ -48,4 +42,4 @@ ZoneSchema.statics = {
 	}
 }
 
-module.exports = ZoneSchema;
+module.exports = degreeSchema;
