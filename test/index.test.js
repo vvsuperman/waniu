@@ -25,72 +25,94 @@ describe('routes/index.js', function () {
     maxSalary: 3000,         //最大薪水
     city: '北京',           			 //期望城市
     degree: '研究生',	        	     //学历要求
-    attraction: ['妹子多', '福利好'],         	 //职位诱惑
-    description: '好工作，不等人',
+    attraction: ['妹子多', '福利好','升值快'],         	 //职位诱惑
+    description: '你，就是下一个俞敏洪',
+
+  };
+
+  //错误的job数据
+  var errorJob = {
+    id: "573c045dc0e2fd0d280e51e91",         //id
+    jobTitle: "573bfec51699b1da6e16186b",    //jobtitles的id
+    minSalary: 1000,         //最小薪水
+    maxSalary: 3000,         //最大薪水
+    city: '北京',                  //期望城市
+    degree: '研究生',                 //学历要求
+    attraction: ['妹子多', '福利好','升值快'],            //职位诱惑
+    description: '你，就是下一个俞敏洪',
 
   };
 
 
-  describe('/job/modify', function () {
+  describe('职位管理', function () {
 
-    it('创建job', function (done) {
-      request.post('/job/modify')
-        .send({
-          job: reqJob
-        })
-        .expect(200, function (err, res) {
-          should.not.exist(err);
-          res.body.state.should.containEql(0);
-          done();
-        })
-    })
+    // it('创建job', function (done) {
+    //   request.post('/job')
+    //     .send({
+    //       job: reqJob
+    //     })
+    //     .expect(200, function (err, res) {
+    //       should.not.exist(err);
+    //       res.body.state.should.containEql(0);
+    //       done();
+    //     })
+    // })
 
-    it('修改job', function (done) {
-      request.post('/job/modify')
+    it('修改job成功', function (done) {
+      request.put('/job')
         .send({
           job: reqModifyJob
         })
         .expect(200, function (err, res) {
           should.not.exist(err);
           res.body.state.should.containEql(0);
-          console.log(res.body.job);
-          done();
-        })
-    })
-  })
-
-  describe('findJobTitles', function () {
-
-    it('查询所有职位名称', function (done) {
-      request.get('/jobTitle/find')
-        .expect(200, function (err, res) {
-          // should.not.exist(err);
-          // res.body.state.should.containEql(0);
-          console.log(res.body.jobTitles);
           done();
         })
     })
 
-
-  })
-
-  describe('findJobs', function () {
-
-    it('查询职位信息', function (done) {
-      request.post('/job/find')
+    it('修改job失败', function (done) {
+      request.put('/job')
         .send({
-          pageNum: 1
+          job: errorJob
         })
         .expect(200, function (err, res) {
-          // should.not.exist(err);
-          // res.body.state.should.containEql(0);
-          console.log(res.body.jobs);
+          should.not.exist(err);
+          res.body.state.should.containEql(1);
           done();
         })
     })
 
-
   })
+
+  // describe('findJobTitles', function () {
+
+  //   it('查询所有职位名称', function (done) {
+  //     request.get('/jobTitle')
+  //       .expect(200, function (err, res) {
+  //         // should.not.exist(err);
+  //         // res.body.state.should.containEql(0);
+  //         console.log(res.body.jobTitles);
+  //         done();
+  //       })
+  //   })
+
+
+  // })
+
+  // describe('findJobs', function () {
+
+  //   it('查询职位信息', function (done) {
+  //     request.get('/job/1')        
+  //       .expect(200, function (err, res) {
+  //         // should.not.exist(err);
+  //         // res.body.state.should.containEql(0);
+  //         console.log(res.body.jobs);
+  //         done();
+  //       })
+  //   })
+
+
+  // })
 
 
 })
