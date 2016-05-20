@@ -5,16 +5,67 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimal-ui"/>
   <title>挖牛管理系统</title>
-  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/bower_components/amazeui/dist/css/amazeui.min.css">
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/header-layout.css">
+  <link rel="stylesheet" href="/stylesheets/admin/home.css">
+  <link rel="stylesheet" href="/javascripts/simditor-2.3.6/styles/simditor.css">
   <style>
   </style>
 </head>
 <body>
 <% include header-layout %>
-admin
+
+<div class="container am-container">
+  <div class="am-g">
+    <div class="am-u-sm-6">
+      <div class="am-input-group am-input-group-primary">
+        <span class="am-input-group-label">
+          <i class="am-icon-search"></i>
+        </span>
+        <input type="text" class="am-form-field search">
+        <span class="am-input-group-btn">
+        <button class="am-btn am-btn-primary" type="button">手气还行</button>
+      </span>
+      </div>
+    </div>
+    <div class="am-u-sm-2 am-u-sm-offset-4">
+      <button type="button" class="am-btn am-btn-primary">
+        <i class="am-icon-plus"></i>
+        添加新职位
+      </button>
+    </div>
+  </div>
+  <table class="am-table am-table-hover am-table-centered">
+    <thead>
+    <tr>
+      <th></th>
+      <th>职位</th>
+      <th>行业</th>
+      <th>预览</th>
+      <th>修改</th>
+      <th>查看候选人</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td></td>
+      <td>前端工程师</td>
+      <td>IT</td>
+      <td>
+        <i class="am-icon-file-text"></i>
+      </td>
+      <td>
+        <i class="am-icon-edit"></i>
+      </td>
+      <td>
+        <i class="am-icon-eye"></i>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 </body>
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/bower_components/amazeui/dist/js/amazeui.min.js"></script>
 </html>

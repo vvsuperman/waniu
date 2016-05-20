@@ -5,7 +5,6 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimal-ui"/>
   <title>发布职位 - 挖牛管理系统</title>
-  <!--<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">-->
   <link rel="stylesheet" href="/bower_components/amazeui/dist/css/amazeui.min.css">
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/header-layout.css">
@@ -79,7 +78,12 @@
               学历要求
             </div>
             <div class="am-u-sm-10">
-              <input type="text" class="am-form-field" placeholder="请输入学历要求">
+              <form class="am-form">
+                <select id="doc-select-1">
+                  <option>本科</option>
+                  <option>专科</option>
+                </select>
+              </form>
             </div>
           </div>
         </li>
@@ -99,7 +103,7 @@
               职位描述
             </div>
             <div class="am-u-sm-10">
-              <textarea id="editor" placeholder="Balabala" autofocus></textarea>
+              <textarea id="editor" placeholder="请输入职位描述"></textarea>
             </div>
           </div>
         </li>
@@ -130,8 +134,18 @@
 <script>
   $(function () {
     var editor = new Simditor({
-      textarea: $('#editor')
-      //optional options
+      textarea: $('#editor'),
+      toolbar: [
+        'title',
+        'bold',
+        'italic',
+        'underline',
+        'strikethrough',
+        'fontScale',
+        'ol',
+        'ul'
+      ]
+
     });
   });
 </script>

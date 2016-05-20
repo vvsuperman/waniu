@@ -1,3 +1,20 @@
+
+.am-btn-primary {
+  background-color: #FDC72E;
+  border-color: #FDC72E;
+}
+
+.am-btn-primary:focus, .am-btn-primary:hover {
+  background-color: #FDC72E;
+  border-color: #FDC72E;
+}
+
+.am-btn-primary:active {
+  background-color: #FDC72E;
+  border-color: #FDC72E;
+}
+
+
 .w300 {
   width: 300px;
 }
