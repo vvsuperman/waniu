@@ -1,0 +1,13 @@
+.container {
+  margin-top: 60px;
+}
+.container .tag {
+  color: #686868;
+}
+.container .tag span {
+  margin-right: 20px;
+}
+
+.container .am-icon-tag {
+  color: #DBDBDB;
+}

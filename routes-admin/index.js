@@ -14,6 +14,10 @@ router.get('/newjob', function (req, res) {
   res.render("admin/newjob");
 });
 
+router.get('/candidate', function (req, res) {
+  res.render("admin/candidate");
+});
+
 //职位修改
 router.put('/job', function (req, res) {
 
