@@ -82,6 +82,17 @@ describe('routes/index.js', function () {
         })
     })
 
+
+    it('职位详细信息', function (done) {
+      request.get('/job/')
+       
+        .expect(200, function (err, res) {
+          should.not.exist(err);
+          res.body.state.should.containEql(1);
+          done();
+        })
+    })
+
   })
 
   // describe('findJobTitles', function () {

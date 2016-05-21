@@ -10,6 +10,7 @@ var JobSchema = new mongoose.Schema({
     degree: String,	        	//学历要求
     attraction:[],         							    //职位诱惑
     description:String,    							    //职位描述
+    weight: Number,    //权重，用于置顶
 	
 	
 	meta: {

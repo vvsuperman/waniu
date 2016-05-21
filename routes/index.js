@@ -31,19 +31,51 @@ router.get('/', function (req, res) {
 //查询所有的职位名称
 router.get('/jobTitle', function (req, res) {
 
-  JobTitle.find({}, function (err, jobTitles) {
+  JobTitle.find({})
+          .sort({weight:-1})
+          .exec(function (err, jobTitles) {
 
-    if (err) console.log(err);
+            if (err) console.log(err);
 
-    res.json({
-      state: 0,
-      jobTitles: jobTitles
-    });
-  });
+            res.json({
+              state: 0,
+              jobTitles: jobTitles
+            });
+          });
 });
 
-//职位查询
-router.get('/job/:pageNum', function (req, res) {
+//职位详细信息查询
+router.get('job/:id',function(req,res){
+   var id = req.params.id;
+
+   Job.findById(id , function(err, job){
+
+      if (err){
+        console.log(err);
+        res.json({state: 1, msg: '获取数据错误'});
+        return false;
+      } else{
+
+         if (job === undefined){
+            res.json({state: 1, msg: '职位不存在'});
+            return false;
+         }else{
+            res.json({state:0, job:job})
+         }
+      }
+
+     
+   })
+
+})
+
+
+
+
+
+
+//职位列表查询
+router.get('/jobs/:pageNum', function (req, res) {
 
   var pageNum = req.params.pageNum;
 
@@ -58,6 +90,7 @@ router.get('/job/:pageNum', function (req, res) {
   }
 
   Job.find({})
+    .sort({weight:-1})
     .skip((pageNum - 1) * pageSize)
     .limit(pageSize)
     .exec(function (err, jobs) {

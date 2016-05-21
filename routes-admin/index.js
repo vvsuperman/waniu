@@ -18,6 +18,19 @@ router.get('/candidate', function (req, res) {
   res.render("admin/candidate");
 });
 
+
+//职位置顶
+router.put('/job/top', function(req,res){
+
+     var id = req.body.id;
+     if(id === undefined){
+       res.json({state: 1, msg: 'id不存在'});
+       return false;
+     }
+})
+
+
+
 //职位修改
 router.put('/job', function (req, res) {
 

@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var JobTitleSchema = new mongoose.Schema({
 	
     name:String,    							    //职位名称
+    weight:Number,		//权重，用于调整顺序
 	
 	
 	meta: {
