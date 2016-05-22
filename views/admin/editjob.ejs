@@ -18,7 +18,8 @@
   <section class="am-panel am-panel-default">
     <header class="am-panel-hd newjob-header">
       <img src="/images/newjob/table2x.png" class="">
-      <span>发布新职位</span>
+      <span>修改职位</span>
+      <span id="jobId" style="visibility: hidden"><%= job._id.toString() %></span>
     </header>
     <div class="am-panel-bd">
       <ul class="am-list am-list-static">
@@ -31,7 +32,13 @@
               <form class="am-form">
                 <select id="jobTitle">
                   <% for(var i = 0, len = jobTitle.length;i < len;i++){ %>
-                  <option value="<%= jobTitle[i]._id %>"><%= jobTitle[i].name %></option>
+                  <% if(job.jobTitle.toString() == jobTitle[i]._id.toString()){ %>
+                  <option value="<%= jobTitle[i]._id.toString() %>" selected>
+                    <%= jobTitle[i].name %></option>
+                  <% }else{ %>
+                  <option value="<%= jobTitle[i]._id.toString() %>">
+                    <%= jobTitle[i].name %></option>
+                  <% } %>
                   <% } %>
                 </select>
               </form>
@@ -46,11 +53,13 @@
             <div class="am-u-sm-10">
               <form class="am-form-inline" role="form">
                 <div class="am-input-group">
-                  <input id="minSalary" type="text" class="am-form-field" placeholder="最低月薪">
+                  <input id="minSalary" type="text" class="am-form-field" placeholder="最低月薪"
+                         value="<%= job.minSalary %>">
                   <span class="am-input-group-label">K</span>
                 </div>
                 <div class="am-input-group">
-                  <input id="maxSalary" type="text" class="am-form-field" placeholder="最高月薪">
+                  <input id="maxSalary" type="text" class="am-form-field" placeholder="最高月薪"
+                         value="<%= job.maxSalary %>">
                   <span class="am-input-group-label">K</span>
                 </div>
 
@@ -67,7 +76,8 @@
               工作城市
             </div>
             <div class="am-u-sm-10">
-              <input id="city" type="text" class="am-form-field" placeholder="请输入城市名">
+              <input id="city" type="text" class="am-form-field" placeholder="请输入城市名"
+                     value="<%= job.city %>">
             </div>
           </div>
         </li>
@@ -78,11 +88,11 @@
             </div>
             <div class="am-u-sm-10">
               <form class="am-form">
-                <select id="degree">
-                  <option>本科</option>
-                  <option>本科以下</option>
-                  <option>硕士研究生</option>
-                  <option>博士研究生</option>
+                <select id="degree" value="<%=job.degree%>">
+                  <option >本科</option>
+                  <option >本科以下</option>
+                  <option >硕士研究生</option>
+                  <option >博士研究生</option>
                 </select>
               </form>
             </div>
@@ -94,7 +104,8 @@
               职位诱惑
             </div>
             <div class="am-u-sm-10">
-              <input id="attraction" type="text" class="am-form-field" placeholder="请选择职位诱惑" disabled>
+              <input id="attraction" type="text" class="am-form-field" placeholder="请选择职位诱惑" disabled
+                     value="<%= job.attraction.join(',') %>">
             </div>
           </div>
         </li>
@@ -104,7 +115,9 @@
               职位描述
             </div>
             <div class="am-u-sm-10">
-              <textarea id="description" placeholder="请输入职位描述"></textarea>
+              <textarea id="description" placeholder="请输入职位描述">
+                <%= job.description %>
+              </textarea>
             </div>
           </div>
         </li>
@@ -150,6 +163,7 @@
 
     $('#saveBtn').on('click', function (e) {
       var data = {
+        id: $('#jobId').text(),
         jobTitle: $('#jobTitle').val(),    //jobtitles的id
         minSalary: $('#minSalary').val(),         //最小薪水
         maxSalary: $('#maxSalary').val(),         //最大薪水
@@ -157,9 +171,9 @@
         degree: $('#degree').val(),	        	     //学历要求
         attraction: $('#attraction').val().split(','),         	 //职位诱惑
         description: descEditor.getValue()
-      }
+      };
       $.ajax({
-        method: 'post',
+        method: 'put',
         url: '/admin/job',
         data: {
           job: data

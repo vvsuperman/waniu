@@ -57,8 +57,9 @@ router.get('/editjob/:id', function (req, res, next) {
       return;
     }
     if (results[0].length) {
-      console.log({job: results[0], jobTitle: results[1]});
-      res.render("admin/editjob", {job: results[0], jobTitle: results[1]});
+      var data = {job: results[0][0], jobTitle: results[1]};
+      console.log(data);
+      res.render('admin/editjob', data);
     } else {
       res.render('404');
     }
@@ -151,7 +152,7 @@ router.post('/job', function (req, res) {
 //职位修改
 router.put('/job', function (req, res) {
 
-  var reqJob = req.body.job;
+  var reqJob = req.body;
 
   if (reqJob.id === undefined) {
 
@@ -187,11 +188,11 @@ router.put('/job', function (req, res) {
 
     //是否可以直接存，通过id reqJob.save?
     job.save(function (error, pJob) {
-      if (error) console.log(error);
-      res.json({
-        state: 0,
-        job: pJob
-      })
+      if (error) {
+        res.sendStatus(500);
+        res.send({code: 500, message: '修改job异常'});
+      }
+      res.send(pJob);
     });
 
   })
