@@ -48,20 +48,24 @@
     </tr>
     </thead>
     <tbody>
+    <% for(var i = 0, len = jobs.length;i < len;i++){ %>
     <tr>
       <td></td>
-      <td>前端工程师</td>
+      <td><%= jobs[i].jobTitle %></td>
       <td>IT</td>
       <td>
         <i class="am-icon-file-text"></i>
       </td>
       <td>
-        <i class="am-icon-edit"></i>
+        <a href="/admin/editjob/<%=jobs[i]._id%>">
+          <i class="am-icon-edit"></i>
+        </a>
       </td>
       <td>
         <i class="am-icon-eye"></i>
       </td>
     </tr>
+    <% } %>
     </tbody>
   </table>
 </div>
