@@ -42,8 +42,7 @@ describe('routes/index.js', function () {
     description: '你，就是下一个俞敏洪',
 
   };
-
-
+  
   describe('职位管理', function () {
 
 
@@ -53,15 +52,9 @@ describe('routes/index.js', function () {
           id: '574042341a9659ab0ec0611e'
         })
         .expect(200, function (err, res) {
-<<<<<<< HEAD
-           should.not.exist(err);
-          res.body.state.should.containEql(1);
-          
-=======
           should.not.exist(err);
           res.body.state.should.containEql(1);
 
->>>>>>> develop
           done();
         })
     })
@@ -72,15 +65,9 @@ describe('routes/index.js', function () {
           job: reqJob
         })
         .expect(200, function (err, res) {
-<<<<<<< HEAD
-           should.not.exist(err);
-          res.body.state.should.containEql(0);
-          
-=======
           should.not.exist(err);
           res.body.state.should.containEql(0);
 
->>>>>>> develop
           done();
         })
     })
@@ -112,9 +99,8 @@ describe('routes/index.js', function () {
 
     it('职位详细信息', function (done) {
       request.get('/job/57403cd1504d24c10cb52c9b')
-<<<<<<< HEAD
-      
-       
+
+
         .expect(200, function (err, res) {
           should.not.exist(err);
           res.body.state.should.containEql(0);
@@ -131,46 +117,6 @@ describe('routes/index.js', function () {
         .expect(200, function (err, res) {
           should.not.exist(err);
           res.body.state.should.containEql(0);
-          
-          done();
-        })
-    })
-=======
-
->>>>>>> develop
-
-        .expect(200, function (err, res) {
-          should.not.exist(err);
-          res.body.state.should.containEql(0);
-          done();
-        })
-    })
-
-<<<<<<< HEAD
-  })
-
-  describe('findJobs', function () {
-
-    it('查询职位信息', function (done) {
-      request.get('/jobs/1')        
-        .expect(200, function (err, res) {
-           should.not.exist(err);
-           res.body.state.should.containEql(0);
-          
-          done();
-        })
-    })
-=======
-  }) //职位管理
-
-  describe('findJobTitles', function () {
-
-    it('查询所有职位名称', function (done) {
-      request.get('/jobTitle')
-        .expect(200, function (err, res) {
-          should.not.exist(err);
-          res.body.state.should.containEql(0);
->>>>>>> develop
 
           done();
         })
@@ -179,11 +125,7 @@ describe('routes/index.js', function () {
 
   });
 
-<<<<<<< HEAD
-  })
-=======
   describe('findJobs', function () {
->>>>>>> develop
 
     it('查询职位信息', function (done) {
       request.get('/jobs/1')
