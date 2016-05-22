@@ -64,7 +64,17 @@ router.get('/editjob/:id', function (req, res, next) {
       res.render('404');
     }
   });
+});
 
+router.get('/lookjob/:id', function (req, res, next) {
+  Job.find({_id: req.params.id}, function (err, results) {
+    if (err) {
+      next(err);
+      return;
+    }
+    console.log(results);
+    res.render('admin/lookjob', {job: results[0]});
+  });
 });
 
 router.get('/candidate', function (req, res) {

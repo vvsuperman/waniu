@@ -23,19 +23,6 @@
   border-radius: 5px;
   width: 80px
 }
-
-/*.newjob .list-group-item:first-child,*/
-/*.newjob .list-group-item:last-child {*/
-/*border-radius: 0 !important;*/
-/*}*/
-/*.newjob .list-group-item:first-child {*/
-/*border-top: none;*/
-/*}*/
-/*.newjob .list-group-item:last-child {*/
-/*border-bottom: none;*/
-/*}*/
-/*.newjob .list-group-item {*/
-/*border-right: none;*/
-/*border-left: none;*/
-/*border-bottom:1px solid #ddd;*/
-/*}*/
+.am-list>li:last-child {
+  border-bottom: none !important;
+}
