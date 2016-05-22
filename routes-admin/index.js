@@ -11,7 +11,11 @@ var Degree = require('../models/degree');
 var async = require('async');
 
 router.get('/waniuadmin', function (req, res, next) {
-  Job.find({}, function (err, results) {
+  var queryData = {};
+  if(req.query.search) {
+    //TODO: 方维 添加搜索功能
+  }
+  Job.find(queryData, function (err, results) {
     if (err) {
       next(err);
       return;

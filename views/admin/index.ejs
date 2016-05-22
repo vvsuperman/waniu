@@ -23,25 +23,24 @@
         <span class="am-input-group-label">
           <i class="am-icon-search"></i>
         </span>
-        <input type="text" class="am-form-field search">
+        <input id="searchText" type="text" class="am-form-field search">
         <span class="am-input-group-btn">
-        <button class="am-btn am-btn-primary" type="button">手气还行</button>
+        <button id="searchBtn" class="am-btn am-btn-primary" type="button">手气还行</button>
       </span>
       </div>
     </div>
     <div class="am-u-sm-2 am-u-sm-offset-4">
-      <button type="button" class="am-btn am-btn-primary">
+      <a href="/admin/newjob" class="am-btn am-btn-primary">
         <i class="am-icon-plus"></i>
         添加新职位
-      </button>
+      </a>
     </div>
   </div>
-  <table class="am-table am-table-hover am-table-centered">
+  <table class="am-table am-table-hover">
     <thead>
     <tr>
       <th></th>
       <th>职位</th>
-      <th>行业</th>
       <th>预览</th>
       <th>修改</th>
       <th>查看候选人</th>
@@ -52,9 +51,10 @@
     <tr>
       <td></td>
       <td><%= jobs[i].jobTitle %></td>
-      <td>IT</td>
       <td>
-        <i class="am-icon-file-text"></i>
+        <a href="/admin/lookjob/<%= jobs[i]._id %>">
+          <i class="am-icon-file-text"></i>
+        </a>
       </td>
       <td>
         <a href="/admin/editjob/<%= jobs[i]._id %>">
@@ -72,4 +72,11 @@
 </body>
 <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="/bower_components/amazeui/dist/js/amazeui.min.js"></script>
+<script>
+  $(function () {
+    $('#searchBtn').on('click', function () {
+      location.search = '?search=' + $('#searchText').val();
+    })
+  });
+</script>
 </html>

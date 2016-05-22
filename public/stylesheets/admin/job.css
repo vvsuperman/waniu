@@ -23,6 +23,19 @@
   border-radius: 5px;
   width: 80px
 }
-.am-list>li:last-child {
+
+.am-list > li:last-child {
   border-bottom: none !important;
+}
+
+.job-attraction {
+  margin-top: 20px;
+}
+
+.job-attraction .am-badge {
+  cursor: pointer;
+}
+
+.job-attraction .active {
+  background-color: #FDC72E;
 }

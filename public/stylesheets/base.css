@@ -13,6 +13,9 @@
   background-color: #FDC72E;
   border-color: #FDC72E;
 }
+.am-topbar-inverse .am-topbar-nav>li>a:focus:after, .am-topbar-inverse .am-topbar-nav>li>a:hover:after {
+  border-bottom-color: #FDC72E;
+}
 
 .w300 {
   width: 300px;
