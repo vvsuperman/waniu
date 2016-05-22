@@ -12,7 +12,7 @@ var async = require('async');
 
 router.get('/waniuadmin', function (req, res, next) {
   var queryData = {};
-  if (req.query.search) {
+  if(req.query.search) {
     //TODO: 方维 添加搜索功能
   }
   Job.find(queryData, function (err, results) {
@@ -81,6 +81,9 @@ router.get('/lookjob/:id', function (req, res, next) {
   });
 });
 
+router.get('/candidate', function (req, res) {
+  res.render("admin/candidate");
+});
 
 //职位置顶
 router.put('/job/top', function (req, res) {
@@ -121,92 +124,91 @@ router.put('/job/top', function (req, res) {
   }
 })
 
-
-})
-;
-
-
-var reqJob = req.body.job;
+//职位新增
+router.post('/job', function (req, res) {
 
 
-if (reqJob === undefined || reqJob.jobTitle === undefined || reqJob.minSalary === undefined
-  || reqJob.city === undefined) {
+  var reqJob = req.body.job;
 
-  res.sendStatus(500);
-  res.send({code: 500, message: '输入均不得为空'});
+
+  if (reqJob === undefined || reqJob.jobTitle === undefined || reqJob.minSalary === undefined
+    || reqJob.city === undefined) {
+
+    res.sendStatus(500);
+    res.send({code: 500, message: '输入均不得为空'});
+
+    return false;
+  }
+
+  var job = new Job({
+
+    jobTitle: reqJob.jobTitle,          //职位id
+    minSalary: reqJob.minSalary,         //最小薪水
+    maxSalary: reqJob.maxSalary,         //最大薪水
+    city: reqJob.city,                 //期望城市
+    degree: reqJob.degree,                 //学历要求
+    attraction: reqJob.attraction,           //职位诱惑
+    description: reqJob.description
+
+  });
+
+  job.save(function (error, pJob) {
+    if (error) {
+      res.sendStatus(500);
+      res.send({code: 500, message: '保存job异常'});
+    }
+    res.send(pJob);
+  });
+});
+
+//职位修改
+router.put('/job', function (req, res) {
+
+  var reqJob = req.body;
+
+  if (reqJob.id === undefined) {
+
+    res.json({
+      state: 1,
+      msg: 'id不得为空'
+    })
+    return false;
+  }
+
 
   Job.findById(reqJob.id, function (err, job) {
 
-    var job = new Job({
+    // 未找到该id
 
-      jobTitle: reqJob.jobTitle,          //职位id
-      minSalary: reqJob.minSalary,         //最小薪水
-      maxSalary: reqJob.maxSalary,         //最大薪水
-      city: reqJob.city,                 //期望城市
-      degree: reqJob.degree,                 //学历要求
-      attraction: reqJob.attraction,           //职位诱惑
-      description: reqJob.description
-
-      return false;
-  }
-
-    job.save(function (error, pJob) {
-      if (error) {
-        res.sendStatus(500);
-        res.send({code: 500, message: '保存job异常'});
-      }
-      res.send(pJob);
-    });
-  });
-
-//职位修改
-  router.put('/job', function (req, res) {
-
-    var reqJob = req.body;
-
-    if (reqJob.id === undefined) {
+    if (job === undefined) {
 
       res.json({
         state: 1,
-        msg: 'id不得为空'
-      })
+        msg: '该job不存在'
+      });
+
       return false;
     }
 
+    job.jobTitle = reqJob.jobTitle;
+    job.minSalary = reqJob.minSalary;
+    job.maxSalary = reqJob.maxSalary;
+    job.city = reqJob.city;
+    job.degree = reqJob.degree;
+    job.attraction = reqJob.attraction;
+    job.description = reqJob.description;
 
-    Job.findById(reqJob.id, function (err, job) {
-
-      // 未找到该id
-
-      if (job === undefined) {
-
-        res.json({
-          state: 1,
-          msg: '该job不存在'
-        });
-
-        return false;
+    //是否可以直接存，通过id reqJob.save?
+    job.save(function (error, pJob) {
+      if (error) {
+        res.sendStatus(500);
+        res.send({code: 500, message: '修改job异常'});
       }
+      res.send(pJob);
+    });
 
-      job.jobTitle = reqJob.jobTitle;
-      job.minSalary = reqJob.minSalary;
-      job.maxSalary = reqJob.maxSalary;
-      job.city = reqJob.city;
-      job.degree = reqJob.degree;
-      job.attraction = reqJob.attraction;
-      job.description = reqJob.description;
-
-      //是否可以直接存，通过id reqJob.save?
-      job.save(function (error, pJob) {
-        if (error) {
-          res.sendStatus(500);
-          res.send({code: 500, message: '修改job异常'});
-        }
-        res.send(pJob);
-      });
-
-    })
-  });
+  })
+});
 
 
-  module.exports = router;
+module.exports = router;
