@@ -85,7 +85,6 @@ router.get('/candidate', function (req, res) {
   res.render("admin/candidate");
 });
 
-
 //职位置顶
 router.put('/job/top', function (req, res) {
 
@@ -124,7 +123,6 @@ router.put('/job/top', function (req, res) {
 
   }
 })
-
 
 //职位新增
 router.post('/job', function (req, res) {
