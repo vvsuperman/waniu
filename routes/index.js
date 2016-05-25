@@ -97,6 +97,7 @@
     }
 
     Job.find({})
+      .populate('jobTitle','name')
       .sort({weight:-1})
       .skip((pageNum - 1) * pageSize)
       .limit(pageSize)

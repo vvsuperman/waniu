@@ -43,87 +43,87 @@ describe('routes/index.js', function () {
 
   };
   
-  describe('职位管理', function () {
+  // describe('职位管理', function () {
 
 
-    it('置顶job', function (done) {
-      request.put('/admin/job/top')
-        .send({
-          id: '574042341a9659ab0ec0611e'
-        })
-        .expect(200, function (err, res) {
-          should.not.exist(err);
-          res.body.state.should.containEql(1);
+  //   it('置顶job', function (done) {
+  //     request.put('/admin/job/top')
+  //       .send({
+  //         id: '574042341a9659ab0ec0611e'
+  //       })
+  //       .expect(200, function (err, res) {
+  //         should.not.exist(err);
+  //         res.body.state.should.containEql(1);
 
-          done();
-        })
-    })
+  //         done();
+  //       })
+  //   })
 
-    it('创建job', function (done) {
-      request.post('/admin/job')
-        .send({
-          job: reqJob
-        })
-        .expect(200, function (err, res) {
-          should.not.exist(err);
-          res.body.state.should.containEql(0);
+  //   it('创建job', function (done) {
+  //     request.post('/admin/job')
+  //       .send({
+  //         job: reqJob
+  //       })
+  //       .expect(200, function (err, res) {
+  //         should.not.exist(err);
+  //         res.body.state.should.containEql(0);
 
-          done();
-        })
-    })
+  //         done();
+  //       })
+  //   })
 
-    it('修改job成功', function (done) {
-      request.put('/admin/job')
-        .send({
-          job: reqModifyJob
-        })
-        .expect(200, function (err, res) {
-          should.not.exist(err);
-          res.body.state.should.containEql(0);
-          done();
-        })
-    })
+  //   it('修改job成功', function (done) {
+  //     request.put('/admin/job')
+  //       .send({
+  //         job: reqModifyJob
+  //       })
+  //       .expect(200, function (err, res) {
+  //         should.not.exist(err);
+  //         res.body.state.should.containEql(0);
+  //         done();
+  //       })
+  //   })
 
-    it('修改job失败', function (done) {
-      request.put('/admin/job')
-        .send({
-          job: errorJob
-        })
-        .expect(200, function (err, res) {
-          should.not.exist(err);
-          res.body.state.should.containEql(1);
-          done();
-        })
-    })
-
-
-    it('职位详细信息', function (done) {
-      request.get('/job/57403cd1504d24c10cb52c9b')
+  //   it('修改job失败', function (done) {
+  //     request.put('/admin/job')
+  //       .send({
+  //         job: errorJob
+  //       })
+  //       .expect(200, function (err, res) {
+  //         should.not.exist(err);
+  //         res.body.state.should.containEql(1);
+  //         done();
+  //       })
+  //   })
 
 
-        .expect(200, function (err, res) {
-          should.not.exist(err);
-          res.body.state.should.containEql(0);
-          done();
-        })
-    })
-
-  }) //职位管理
-
-  describe('findJobTitles', function () {
-
-    it('查询所有职位名称', function (done) {
-      request.get('/jobTitle')
-        .expect(200, function (err, res) {
-          should.not.exist(err);
-          res.body.state.should.containEql(0);
-
-          done();
-        })
-    })
+  //   it('职位详细信息', function (done) {
+  //     request.get('/job/57403cd1504d24c10cb52c9b')
 
 
-  });
+  //       .expect(200, function (err, res) {
+  //         should.not.exist(err);
+  //         res.body.state.should.containEql(0);
+  //         done();
+  //       })
+  //   })
+
+  // }) //职位管理
+
+  // describe('findJobTitles', function () {
+
+  //   it('查询所有职位名称', function (done) {
+  //     request.get('/jobTitle')
+  //       .expect(200, function (err, res) {
+  //         should.not.exist(err);
+  //         res.body.state.should.containEql(0);
+
+  //         done();
+  //       })
+  //   })
+
+
+  // });
 
   describe('findJobs', function () {
 
@@ -132,6 +132,7 @@ describe('routes/index.js', function () {
         .expect(200, function (err, res) {
           should.not.exist(err);
           res.body.state.should.containEql(0);
+          console.log(res.body.jobs)
 
           done();
         })
