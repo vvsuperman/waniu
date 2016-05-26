@@ -198,3 +198,12 @@ body {
 .mobile-apply .am-btn img{
   height:20px;
 }
+
+.am-popup-bd .am-input-group {
+  margin-bottom: 10px;
+}
+
+.am-gotop-fixed .am-gotop-icon {
+  background-color: #FECF2D;
+  color: #fff;
+}

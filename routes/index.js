@@ -84,7 +84,7 @@ router.get('/job/:id', function (req, res) {
 
   })
 
-})
+});
 
 
 //职位列表查询
