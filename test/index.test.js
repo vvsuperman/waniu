@@ -125,14 +125,32 @@ describe('routes/index.js', function () {
 
   // });
 
-  describe('findJobs', function () {
+  // describe('findJobs', function () {
 
-    it('查询职位信息', function (done) {
-      request.get('/jobs/1')
+  //   it('查询职位信息', function (done) {
+  //     request.get('/jobs/1')
+  //       .expect(200, function (err, res) {
+  //         should.not.exist(err);
+  //         res.body.state.should.containEql(0);
+  //         console.log(res.body.jobs)
+
+  //         done();
+  //       })
+  //   })
+  // })
+
+
+   describe('searchJobs', function () {
+
+    it('搜索职位信息', function (done) {
+      request.post('/search')
+        .send({
+           key:'北京'
+        })
         .expect(200, function (err, res) {
           should.not.exist(err);
           res.body.state.should.containEql(0);
-          console.log(res.body.jobs)
+          console.log('jobs...',res.body.jobs)
 
           done();
         })
