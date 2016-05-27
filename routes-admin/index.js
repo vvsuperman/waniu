@@ -12,17 +12,22 @@ var async = require('async');
 
 router.get('/waniuadmin', function (req, res, next) {
   var queryData = {};
-  if(req.query.search) {
+  if (req.query.search) {
     //TODO: 方维 添加搜索功能
   }
-  Job.find(queryData, function (err, results) {
-    if (err) {
-      next(err);
-      return;
-    }
-    //TODO: 方维 - 需要将jobTitle 的 值转换为 中文值
-    res.render("admin/index", {jobs: results});
-  });
+
+  Job.find(queryData)
+    .populate('jobTitle', 'name')
+    .sort({weight: -1})
+    .skip(0)
+    .limit(10)
+    .exec(function (err, results) {
+      if (err) {
+        next(err);
+        return;
+      }
+      res.render("admin/index", {jobs: results});
+    });
 });
 
 router.get('/newjob', function (req, res, next) {

@@ -25,7 +25,19 @@ var pageSize = 10; //每页十条记录
 mongoose.connect('mongodb://localhost:27017/waniudb');
 
 router.get('/', function (req, res) {
-  res.render("index");
+    Job.find({})
+    .populate('jobTitle', 'name')
+    .sort({weight: -1})
+    .skip(0)
+    .limit(20)
+    .exec(function (err, results) {
+      if (err) {
+        next(err);
+        return;
+      }
+      res.render("index", {jobs: results});
+    });
+
 });
 
 

@@ -50,7 +50,7 @@
     <% for(var i = 0, len = jobs.length;i < len;i++){ %>
     <tr>
       <td></td>
-      <td><%= jobs[i].jobTitle %></td>
+      <td><%= jobs[i].jobTitle.name %></td>
       <td>
         <a href="/admin/lookjob/<%= jobs[i]._id %>">
           <i class="am-icon-file-text"></i>

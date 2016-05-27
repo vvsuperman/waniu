@@ -2,26 +2,18 @@
 <html>
 <head lang="zh">
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimal-ui"/>
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>挖牛</title>
   <link rel="stylesheet" href="/bower_components/amazeui/dist/css/amazeui.min.css">
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/index.css">
 </head>
-<body style="height: 10000px">
+<body>
 <div class="header">
   <header class="am-topbar am-topbar-inverse">
     <div class="am-container">
-      <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-2">
-        <ul class="am-nav am-nav-pills am-topbar-nav">
-          <li class="topbar-title">
-            <a href="/">
-              <img src="/images/logo2.png" alt="logo">
-            </a>
-          </li>
-        </ul>
-      </div>
+      <a href="/"><img src="/images/logo2.png" alt="logo" class="logo"></a>
     </div>
   </header>
   <img class="header-background" src="/images/header_background.jpg" alt="背景">
@@ -36,36 +28,141 @@
   </div>
 </div>
 <div class="container am-container">
-  <div class="container-header">
-    <img src="/images/hot2x.png" alt="hot">
-    <span>热气牛坑</span>
-  </div>
-  <ul class="container-sort am-cf">
-    <li class="active">最新</li>
-    <li>热门</li>
-  </ul>
-  <div class="content">
-    <div class="content-item">
-      <div class="content-item-title">
-        移动产品经理
-        <span class="content-item-title-right">占坑</span>
-        <img class="content-item-title-apply" src="/images/zhankeng.jpg" alt="占坑">
-      </div>
-      <div class="content-item-tag">
-        <ul class="am-cf">
-          <li>10k-20k</li>
-          <li>本科</li>
-          <li>上海</li>
-        </ul>
-        <div>
-          职位诱惑:&nbsp;妹子多,福利好,扁平管理
-        </div>
-      </div>
-      <div class="content-item-desc">
-        工作职责
+  <div class="row am-show-md-up">
+    <div class="am-md-12">
+      <div class="container-header">
+        <img src="/images/hot2x.png" alt="hot">
+        <span class="am-text-middle">热气牛坑</span>
       </div>
     </div>
   </div>
+  <div class="row am-show-md-up">
+    <div class="am-md-12">
+      <ul class="container-sort am-cf">
+        <li class="active">最新</li>
+        <li>热门</li>
+      </ul>
+    </div>
+  </div>
+  <div class="am-show-sm-down am-cf" style="position: relative;margin-bottom: 10px">
+    <div class="am-fl">
+      <img src="/images/hot2x.png" alt="hot" style="height: 20px;vertical-align: middle">
+      <span class="am-text-middle" style="font-size: 20px;font-weight: 600;color: #666">热气牛坑</span>
+    </div>
+    <div class="am-fr am-text-center">
+      <a class="am-badge am-round">最新</a>
+      <a class="am-badge am-round">热门</a>
+    </div>
+  </div>
+  <div id="content" class="content">
+    <% for(var i = 0, len = jobs.length;i < len;i++){ %>
+    <div class="content-item">
+      <div class="content-item-title">
+        <%= jobs[i].jobTitle.name %>
+        <div class="am-show-md-up apply-job"
+             data-job-name="<%= jobs[i].jobTitle.name %>"
+             data-job-id="<%= jobs[i].jobTitle._id %>"
+             data-am-modal="{target: '#applyPopup'}">
+          <span class="content-item-title-right">占坑</span>
+          <img class="content-item-title-apply" src="/images/zhankeng.jpg" alt="占坑">
+        </div>
+      </div>
+      <div class="content-item-tag">
+        <ul class="am-cf">
+          <i class="am-icon-cny"></i><%= jobs[i].minSalary %>K - <%= jobs[i].maxSalary %>K
+          &nbsp;<i class="am-icon-graduation-cap"></i>&nbsp;<%= jobs[i].degree %>
+          &nbsp;<i class="am-icon-map-marker"></i>&nbsp;<%= jobs[i].city %>
+        </ul>
+        <div>
+          <span class="am-show-md-up am-fl">职位诱惑:&nbsp;</span>
+          <span class="am-show-md-up"><%= jobs[i].attraction.join(',') %></span>
+          <div class="am-show-sm-down">
+            <% for(var j = 0;j < jobs[i].attraction.length;j++){ %>
+            <i class="am-icon-tag"></i>&nbsp;<%= jobs[i].attraction[j] %>&nbsp;
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <div class="content-item-desc">
+        <%- jobs[i].description %>
+      </div>
+      <div class="mobile-apply am-text-center am-show-sm-down">
+        <button type="button"
+                class="am-btn am-btn-primary am-radius apply-job"
+                data-job-name="<%= jobs[i].jobTitle.name %>"
+                data-job-id="<%= jobs[i].jobTitle._id %>"
+                data-am-modal="{target: '#applyPopup'}">
+          <img src="/images/keng2x.png" alt="">
+          <span class="am-text-middle">占坑</span>
+        </button>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+<div class="am-popup" id="applyPopup">
+  <div class="am-popup-inner">
+    <div class="am-popup-hd">
+      <h4 class="am-popup-title">请完善信息</h4>
+      <span data-am-modal-close class="am-close">&times;</span>
+    </div>
+    <div class="am-popup-bd">
+      <div class="am-input-group">
+        <span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
+        <input type="text" class="am-form-field" placeholder="姓名">
+      </div>
+      <div class="am-input-group">
+        <span class="am-input-group-label"><i class="am-icon-mobile am-icon-fw"></i></span>
+        <input type="text" class="am-form-field" placeholder="手机">
+      </div>
+      <div class="am-input-group">
+        <span class="am-input-group-label"><i class="am-icon-envelope am-icon-fw"></i></span>
+        <input type="email" class="am-form-field" placeholder="邮箱">
+      </div>
+      <div class="am-input-group">
+        <span class="am-input-group-label"><i class="am-icon-map-marker am-icon-fw"></i></span>
+        <input type="text" class="am-form-field" placeholder="所在城市">
+      </div>
+      <div class="am-input-group">
+        <span class="am-input-group-label"><i class="am-icon-briefcase am-icon-fw"></i></span>
+        <input id="jobTitleName" type="text" class="am-form-field" placeholder="感兴趣的职位" disabled>
+      </div>
+      <button class="am-btn am-btn-primary am-btn-block">确认</button>
+    </div>
+  </div>
+</div>
+<div data-am-widget="gotop" class="am-gotop am-gotop-fixed">
+  <a href="#top" title="回到顶部">
+    <span class="am-gotop-title">回到顶部</span>
+    <i class="am-gotop-icon am-icon-chevron-up"></i>
+  </a>
 </div>
 </body>
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/javascripts/template.js"></script>
+<script src="/bower_components/amazeui/dist/js/amazeui.min.js"></script>
+<script id="test" type="text/html">
+  <h1>{{title}}</h1>
+  <ul>
+    {{each list as value i}}
+    <li>索引 {{i + 1}} ：{{value}}</li>
+    {{/each}}
+  </ul>
+</script>
+<script>
+  $(function () {
+    $('.apply-job').on('click', function (e) {
+      $('#jobTitleName').val(e.currentTarget.attributes['data-job-name'].value)
+    });
+
+//    var data = {
+//      title: '标签',
+//      list: ['文艺', '博客', '摄影', '电影', '民谣', '旅行', '吉他']
+//    };
+//    var html = template('test', data);
+//    document.getElementById('content').innerHTML = html;
+  });
+</script>
+<script id="test1" type="text/html">
+</script>
 </html>
