@@ -26,7 +26,7 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              职位名称
+              <strong>职位名称</strong>
             </div>
             <div class="am-u-sm-10">
               <form class="am-form">
@@ -48,7 +48,7 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              月薪范围
+              <strong>月薪范围</strong>
             </div>
             <div class="am-u-sm-10">
               <form class="am-form-inline" role="form">
@@ -73,7 +73,7 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              工作城市
+              <strong>工作城市</strong>
             </div>
             <div class="am-u-sm-10">
               <input id="city" type="text" class="am-form-field" placeholder="请输入城市名"
@@ -84,7 +84,7 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              学历要求
+              <strong>学历要求</strong>
             </div>
             <div class="am-u-sm-10">
               <form class="am-form">
@@ -101,7 +101,7 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              职位诱惑
+              <strong>职位诱惑</strong>
             </div>
             <div class="am-u-sm-10">
               <input id="attraction" type="text" class="am-form-field" placeholder="请选择职位诱惑" disabled
@@ -112,7 +112,7 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              职位描述
+              <strong>职位描述</strong>
             </div>
             <div class="am-u-sm-10">
               <textarea id="description" placeholder="请输入职位描述">
@@ -177,7 +177,6 @@
         url: '/admin/job',
         data: data,
         success: function (res) {
-          console.log(res);
           location.href='/admin/waniuadmin';
         },
         error: function (err) {

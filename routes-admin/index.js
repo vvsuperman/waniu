@@ -91,43 +91,37 @@ router.get('/candidate', function (req, res) {
 });
 
 //职位置顶
-router.put('/job/top', function (req, res) {
-
+router.post('/job/top', function (req, res) {
   var id = req.body.id;
   if (id === undefined) {
-    res.json({state: 1, msg: 'id不存在'});
+    res.sendStatus(400);
+    res.send({code: 400, message: '参数错误,id不存在!'});
     return false;
   } else {
-
     Job.findById(id, function (err, job) {
       if (job === undefined) {
-        res.json({state: 1, msg: '职位不存在'});
+        res.sendStatus(400);
+        res.send({code: 400, message: '职位不存在!'});
         return false;
       }
       //找到weight值最大的那个
       Job.findOne({})
         .sort({weight: -1})
         .exec(function (err, wJob) {
-
           job.weight = wJob.weight + 1;
           job.save(function (err, rtJob) {
-
             if (err) {
-              console.log(err);
-              res.json({state: 1, msg: '保存数据错误'});
+              res.sendStatus(500);
+              res.send({code: 500, message: '保存数据错误!'});
+            } else {
+              //res.json({state: 0, job: rtJob});
+              res.send(rtJob);
             }
-            else {
-              res.json({state: 0, job: rtJob});
-            }
-
-          })
-
-        })
-
+          });
+        });
     })
-
   }
-})
+});
 
 //职位新增
 router.post('/job', function (req, res) {
@@ -139,8 +133,8 @@ router.post('/job', function (req, res) {
   if (reqJob === undefined || reqJob.jobTitle === undefined || reqJob.minSalary === undefined
     || reqJob.city === undefined) {
 
-    res.sendStatus(500);
-    res.send({code: 500, message: '输入均不得为空'});
+    res.sendStatus(400);
+    res.send({code: 400, message: '输入均不得为空'});
 
     return false;
   }
