@@ -26,7 +26,7 @@
   </div>
   <div class="am-g">
     <div class="am-u-md-6 am-u-md-offset-3 am-u-sm-12">
-      <input type="text" class="am-form-field am-round" placeholder="职位描述,地点等"/>
+      <input id="searchInput" type="text" class="am-form-field am-round" placeholder="职位描述,地点等"/>
     </div>
   </div>
 </div>
@@ -212,6 +212,22 @@
         }
       }
     });
+
+    $('#searchInput').on('keypress', function (e) {
+      if (e.keyCode === 13) {
+        console.log($(this).val());
+        $.ajax({
+          url: '/search',
+          method: 'post',
+          data: {
+            key: $(this).val()
+          },
+          success: function (res) {
+            console.log(res);
+          }
+        });
+      }
+    })
   });
 </script>
 </html>
