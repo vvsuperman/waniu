@@ -4,6 +4,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var JobSchema = new mongoose.Schema({
 	jobTitle: {type:ObjectId, ref:'JobTitle'} ,         //职位id
+  industry: {type:ObjectId, ref:'industry'} ,         //行业id
 	minSalary: Number,                    				//最小薪水
 	maxSalary: Number,     							    //最大薪水
 	city: String,           							//期望城市
@@ -11,9 +12,8 @@ var JobSchema = new mongoose.Schema({
     attraction:[],         							    //职位诱惑
     description:String,    							    //职位描述
     weight:{type:Number,default:0},    //权重，用于置顶
-    // weight:Number,    //权重，用于置顶
-	
-	
+
+
 	meta: {
 		createdAt: {
 			type: Date,

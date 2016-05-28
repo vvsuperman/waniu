@@ -41,6 +41,7 @@
     <tr>
       <th></th>
       <th>职位</th>
+      <th>行业</th>
       <th>预览</th>
       <th>修改</th>
       <th>查看候选人</th>
@@ -55,6 +56,7 @@
         <!--<i class="am-icon-sort-desc am-icon-sm sort-down"></i>-->
       </td>
       <td><%= jobs[i].jobTitle.name %></td>
+      <td><%= jobs[i].industry.name %></td>
       <td>
         <a href="/admin/lookjob/<%= jobs[i]._id %>">
           <i class="am-icon-file-text"></i>

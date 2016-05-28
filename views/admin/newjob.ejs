@@ -41,6 +41,22 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
+              <strong>所属行业</strong>
+            </div>
+            <div class="am-u-sm-10">
+              <form class="am-form">
+                <select id="industry">
+                  <% for(var i = 0, len = industry.length;i < len;i++){ %>
+                  <option value="<%= industry[i]._id %>"><%= industry[i].name %></option>
+                  <% } %>
+                </select>
+              </form>
+            </div>
+          </div>
+        </li>
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
               <strong>月薪范围</strong>
             </div>
             <div class="am-u-sm-10">
@@ -176,6 +192,7 @@
     $('#saveBtn').on('click', function (e) {
       var data = {
         jobTitle: $('#jobTitle').val(),    //jobtitles的id
+        industry: $('#industry').val(),    //industry的id
         minSalary: $('#minSalary').val(),         //最小薪水
         maxSalary: $('#maxSalary').val(),         //最大薪水
         city: $('#city').val(),           			 //期望城市
@@ -183,7 +200,7 @@
         attraction: $('#attraction').val().split(','),         	 //职位诱惑
         description: descEditor.getValue()
       }
-      if (data.jobTitle == '' || data.minSalary == '' || data.city == '') {
+      if (data.jobTitle == '' || data.minSalary == '' || data.city == '' || data.industry == '') {
         return;
       }
       $.ajax({
@@ -193,7 +210,7 @@
           job: data
         },
         success: function (res) {
-          location.href='/admin/waniuadmin';
+          location.href = '/admin/waniuadmin';
         },
         error: function (err) {
           console.error(err);

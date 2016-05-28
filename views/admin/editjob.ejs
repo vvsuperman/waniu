@@ -32,12 +32,34 @@
               <form class="am-form">
                 <select id="jobTitle">
                   <% for(var i = 0, len = jobTitle.length;i < len;i++){ %>
-                  <% if(job.jobTitle.toString() == jobTitle[i]._id.toString()){ %>
+                  <% if(job.jobTitle._id.toString() == jobTitle[i]._id.toString()){ %>
                   <option value="<%= jobTitle[i]._id.toString() %>" selected>
                     <%= jobTitle[i].name %></option>
                   <% }else{ %>
                   <option value="<%= jobTitle[i]._id.toString() %>">
                     <%= jobTitle[i].name %></option>
+                  <% } %>
+                  <% } %>
+                </select>
+              </form>
+            </div>
+          </div>
+        </li>
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
+              <strong>所属行业</strong>
+            </div>
+            <div class="am-u-sm-10">
+              <form class="am-form">
+                <select id="industry">
+                  <% for(var i = 0, len = industry.length;i < len;i++){ %>
+                  <% if(job.industry._id.toString() == industry[i]._id.toString()){ %>
+                  <option value="<%= industry[i]._id.toString() %>" selected>
+                    <%= industry[i].name %></option>
+                  <% }else{ %>
+                  <option value="<%= industry[i]._id.toString() %>">
+                    <%= industry[i].name %></option>
                   <% } %>
                   <% } %>
                 </select>
@@ -104,8 +126,14 @@
               <strong>职位诱惑</strong>
             </div>
             <div class="am-u-sm-10">
-              <input id="attraction" type="text" class="am-form-field" placeholder="请选择职位诱惑" disabled
-                     value="<%= job.attraction.join(',') %>">
+              <input id="attraction" type="text" class="am-form-field"
+                     placeholder="请选择职位诱惑,英文逗号分隔" value="<%= job.attraction.join(',') %>">
+              <div class="job-attraction">
+                <span class="am-badge">五险一金</span>
+                <span class="am-badge">带薪休假</span>
+                <span class="am-badge">扁平管理</span>
+                <span class="am-badge">福利好</span>
+              </div>
             </div>
           </div>
         </li>
@@ -160,11 +188,30 @@
         'ul'
       ]
     });
+    $('.job-attraction .am-badge').on('click', function (e) {
+      var attractionArr = $('#attraction').val() != '' ? $('#attraction').val().split(',') : [];
+      var text = e.currentTarget.innerText;
+      var val = $('#attraction').val();
+      var index = val.indexOf(text);
+      if (index == -1) {
+        attractionArr.push(e.currentTarget.innerText);
+        $(e.currentTarget).addClass('active');
+      } else {
+        for (var i = 0, len = attractionArr.length; i < len; i++) {
+          if (attractionArr[i] == text) {
+            attractionArr.splice(i, 1);
+          }
+        }
+        $(e.currentTarget).removeClass('active');
+      }
+      $('#attraction').val(attractionArr.join(','));
+    });
 
     $('#saveBtn').on('click', function (e) {
       var data = {
         id: $('#jobId').text(),
         jobTitle: $('#jobTitle').val(),    //jobtitles的id
+        industry: $('#industry').val(),    //industry的id
         minSalary: $('#minSalary').val(),         //最小薪水
         maxSalary: $('#maxSalary').val(),         //最大薪水
         city: $('#city').val(),           			 //期望城市
@@ -177,7 +224,7 @@
         url: '/admin/job',
         data: data,
         success: function (res) {
-          location.href='/admin/waniuadmin';
+          location.href = '/admin/waniuadmin';
         },
         error: function (err) {
           console.error(err);
