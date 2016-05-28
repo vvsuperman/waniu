@@ -101,17 +101,16 @@ router.post('/search',function(req,res){
         }
       }
     }else{
-      rtResult.push(a);
+       if(a!=null) {
+         rtResult.push(a);
+       }
     }
   }
   getResult(results);
-  res.json({
-    state:0,
-    jobs: rtResult
-  })
+  res.json(rtResult)
 });
 
-})
+});
 
 
 //查询所有的职位名称
