@@ -41,7 +41,7 @@ router.get('/', function (req, res) {
 });
 
 
-router.post('/search',function(req,res){     
+router.post('/search',function(req,res){
   var key = req.body.key;
   if(key === undefined){
     res.json({state: 1, msg: 'key不可为空'});
@@ -72,24 +72,24 @@ router.post('/search',function(req,res){
      },
       //对jobTitle使用正则
       function (cbParal) {
-        JobTitle.find({'name':{'$regex': key}})                    
+        JobTitle.find({'name':{'$regex': key}})
         .exec(function(err, jobTitles){
           if(jobTitles.length == 0){
            cbParal(null);
          }else{
            //分别对所有匹配的jobtitles使用正则
-           async.map(jobTitles,function(jobTitle, cbAs){            
+           async.map(jobTitles,function(jobTitle, cbAs){
              Job.find({jobTitle:jobTitle},function(err,jobs){
               cbAs(null, jobs);
-            })               
-           }, function(err,results) {    
+            })
+           }, function(err,results) {
             cbParal(null, results);
-          })  
-         }                         
+          })
+         }
        })
       }],function (err, results) {
-       callback(null,results);               
-     });                      
+       callback(null,results);
+     });
   }, function(err,results) {
     var rtResult =[];
     //递归处理数组数据，将所有的job放到返回数组中去
@@ -99,7 +99,7 @@ router.post('/search',function(req,res){
          for( var i in a){
           getResult(a[i])
         }
-      }               
+      }
     }else{
       rtResult.push(a);
     }
@@ -171,12 +171,8 @@ router.get('/jobs/:pageNum', function (req, res) {
   var pageNum = req.params.pageNum;
 
   if (pageNum === undefined) {
-
-    res.json({
-      state: 1,
-      msg: '页数不得为空'
-    });
-
+    res.sendStatus(400);
+    res.send({code: 400, message: '参数错误,页数不得为空!'});
     return false;
   }
 
@@ -186,14 +182,13 @@ router.get('/jobs/:pageNum', function (req, res) {
   .skip((pageNum - 1) * pageSize)
   .limit(pageSize)
   .exec(function (err, jobs) {
-    if (err) console.log(err);
-
-    res.json({
-      state: 0,
-      jobs: jobs
-    })
+    if (err) {
+      res.sendStatus(500);
+      res.send({code: 500, message: '服务器错误,获取数据失败!'});
+    } else {
+      res.send(jobs);
+    }
   })
-
 });
 
 router.get('/login', function (req, res, next) {

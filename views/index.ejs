@@ -76,7 +76,8 @@
           &nbsp;<i class="am-icon-graduation-cap"></i>&nbsp;<%= jobs[i].degree %>
           &nbsp;<i class="am-icon-map-marker"></i>&nbsp;<%= jobs[i].city %>
         </div>
-        <div>
+        <% if(jobs[i].attraction.length != 0){ %>
+        <div class="am-cf">
           <span class="am-show-md-up am-fl">职位诱惑:&nbsp;</span>
           <span class="am-show-md-up"><%= jobs[i].attraction.join(',') %></span>
           <div class="am-show-sm-down">
@@ -85,6 +86,7 @@
             <% } %>
           </div>
         </div>
+        <% } %>
       </div>
       <div class="content-item-desc">
         <%- jobs[i].description %>
@@ -137,12 +139,52 @@
 <script src="/javascripts/template.js"></script>
 <script src="/bower_components/amazeui/dist/js/amazeui.min.js"></script>
 <script id="test" type="text/html">
-  <h1>{{title}}</h1>
-  <ul>
-    {{each list as value i}}
-    <li>索引 {{i + 1}} ：{{value}}</li>
-    {{/each}}
-  </ul>
+  {{each jobs as job index}}
+  <div class="content-item">
+    <div class="content-item-title">
+      {{ job.jobTitle.name }}
+      <div class="am-show-md-up apply-job"
+           data-job-name="{{ job.jobTitle.name }}"
+           data-job-id="{{ job.jobTitle._id }}"
+           data-am-modal="{target: '#applyPopup'}">
+        <span class="content-item-title-right">占坑</span>
+        <img class="content-item-title-apply" src="/images/zhankeng.jpg" alt="占坑">
+      </div>
+    </div>
+    <div class="content-item-tag">
+      <div>
+        <i class="am-icon-cny"></i>{{ job.minSalary }}K - {{ job.maxSalary }}K
+        &nbsp;<i class="am-icon-graduation-cap"></i>&nbsp;{{ job.degree }}
+        &nbsp;<i class="am-icon-map-marker"></i>&nbsp;{{ job.city }}
+      </div>
+      {{if job.attraction.length}}
+      <div>
+        <span class="am-show-md-up am-fl">职位诱惑:&nbsp;</span>
+        <span class="am-show-md-up">{{ job.attraction.join(',') }}</span>
+        <div class="am-show-sm-down">
+          {{each job.attraction as attractionValue attractionIndex}}
+          <i class="am-icon-tag"></i>&nbsp;{{ attractionValue }}&nbsp;
+          {{/each}}
+        </div>
+      </div>
+      {{/if}}
+
+    </div>
+    <div class="content-item-desc">
+      {{# job.description }}
+    </div>
+    <div class="mobile-apply am-text-center am-show-sm-down">
+      <button type="button"
+              class="am-btn am-btn-primary am-radius apply-job"
+              data-job-name="{{ job.jobTitle.name }}"
+              data-job-id="{{ job.jobTitle._id }}"
+              data-am-modal="{target: '#applyPopup'}">
+        <img src="/images/keng2x.png" alt="">
+        <span class="am-text-middle">占坑</span>
+      </button>
+    </div>
+  </div>
+  {{/each}}
 </script>
 <script>
   $(function () {
@@ -163,20 +205,13 @@
             method: 'get',
             success: function (res) {
               loading = false;
-              console.log(res);
+              var html = template('test', {jobs: res});
+              $('#content').append(html);
             }
           });
         }
       }
     });
-//    var data = {
-//      title: '标签',
-//      list: ['文艺', '博客', '摄影', '电影', '民谣', '旅行', '吉他']
-//    };
-//    var html = template('test', data);
-//    document.getElementById('content').innerHTML = html;
   });
-</script>
-<script id="test1" type="text/html">
 </script>
 </html>
