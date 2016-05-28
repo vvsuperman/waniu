@@ -114,17 +114,18 @@
     <div class="am-popup-bd">
       <div class="am-input-group">
         <span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
-        <input type="text" class="am-form-field" placeholder="姓名">
+        <input id="applyName" type="text" class="am-form-field" placeholder="姓名">
       </div>
       <div class="am-input-group">
         <span class="am-input-group-label"><i class="am-icon-mobile am-icon-fw"></i></span>
-        <input type="text" class="am-form-field" placeholder="手机">
+        <input id="applyPhone" type="text" class="am-form-field" placeholder="手机">
       </div>
       <div class="am-input-group">
         <span class="am-input-group-label"><i class="am-icon-map-marker am-icon-fw"></i></span>
-        <input type="text" class="am-form-field" placeholder="所在城市">
+        <input id="applyCity" type="text" class="am-form-field" placeholder="所在城市">
       </div>
-      <button class="am-btn am-btn-primary am-btn-block">确认</button>
+      <button id="applySubmit" class="am-btn am-btn-primary am-btn-block">确认</button>
+      <input id="applyJobId" style="visibility: hidden"/>
     </div>
   </div>
 </div>
@@ -190,7 +191,8 @@
   $(function () {
     var pageNum = 1;
     $('.apply-job').on('click', function (e) {
-      $('#jobTitleName').val(e.currentTarget.attributes['data-job-name'].value)
+      var attr = e.currentTarget.attributes;
+      $('#applyJobId').val(attr['data-job-id'].value);
     });
     var loading = false;
     var totalHeight;
@@ -228,7 +230,27 @@
           }
         });
       }
-    })
+    });
+
+    $('#applySubmit').on('click', function (e) {
+      var data = {
+        jobId: $('#applyJobId').val(),
+        name: $('#applyName').val(),
+        phone: $('#applyPhone').val(),
+        city: $('#applyCity').val()
+      };
+      if (data.jobId == '' || data.name == '' || data.phone == '' || data.city == '') {
+        return;
+      }
+      $.ajax({
+        url: '/applyjob',
+        method: 'post',
+        data: data,
+        success: function (res) {
+          console.log(res);
+        }
+      });
+    });
   });
 </script>
 </html>

@@ -15,6 +15,7 @@ var ObjectId = Schema.Types.ObjectId;
 
 var Job = require('../models/job');
 var JobTitle = require('../models/jobTitle');
+var ApplyModel = require('../models/apply');
 var Degree = require('../models/degree');
 
 var pageSize = 10; //每页十条记录
@@ -162,7 +163,7 @@ router.get('/job/:id', function (req, res) {
 
   })
 
-})
+});
 
 
 //职位列表查询
@@ -191,8 +192,30 @@ router.get('/jobs/:pageNum', function (req, res) {
     })
 });
 
-router.get('/login', function (req, res, next) {
-  res.render('login');
+router.post('/applyjob', function (req, res, next) {
+  var reqData = req.body;
+  if (reqData.name === undefined || reqData.phone === undefined
+    || reqData.city === undefined) {
+    res.sendStatus(400);
+    res.send({code: 400, message: '输入均不得为空'});
+    return false;
+  }
+
+  var applyModel = new ApplyModel({
+    name: reqData.name,
+    phone: reqData.phone,
+    city: reqData.city,
+    job: reqData.jobId
+  });
+
+  applyModel.save(function (err, result) {
+    if (err) {
+      res.sendStatus(500);
+      res.send({code: 500, message: '服务器忙,请稍后重试'});
+    }
+    res.send(result);
+  });
 });
+
 
 module.exports = router;
