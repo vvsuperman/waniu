@@ -140,20 +140,38 @@ describe('routes/index.js', function () {
   // })
 
 
-   describe('searchJobs', function () {
+  //  describe('searchJobs', function () {
 
-    it('搜索职位信息', function (done) {
-      request.post('/search')
+  //   it('搜索职位信息', function (done) {
+  //     request.post('/search')
+  //       .send({
+  //          key:'IOS'
+  //       })
+  //       .expect(200, function (err, res) {
+  //         should.not.exist(err);
+  //         res.body.state.should.containEql(0);
+  //         console.log('jobs...',res.body.jobs)
+
+  //         done();
+  //       })
+  //   })
+  // })
+
+
+  describe('微信sdk', function () {
+
+    it('测试sdk', function (done) {
+      request.post('/wsjsdk')
         .send({
-           key:'北京'
+           url:'51waniu.com'
         })
         .expect(200, function (err, res) {
           should.not.exist(err);
           res.body.state.should.containEql(0);
-          console.log('jobs...',res.body.jobs)
-
+          console.log('weixin result...',res.body.result)
           done();
         })
     })
   })
+
 });
