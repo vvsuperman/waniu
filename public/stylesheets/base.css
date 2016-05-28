@@ -1,4 +1,21 @@
 
+html {
+  font-family: "Microsoft YaHei", "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+  font-size: 62.5%;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  height: 100%;
+}
+
+body {
+  font-size: 1.4rem;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  background: #F2F2F2;
+  color: #333;
+}
+
 .am-btn-primary {
   background-color: #FDC72E !important;
   border-color: #FDC72E !important;
@@ -12,6 +29,10 @@
 .am-btn-primary:active {
   background-color: #FDC72E !important;
   border-color: #FDC72E !important;
+}
+
+.am-topbar-inverse .am-topbar-nav > li > a:after {
+  border-bottom-color: #FDC72E;
 }
 
 .am-topbar-inverse .am-topbar-nav > li > a:focus:after, .am-topbar-inverse .am-topbar-nav > li > a:hover:after {

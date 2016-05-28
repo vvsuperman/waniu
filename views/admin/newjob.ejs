@@ -25,7 +25,7 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              职位名称
+              <strong>职位名称</strong>
             </div>
             <div class="am-u-sm-10">
               <form class="am-form">
@@ -41,7 +41,23 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              月薪范围
+              <strong>所属行业</strong>
+            </div>
+            <div class="am-u-sm-10">
+              <form class="am-form">
+                <select id="industry">
+                  <% for(var i = 0, len = industry.length;i < len;i++){ %>
+                  <option value="<%= industry[i]._id %>"><%= industry[i].name %></option>
+                  <% } %>
+                </select>
+              </form>
+            </div>
+          </div>
+        </li>
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
+              <strong>月薪范围</strong>
             </div>
             <div class="am-u-sm-10">
               <form class="am-form-inline" role="form">
@@ -64,7 +80,7 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              工作城市
+              <strong>工作城市</strong>
             </div>
             <div class="am-u-sm-10">
               <input id="city" type="text" class="am-form-field" placeholder="请输入城市名">
@@ -74,7 +90,7 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              学历要求
+              <strong>学历要求</strong>
             </div>
             <div class="am-u-sm-10">
               <form class="am-form">
@@ -91,10 +107,11 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              职位诱惑
+              <strong>职位诱惑</strong>
             </div>
             <div class="am-u-sm-10">
-              <input id="attraction" type="text" class="am-form-field" placeholder="请选择职位诱惑" disabled>
+              <input id="attraction" type="text" class="am-form-field"
+                     placeholder="请选择职位诱惑,英文逗号分隔">
               <div class="job-attraction">
                 <span class="am-badge">五险一金</span>
                 <span class="am-badge">带薪休假</span>
@@ -107,7 +124,7 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
-              职位描述
+              <strong>职位描述</strong>
             </div>
             <div class="am-u-sm-10">
               <textarea id="description" placeholder="请输入岗位职责、任职要求等,建议尽量使用短句并分条列出"></textarea>
@@ -175,6 +192,7 @@
     $('#saveBtn').on('click', function (e) {
       var data = {
         jobTitle: $('#jobTitle').val(),    //jobtitles的id
+        industry: $('#industry').val(),    //industry的id
         minSalary: $('#minSalary').val(),         //最小薪水
         maxSalary: $('#maxSalary').val(),         //最大薪水
         city: $('#city').val(),           			 //期望城市
@@ -182,7 +200,7 @@
         attraction: $('#attraction').val().split(','),         	 //职位诱惑
         description: descEditor.getValue()
       }
-      if (data.jobTitle == '' || data.minSalary == '' || data.city == '') {
+      if (data.jobTitle == '' || data.minSalary == '' || data.city == '' || data.industry == '') {
         return;
       }
       $.ajax({
@@ -192,8 +210,7 @@
           job: data
         },
         success: function (res) {
-          console.log(res);
-          location.reload();
+          location.href = '/admin/waniuadmin';
         },
         error: function (err) {
           console.error(err);

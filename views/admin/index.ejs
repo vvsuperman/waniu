@@ -41,6 +41,7 @@
     <tr>
       <th></th>
       <th>职位</th>
+      <th>行业</th>
       <th>预览</th>
       <th>修改</th>
       <th>查看候选人</th>
@@ -49,8 +50,13 @@
     <tbody>
     <% for(var i = 0, len = jobs.length;i < len;i++){ %>
     <tr>
-      <td></td>
+      <td class="sort">
+        <i class="am-icon-sort-asc am-icon-sm sort-up"
+           data-id="<%= jobs[i]._id %>"></i>
+        <!--<i class="am-icon-sort-desc am-icon-sm sort-down"></i>-->
+      </td>
       <td><%= jobs[i].jobTitle.name %></td>
+      <td><%= jobs[i].industry.name %></td>
       <td>
         <a href="/admin/lookjob/<%= jobs[i]._id %>">
           <i class="am-icon-file-text"></i>
@@ -76,6 +82,17 @@
   $(function () {
     $('#searchBtn').on('click', function () {
       location.search = '?search=' + $('#searchText').val();
+    });
+    $('.sort-up').on('click', function (e) {
+      console.log(e.currentTarget.attributes['data-id'].value);
+      $.ajax({
+        url:'/admin/job/top',
+        method:'post',
+        data:{id:e.currentTarget.attributes['data-id'].value},
+        success: function (res) {
+          location.reload();
+        }
+      });
     })
   });
 </script>
