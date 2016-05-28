@@ -223,7 +223,8 @@
             key: $(this).val()
           },
           success: function (res) {
-            console.log(res);
+            var html = template('test', {jobs: res});
+            $('#content').html(html);
           }
         });
       }

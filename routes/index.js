@@ -25,7 +25,7 @@ var pageSize = 10; //每页十条记录
 mongoose.connect('mongodb://localhost:27017/waniudb');
 
 router.get('/', function (req, res) {
-    Job.find({})
+  Job.find({})
     .populate('jobTitle', 'name')
     .sort({weight: -1})
     .skip(0)
@@ -41,9 +41,9 @@ router.get('/', function (req, res) {
 });
 
 
-router.post('/search',function(req,res){
+router.post('/search', function (req, res) {
   var key = req.body.key;
-  if(key === undefined){
+  if (key === undefined) {
     res.json({state: 1, msg: 'key不可为空'});
     return false;
   }
@@ -52,63 +52,68 @@ router.post('/search',function(req,res){
   keys = key.split(/\s./);
 
 
-  async.map(keys, function(key, callback) {
+  async.map(keys, function (key, callback) {
 
     //分别对description, city, jobTitle使用正则
     async.parallel([
-       // description正则
-       function (cbParal) {
-        Job.find({'description':{'$regex': key}})
-        .exec(function(err, jobs){
-         cbParal(null, jobs);
-       })
+      // description正则
+      function (cbParal) {
+        Job.find({'description': {'$regex': key}})
+          .populate('jobTitle', 'name')
+          .exec(function (err, jobs) {
+            console.log(jobs);
+            cbParal(null, jobs);
+          })
       },
       //对city使用正则
       function (cbParal) {
-       Job.find({'city':{'$regex': key}})
-       .exec(function(err, jobs){
-         cbParal(null, jobs);
-       })
-     },
+        Job.find({'city': {'$regex': key}})
+          .populate('jobTitle', 'name')
+          .exec(function (err, jobs) {
+            cbParal(null, jobs);
+          })
+      },
       //对jobTitle使用正则
       function (cbParal) {
-        JobTitle.find({'name':{'$regex': key}})
-        .exec(function(err, jobTitles){
-          if(jobTitles.length == 0){
-           cbParal(null);
-         }else{
-           //分别对所有匹配的jobtitles使用正则
-           async.map(jobTitles,function(jobTitle, cbAs){
-             Job.find({jobTitle:jobTitle},function(err,jobs){
-              cbAs(null, jobs);
-            })
-           }, function(err,results) {
-            cbParal(null, results);
+        JobTitle.find({'name': {'$regex': key}})
+          .populate('jobTitle', 'name')
+          .exec(function (err, jobTitles) {
+            if (jobTitles.length == 0) {
+              cbParal(null);
+            } else {
+              //分别对所有匹配的jobtitles使用正则
+              async.map(jobTitles, function (jobTitle, cbAs) {
+                Job.find({jobTitle: jobTitle}, function (err, jobs) {
+                  cbAs(null, jobs);
+                })
+              }, function (err, results) {
+                cbParal(null, results);
+              })
+            }
           })
-         }
-       })
-      }],function (err, results) {
-       callback(null,results);
-     });
-  }, function(err,results) {
-    var rtResult =[];
+      }], function (err, results) {
+      callback(null, results);
+    });
+  }, function (err, results) {
+    var rtResult = [];
     //递归处理数组数据，将所有的job放到返回数组中去
-    function getResult(a){
-     if(a instanceof Array){
-       if(a.length>0){
-         for( var i in a){
-          getResult(a[i])
+    function getResult(a) {
+      if (a instanceof Array) {
+        if (a.length > 0) {
+          for (var i in a) {
+            getResult(a[i])
+          }
+        }
+      } else {
+        if (a != null) {
+          rtResult.push(a);
         }
       }
-    }else{
-       if(a!=null) {
-         rtResult.push(a);
-       }
     }
-  }
-  getResult(results);
-  res.json(rtResult)
-});
+
+    getResult(results);
+    res.json(rtResult)
+  });
 
 });
 
@@ -117,51 +122,47 @@ router.post('/search',function(req,res){
 router.get('/jobTitle', function (req, res) {
 
   JobTitle.find({})
-  .sort({weight:-1})
-  .exec(function (err, jobTitles) {
+    .sort({weight: -1})
+    .exec(function (err, jobTitles) {
 
-    if (err) console.log(err);
+      if (err) console.log(err);
 
-    res.json({
-      state: 0,
-      jobTitles: jobTitles
+      res.json({
+        state: 0,
+        jobTitles: jobTitles
+      });
     });
-  });
 });
 
 //职位详细信息查询
-router.get('/job/:id',function(req,res){
- var id = req.params.id;
+router.get('/job/:id', function (req, res) {
+  var id = req.params.id;
 
- if(id === undefined){
-   res.json({state: 1, msg: 'id不可为空'});
-   return false;
- }
-
- Job.findById(id , function(err, job){
-
-  if (err){
-    console.log(err);
-    res.json({state: 1, msg: '获取数据错误'});
+  if (id === undefined) {
+    res.json({state: 1, msg: 'id不可为空'});
     return false;
-  } else{
-
-   if (job === undefined){
-    res.json({state: 1, msg: '职位不存在'});
-    return false;
-  }else{
-    res.json({state:0, job:job})
   }
-}
 
+  Job.findById(id, function (err, job) {
+
+    if (err) {
+      console.log(err);
+      res.json({state: 1, msg: '获取数据错误'});
+      return false;
+    } else {
+
+      if (job === undefined) {
+        res.json({state: 1, msg: '职位不存在'});
+        return false;
+      } else {
+        res.json({state: 0, job: job})
+      }
+    }
+
+
+  })
 
 })
-
-})
-
-
-
-
 
 
 //职位列表查询
@@ -176,18 +177,18 @@ router.get('/jobs/:pageNum', function (req, res) {
   }
 
   Job.find({})
-  .populate('jobTitle','name')
-  .sort({weight:-1})
-  .skip((pageNum - 1) * pageSize)
-  .limit(pageSize)
-  .exec(function (err, jobs) {
-    if (err) {
-      res.sendStatus(500);
-      res.send({code: 500, message: '服务器错误,获取数据失败!'});
-    } else {
-      res.send(jobs);
-    }
-  })
+    .populate('jobTitle', 'name')
+    .sort({weight: -1})
+    .skip((pageNum - 1) * pageSize)
+    .limit(pageSize)
+    .exec(function (err, jobs) {
+      if (err) {
+        res.sendStatus(500);
+        res.send({code: 500, message: '服务器错误,获取数据失败!'});
+      } else {
+        res.send(jobs);
+      }
+    })
 });
 
 router.get('/login', function (req, res, next) {
