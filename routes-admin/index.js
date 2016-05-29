@@ -12,25 +12,55 @@ var ApplyModel = require('../models/apply');
 var Degree = require('../models/degree');
 var async = require('async');
 
+var pageSize = 2;
+
 router.get('/waniuadmin', function (req, res, next) {
   var queryData = {};
   if (req.query.search) {
     //TODO: 方维 添加搜索功能
   }
+  var page = req.query.page ? req.query.page - 1 : 0;
+  var startNum = page * pageSize;
 
-  Job.find(queryData)
-    .populate('jobTitle', 'name')
-    .populate('industry', 'name')
-    .sort({weight: -1})
-    .skip(0)
-    .limit(10)
-    .exec(function (err, results) {
-      if (err) {
-        next(err);
-        return;
+  async.parallel([
+    function (callback) {
+      Job.find(queryData)
+        .populate('jobTitle', 'name')
+        .populate('industry', 'name')
+        .sort({weight: -1})
+        .skip(startNum)
+        .limit(pageSize)
+        .exec(function (err, results) {
+          if (err) {
+            callback(err);
+            return;
+          }
+          callback(null, results);
+        });
+    },
+    function (callback) {
+      Job.find({}, function (err, results) {
+        if (err) {
+          callback(err);
+          return;
+        }
+        callback(null, results);
+      });
+    }
+  ], function (err, results) {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.render("admin/index", {
+      jobs: results[0],
+      pageData: {
+        total: results[1].length,
+        currentPage: page + 1,
+        totalPage: Math.ceil(results[1].length / pageSize)
       }
-      res.render("admin/index", {jobs: results});
     });
+  });
 });
 
 router.get('/newjob', function (req, res, next) {

@@ -76,14 +76,9 @@
     <% } %>
     </tbody>
   </table>
-  <ul class="am-pagination am-pagination-centered">
-    <li class="am-disabled"><a href="#">&laquo;</a></li>
-    <li class="am-active"><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li><a href="#">&raquo;</a></li>
+  <ul class="am-pagination am-pagination-centered"
+      data-page-total="<%= pageData.totalPage %>"
+      data-page-current="<%= pageData.currentPage %>">
   </ul>
 </div>
 </body>
@@ -96,16 +91,27 @@
       location.search = '?search=' + $('#searchText').val();
     });
     $('.sort-up').on('click', function (e) {
-      console.log(e.currentTarget.attributes['data-id'].value);
       $.ajax({
-        url:'/admin/job/top',
-        method:'post',
-        data:{id:e.currentTarget.attributes['data-id'].value},
+        url: '/admin/job/top',
+        method: 'post',
+        data: {id: e.currentTarget.attributes['data-id'].value},
         success: function (res) {
           location.reload();
         }
       });
-    })
+    });
+    var pagination = new Pagination({
+      wrap: $('.am-pagination'),
+      count: Number($('.am-pagination').attr('data-page-total')),
+      current: Number($('.am-pagination').attr('data-page-current')),
+      prevText: '上一页',
+      nextText: '下一页',
+      callback: function (page) {
+        console.log(page);
+        console.log(location.search);
+        location.search = 'page=' + page;
+      }
+    });
   });
 </script>
 </html>
