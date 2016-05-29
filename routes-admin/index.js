@@ -157,17 +157,69 @@ router.get('/candidate', function (req, res) {
 });
 
 router.get('/applylist/:id', function (req, res, next) {
-  ApplyModel
-    .find({job: req.params.id})
-    .populate('job')
-    .exec(function (err, results) {
-      if (err) {
-        next(err);
-        return;
-      }
-      console.log(results);
-      res.render('admin/applylist', {applyList: results});
-    });
+  var page = req.query.page ? req.query.page - 1 : 0;
+  if (page < 0) {
+    page = 0;
+  }
+  var startNum = page * pageSize;
+
+  async.parallel([
+    function (callback) {
+      ApplyModel
+        .find({job: req.params.id})
+        .populate('job')
+        .skip(startNum)
+        .limit(pageSize)
+        .exec(function (err, results) {
+          if (err) {
+            callback(err);
+            return;
+          }
+          callback(null, results);
+        });
+    },
+    function (callback) {
+      Job
+        .find({_id: req.params.id})
+        .populate('jobTitle', 'name')
+        .populate('industry', 'name')
+        .exec(function (err, results) {
+          if (err) {
+            callback(err);
+            return;
+          }
+          callback(null, results);
+        });
+    },
+    function (callback) {
+      ApplyModel.find({job: req.params.id}, function (err, results) {
+        if (err) {
+          callback(err);
+          return;
+        }
+        callback(null, results);
+      });
+    }
+  ], function (err, results) {
+    if (err) {
+      next(err);
+      return;
+    }
+    if (results[1].length) {
+      res.render('admin/applylist', {
+        applyList: results[0],
+        job: results[1][0],
+        pageData: {
+          total: results[2].length,
+          currentPage: page + 1,
+          totalPage: Math.ceil(results[2].length / pageSize)
+        }
+      });
+    } else {
+      res.render('404');
+    }
+  });
+
 });
 
 //职位置顶

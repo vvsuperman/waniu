@@ -16,9 +16,20 @@
 <div class="am-container applylist">
   <section class="am-panel am-panel-default">
     <header class="am-panel-hd">
-      <h3 class="am-panel-title">查看候选人 | </h3>
+      <h3 class="am-panel-title">
+        <i class="am-icon-eye am-icon-sm"></i>
+        <%= job.jobTitle.name %> 候选人
+      </h3>
     </header>
     <div class="am-panel-bd">
+      <div class="am-panel am-panel-default">
+        <div class="am-panel-bd">
+          <i class="am-icon-cny"></i><%= job.minSalary %>K - <%= job.maxSalary %>K
+          &nbsp;&nbsp;<i class="am-icon-graduation-cap"></i>&nbsp;<%= job.degree %>
+          &nbsp;&nbsp;<i class="am-icon-map-marker"></i>&nbsp;<%= job.city %>
+        </div>
+      </div>
+      <% if(applyList.length > 0){ %>
       <table class="am-table">
         <thead>
         <tr>
@@ -28,15 +39,46 @@
         </tr>
         </thead>
         <tbody>
+        <% for(var i = 0, len = applyList.length;i < len;i++){ %>
         <tr>
-          <td>Amaze UI</td>
-          <td>http://amazeui.org</td>
-          <td>2012-10-01</td>
+          <td><%= applyList[i].name %></td>
+          <td><%= applyList[i].phone %></td>
+          <td><%= applyList[i].city %></td>
         </tr>
+        <% } %>
         </tbody>
       </table>
+      <ul class="am-pagination am-pagination-centered"
+          data-page-total="<%= pageData.totalPage %>"
+          data-page-current="<%= pageData.currentPage %>">
+      </ul>
+      <% }else{ %>
+      <p>该职位暂无候选人</p>
+      <% } %>
     </div>
   </section>
 </div>
 </body>
+<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/bower_components/amazeui/dist/js/amazeui.min.js"></script>
+<script type="text/javascript" src="/javascripts/amazeui-pagination/amazeui-pagination.min.js"></script>
+<script>
+  $(function () {
+    var count = Number($('.am-pagination').attr('data-page-total'));
+    if(count>0) {
+      var pagination = new Pagination({
+        wrap: $('.am-pagination'),
+        count: Number($('.am-pagination').attr('data-page-total')),
+        current: Number($('.am-pagination').attr('data-page-current')),
+        prevText: '上一页',
+        nextText: '下一页',
+        callback: function (page) {
+          console.log(page);
+          console.log(location.search);
+          location.search = 'page=' + page;
+        }
+      });
+    }
+  });
+</script>
 </html>
