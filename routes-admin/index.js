@@ -8,6 +8,7 @@ var router = express.Router();
 var Job = require('../models/job');
 var JobTitle = require('../models/jobTitle');
 var IndustryModel = require('../models/industry');
+var ApplyModel = require('../models/apply');
 var Degree = require('../models/degree');
 var async = require('async');
 
@@ -28,7 +29,6 @@ router.get('/waniuadmin', function (req, res, next) {
         next(err);
         return;
       }
-      console.log(results);
       res.render("admin/index", {jobs: results});
     });
 });
@@ -50,7 +50,6 @@ router.get('/newjob', function (req, res, next) {
           callback(err);
           return;
         }
-        console.log(results);
         callback(null, results);
       });
     }
@@ -125,6 +124,20 @@ router.get('/lookjob/:id', function (req, res, next) {
 
 router.get('/candidate', function (req, res) {
   res.render("admin/candidate");
+});
+
+router.get('/applylist/:id', function (req, res, next) {
+  ApplyModel
+    .find({job: req.params.id})
+    .populate('Job','city')
+    .exec(function (err, results) {
+      if (err) {
+        next(err);
+        return;
+      }
+      console.log(results);
+      res.render('admin/applylist', {applyList: results});
+    });
 });
 
 //职位置顶

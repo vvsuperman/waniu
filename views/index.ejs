@@ -64,7 +64,7 @@
         <%= jobs[i].jobTitle.name %>
         <div class="am-show-md-up apply-job"
              data-job-name="<%= jobs[i].jobTitle.name %>"
-             data-job-id="<%= jobs[i].jobTitle._id %>"
+             data-job-id="<%= jobs[i]._id %>"
              data-am-modal="{target: '#applyPopup'}">
           <span class="content-item-title-right">占坑</span>
           <img class="content-item-title-apply" src="/images/zhankeng.jpg" alt="占坑">
@@ -95,7 +95,7 @@
         <button type="button"
                 class="am-btn am-btn-primary am-radius apply-job"
                 data-job-name="<%= jobs[i].jobTitle.name %>"
-                data-job-id="<%= jobs[i].jobTitle._id %>"
+                data-job-id="<%= jobs[i]._id %>"
                 data-am-modal="{target: '#applyPopup'}">
           <img src="/images/keng2x.png" alt="">
           <span class="am-text-middle">占坑</span>
@@ -178,7 +178,7 @@
       <button type="button"
               class="am-btn am-btn-primary am-radius apply-job"
               data-job-name="{{ job.jobTitle.name }}"
-              data-job-id="{{ job.jobTitle._id }}"
+              data-job-id="{{ job._id }}"
               data-am-modal="{target: '#applyPopup'}">
         <img src="/images/keng2x.png" alt="">
         <span class="am-text-middle">占坑</span>
@@ -250,97 +250,97 @@
         method: 'post',
         data: data,
         success: function (res) {
-          console.log(res);
+          $('#applyPopup').modal('close');
         }
       });
     });
 
     //微信sdk
     $.ajax({
-      url:  "/wsjsdk",
-      method: 'POST',   
-      data:{"url":'51waniu.com'},   //测试，上线记得修改
+      url: "/wsjsdk",
+      method: 'POST',
+      data: {"url": '51waniu.com'},   //测试，上线记得修改
       success: function (data) {
-       var result = data.result;
+        var result = data.result;
 
 
-
-
-       wx.config({
-                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                    appId: result.appId, // 必填，公众号的唯一标识
-                    timestamp: result.timestamp, // 必填，生成签名的时间戳
-                    nonceStr: result.nonce_arr, // 必填，生成签名的随机串
-                    signature: result.jsapi_ticket,// 必填，签名，见附录1
-                    jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo',
-                                'onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-                              });
-
-       var wxData = {
-        'imgUrl': '',  
-        'link': window.location.href,  
-        'title': "挖牛职位速递",
-        'desc': "看一眼又不会怀孕，快来看下吧", 
-        'type': 'link' 
-      };
-
-
-      wx.ready(function(){
-
-
-        wx.onMenuShareTimeline({
-          title: wxData.title,
-          link: wxData.link,
-          imgUrl: wxData.imgUrl,
-          success: function() {
-           TDAPP.onEvent("微信朋友圈分享成功");
-         },
-         cancel: function() {
-           TDAPP.onEvent("微信朋友圈分享取消");
-         }
-       });
-
-        wx.onMenuShareAppMessage({
-          title: wxData.title,
-          desc: wxData.desc,
-          link: wxData.link,
-          imgUrl: wxData.imgUrl,
-          type: wxData.type,
-          dataUrl: '',
-          success: function() {
-           TDAPP.onEvent("微信分享成功");
-         },
-         error: function() {
-          TDAPP.onEvent("微信分享取消");
-        }
-      });
-
-        wx.onMenuShareQQ({
-          title: wxData.title,
-          desc: wxData.desc,
-          link: wxData.link,
-          imgUrl: wxData.imgUrl,
-          success: function() {
-            TDAPP.onEvent("qq分享成功");
-          },
-          error: function() {
-            TDAPP.onEvent("qq分享取消");
-          }
+        wx.config({
+          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: result.appId, // 必填，公众号的唯一标识
+          timestamp: result.timestamp, // 必填，生成签名的时间戳
+          nonceStr: result.nonce_arr, // 必填，生成签名的随机串
+          signature: result.jsapi_ticket,// 必填，签名，见附录1
+          jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo',
+            'onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
 
-        wx.onMenuShareWeibo({
-          title: wxData.title,
-          desc: wxData.desc,
-          link: wxData.link,
-          imgUrl: wxData.imgUrl,
-          success: function() {},
-          error: function() {}
+        var wxData = {
+          'imgUrl': '',
+          'link': window.location.href,
+          'title': "挖牛职位速递",
+          'desc': "看一眼又不会怀孕，快来看下吧",
+          'type': 'link'
+        };
+
+
+        wx.ready(function () {
+
+
+          wx.onMenuShareTimeline({
+            title: wxData.title,
+            link: wxData.link,
+            imgUrl: wxData.imgUrl,
+            success: function () {
+              TDAPP.onEvent("微信朋友圈分享成功");
+            },
+            cancel: function () {
+              TDAPP.onEvent("微信朋友圈分享取消");
+            }
+          });
+
+          wx.onMenuShareAppMessage({
+            title: wxData.title,
+            desc: wxData.desc,
+            link: wxData.link,
+            imgUrl: wxData.imgUrl,
+            type: wxData.type,
+            dataUrl: '',
+            success: function () {
+              TDAPP.onEvent("微信分享成功");
+            },
+            error: function () {
+              TDAPP.onEvent("微信分享取消");
+            }
+          });
+
+          wx.onMenuShareQQ({
+            title: wxData.title,
+            desc: wxData.desc,
+            link: wxData.link,
+            imgUrl: wxData.imgUrl,
+            success: function () {
+              TDAPP.onEvent("qq分享成功");
+            },
+            error: function () {
+              TDAPP.onEvent("qq分享取消");
+            }
+          });
+
+          wx.onMenuShareWeibo({
+            title: wxData.title,
+            desc: wxData.desc,
+            link: wxData.link,
+            imgUrl: wxData.imgUrl,
+            success: function () {
+            },
+            error: function () {
+            }
+          });
+
         });
 
-      });
-
-    }
-  })
+      }
+    })
 
 
   });

@@ -10,7 +10,7 @@ var ApplySchema = new mongoose.Schema({
   name: String,    							          //申请者姓名
   phone: String,    							          //申请者手机号
   city: String,    							          //申请者所在城市
-  job: {type: ObjectId, ref: 'job'},         //职位id
+  job: {type: ObjectId, ref: 'Job'},         //职位id
 
   meta: {
     createdAt: {
