@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html>
+<head lang="zh">
   <meta charset="UTF-8">
-  <title>查看候选人</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimal-ui"/>
+  <title>查看候选人 - 挖牛管理系统</title>
+  <link rel="stylesheet" href="/bower_components/amazeui/dist/css/amazeui.min.css">
+  <link rel="stylesheet" href="/stylesheets/base.css">
+  <link rel="stylesheet" href="/stylesheets/header-layout.css">
+  <link rel="stylesheet" href="/stylesheets/admin/applylist.css">
 </head>
 <body>
-查看候选人
+<% include header-layout %>
+
+<div class="am-container applylist">
+  <section class="am-panel am-panel-default">
+    <header class="am-panel-hd">
+      <h3 class="am-panel-title">查看候选人 | </h3>
+    </header>
+    <div class="am-panel-bd">
+      <table class="am-table">
+        <thead>
+        <tr>
+          <th>姓名</th>
+          <th>电话</th>
+          <th>城市</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Amaze UI</td>
+          <td>http://amazeui.org</td>
+          <td>2012-10-01</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
 </body>
 </html>

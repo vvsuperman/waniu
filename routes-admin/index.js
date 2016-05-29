@@ -129,7 +129,7 @@ router.get('/candidate', function (req, res) {
 router.get('/applylist/:id', function (req, res, next) {
   ApplyModel
     .find({job: req.params.id})
-    .populate('Job','city')
+    .populate('job')
     .exec(function (err, results) {
       if (err) {
         next(err);
