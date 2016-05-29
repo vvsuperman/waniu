@@ -32,6 +32,7 @@ mongoose.connect('mongodb://localhost:27017/waniudb');
 //生成微信签名
 router.post('/wsjsdk',function(req,res){
   var url = req.body.url;
+  console.log('url.......',url);
   var APPID = "wxaae5c90f87df2f1b";
   var APPSECRET = "00aafd2544f3ed2ff9f4111e327cc97a";
   var targetUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+APPID+'&secret='+APPSECRET;  
@@ -43,7 +44,10 @@ router.post('/wsjsdk',function(req,res){
 
     request.get(ticketUrl, function(err,response,body) {  
 
-      rt.token = eval('(' + body+ ')').ticket;                      
+      rt.token = eval('(' + body+ ')').ticket;    
+
+      console.log('ticket.........',rt.token);  
+
       var pArray = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
       rt.nonce_arr = "";
       for(var i=0;i<10;i++){
