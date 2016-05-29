@@ -99,17 +99,21 @@
       searchJob($('#searchText').val());
     });
     function searchJob(keywords) {
-      $.ajax({
-        url: '/search',
-        method: 'post',
-        data: {
-          key: keywords
-        },
-        success: function (res) {
-          var html = template('jobTpl', {jobs: res});
-          $('#content').html(html);
-        }
-      });
+      if (keywords == '') {
+        location.reload();
+      } else {
+        $.ajax({
+          url: '/search',
+          method: 'post',
+          data: {
+            key: keywords
+          },
+          success: function (res) {
+            var html = template('jobTpl', {jobs: res});
+            $('#content').html(html);
+          }
+        });
+      }
     }
 
     $('.sort-up').on('click', function (e) {
