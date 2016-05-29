@@ -36,60 +36,82 @@
       </a>
     </div>
   </div>
-  <table class="am-table am-table-hover">
-    <thead>
-    <tr>
-      <th></th>
-      <th>职位</th>
-      <th>行业</th>
-      <th>预览</th>
-      <th>修改</th>
-      <th>查看候选人</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% for(var i = 0, len = jobs.length;i < len;i++){ %>
-    <tr>
-      <td class="sort">
-        <i class="am-icon-sort-asc am-icon-sm sort-up"
-           data-id="<%= jobs[i]._id %>"></i>
-        <!--<i class="am-icon-sort-desc am-icon-sm sort-down"></i>-->
-      </td>
-      <td><%= jobs[i].jobTitle.name %></td>
-      <td><%= jobs[i].industry.name %></td>
-      <td>
-        <a href="/admin/lookjob/<%= jobs[i]._id %>">
-          <i class="am-icon-file-text"></i>
-        </a>
-      </td>
-      <td>
-        <a href="/admin/editjob/<%= jobs[i]._id %>">
-          <i class="am-icon-edit"></i>
-        </a>
-      </td>
-      <td>
-        <a href="/admin/applylist/<%= jobs[i]._id %>">
-          <i class="am-icon-eye"></i>
-        </a>
-      </td>
-    </tr>
-    <% } %>
-    </tbody>
-  </table>
-  <ul class="am-pagination am-pagination-centered"
-      data-page-total="<%= pageData.totalPage %>"
-      data-page-current="<%= pageData.currentPage %>">
-  </ul>
+  <div id="content">
+    <table class="am-table am-table-hover">
+      <thead>
+      <tr>
+        <th></th>
+        <th>职位</th>
+        <th>行业</th>
+        <th>预览</th>
+        <th>修改</th>
+        <th>查看候选人</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% for(var i = 0, len = jobs.length;i < len;i++){ %>
+      <tr>
+        <td class="sort">
+          <i class="am-icon-sort-asc am-icon-sm sort-up"
+             data-id="<%= jobs[i]._id %>"></i>
+          <!--<i class="am-icon-sort-desc am-icon-sm sort-down"></i>-->
+        </td>
+        <td><%= jobs[i].jobTitle.name %></td>
+        <td><%= jobs[i].industry.name %></td>
+        <td>
+          <a href="/admin/lookjob/<%= jobs[i]._id %>">
+            <i class="am-icon-file-text"></i>
+          </a>
+        </td>
+        <td>
+          <a href="/admin/editjob/<%= jobs[i]._id %>">
+            <i class="am-icon-edit"></i>
+          </a>
+        </td>
+        <td>
+          <a href="/admin/applylist/<%= jobs[i]._id %>">
+            <i class="am-icon-eye"></i>
+          </a>
+        </td>
+      </tr>
+      <% } %>
+      </tbody>
+    </table>
+    <ul class="am-pagination am-pagination-centered"
+        data-page-total="<%= pageData.totalPage %>"
+        data-page-current="<%= pageData.currentPage %>">
+    </ul>
+  </div>
 </div>
 </body>
 <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/template.js"></script>
 <script type="text/javascript" src="/bower_components/amazeui/dist/js/amazeui.min.js"></script>
 <script type="text/javascript" src="/javascripts/amazeui-pagination/amazeui-pagination.min.js"></script>
 <script>
   $(function () {
-    $('#searchBtn').on('click', function () {
-      location.search = '?search=' + $('#searchText').val();
+    $('#searchText').on('keypress', function (e) {
+      if (e.keyCode === 13) {
+        searchJob($(this).val());
+      }
     });
+    $('#searchBtn').on('click', function () {
+      searchJob($('#searchText').val());
+    });
+    function searchJob(keywords) {
+      $.ajax({
+        url: '/search',
+        method: 'post',
+        data: {
+          key: keywords
+        },
+        success: function (res) {
+          var html = template('jobTpl', {jobs: res});
+          $('#content').html(html);
+        }
+      });
+    }
+
     $('.sort-up').on('click', function (e) {
       $.ajax({
         url: '/admin/job/top',
@@ -113,5 +135,47 @@
       }
     });
   });
+</script>
+<script id="jobTpl" type="text/html">
+  <table class="am-table am-table-hover">
+    <thead>
+    <tr>
+      <th></th>
+      <th>职位</th>
+      <th>行业</th>
+      <th>预览</th>
+      <th>修改</th>
+      <th>查看候选人</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{each jobs as job index}}
+    <tr>
+      <td class="sort">
+        <i class="am-icon-sort-asc am-icon-sm sort-up"
+           data-id="{{ job._id }}"></i>
+        <!--<i class="am-icon-sort-desc am-icon-sm sort-down"></i>-->
+      </td>
+      <td>{{ job.jobTitle.name }}</td>
+      <td>{{ job.industry.name }}</td>
+      <td>
+        <a href="/admin/lookjob/{{ job._id }}">
+          <i class="am-icon-file-text"></i>
+        </a>
+      </td>
+      <td>
+        <a href="/admin/editjob/{{ job._id }}">
+          <i class="am-icon-edit"></i>
+        </a>
+      </td>
+      <td>
+        <a href="/admin/applylist/{{ job._id }}">
+          <i class="am-icon-eye"></i>
+        </a>
+      </td>
+    </tr>
+    {{/each}}
+    </tbody>
+  </table>
 </script>
 </html>

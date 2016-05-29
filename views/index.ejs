@@ -136,10 +136,10 @@
   </a>
 </div>
 </body>
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/javascripts/template.js"></script>
-<script src="/bower_components/amazeui/dist/js/amazeui.min.js"></script>
-<script id="test" type="text/html">
+<script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/template.js"></script>
+<script type="text/javascript" src="/bower_components/amazeui/dist/js/amazeui.min.js"></script>
+<script id="jobTpl" type="text/html">
   {{each jobs as job index}}
   <div class="content-item">
     <div class="content-item-title">
@@ -210,7 +210,7 @@
             method: 'get',
             success: function (res) {
               loading = false;
-              var html = template('test', {jobs: res});
+              var html = template('jobTpl', {jobs: res});
               $('#content').append(html);
             }
           });
@@ -228,7 +228,7 @@
             key: $(this).val()
           },
           success: function (res) {
-            var html = template('test', {jobs: res});
+            var html = template('jobTpl', {jobs: res});
             $('#content').html(html);
           }
         });
