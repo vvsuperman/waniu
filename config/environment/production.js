@@ -7,5 +7,5 @@
 // 生产环境配置
 // =================================
 module.exports = {
-  PORT: process.env.PORT || 80
+  PORT: process.env.PORT || 8080
 };
