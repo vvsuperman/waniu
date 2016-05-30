@@ -28,7 +28,9 @@
   },
   "description": "挖牛",
   "main": "app.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "lodash": "latest"
+  },
   "author": "sqrtthree@foxmail.com",
   "license": "ISC"
 }
