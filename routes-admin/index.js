@@ -9,12 +9,14 @@ var Job = require('../models/job');
 var JobTitle = require('../models/jobTitle');
 var IndustryModel = require('../models/industry');
 var ApplyModel = require('../models/apply');
+var UserModel = require('../models/user');
 var Degree = require('../models/degree');
+var routerFilter = require('../libs/router.filter');
 var async = require('async');
 
 var pageSize = 2;
 
-router.get('/waniuadmin', function (req, res, next) {
+router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
   var queryData = {};
   if (req.query.search) {
     //TODO: 方维 添加搜索功能
@@ -63,7 +65,7 @@ router.get('/waniuadmin', function (req, res, next) {
   });
 });
 
-router.get('/newjob', function (req, res, next) {
+router.get('/newjob', routerFilter.authorize, function (req, res, next) {
   async.parallel([
     function (callback) {
       JobTitle.find({}, function (err, results) {
@@ -93,7 +95,7 @@ router.get('/newjob', function (req, res, next) {
 
 });
 
-router.get('/editjob/:id', function (req, res, next) {
+router.get('/editjob/:id', routerFilter.authorize, function (req, res, next) {
   async.parallel([
     function (callback) {
       Job.find({_id: req.params.id})
@@ -139,7 +141,7 @@ router.get('/editjob/:id', function (req, res, next) {
   });
 });
 
-router.get('/lookjob/:id', function (req, res, next) {
+router.get('/lookjob/:id', routerFilter.authorize, function (req, res, next) {
   Job.find({_id: req.params.id})
     .populate('jobTitle', 'name')
     .populate('industry', 'name')
@@ -152,11 +154,11 @@ router.get('/lookjob/:id', function (req, res, next) {
     });
 });
 
-router.get('/candidate', function (req, res) {
+router.get('/candidate', routerFilter.authorize, function (req, res) {
   res.render("admin/candidate");
 });
 
-router.get('/applylist/:id', function (req, res, next) {
+router.get('/applylist/:id', routerFilter.authorize, function (req, res, next) {
   var page = req.query.page ? req.query.page - 1 : 0;
   if (page < 0) {
     page = 0;
@@ -223,7 +225,7 @@ router.get('/applylist/:id', function (req, res, next) {
 });
 
 //职位置顶
-router.post('/job/top', function (req, res) {
+router.post('/job/top', routerFilter.authorize, function (req, res) {
   var id = req.body.id;
   if (id === undefined) {
     res.sendStatus(400);
@@ -256,7 +258,7 @@ router.post('/job/top', function (req, res) {
 });
 
 //职位新增
-router.post('/job', function (req, res) {
+router.post('/job', routerFilter.authorize, function (req, res) {
 
 
   var reqJob = req.body.job;
@@ -292,7 +294,7 @@ router.post('/job', function (req, res) {
 });
 
 //职位修改
-router.put('/job', function (req, res) {
+router.put('/job', routerFilter.authorize, function (req, res) {
 
   var reqJob = req.body;
 
@@ -335,5 +337,34 @@ router.put('/job', function (req, res) {
   })
 });
 
+router.get('/login', function (req, res, next) {
+  res.render('admin/login');
+});
+router.post('/dologin', function (req, res) {
+  console.log(req.body);
+  if (req.body.nickname === '' || req.body.pass === '') {
+    res.sendStatus(400);
+    res.send({code: 400, message: '登录失败,用户名或密码不能为空!'});
+    return;
+  }
+  UserModel.findOne({nickname: req.body.nickname, pass: req.body.pass}, function (err, result) {
+    if (err) {
+      res.sendStatus(500);
+      res.send({code: 500, message: '登录失败,服务器忙,请稍后重试!'});
+      return;
+    }
+    if (result === null) {
+      res.sendStatus(400);
+      res.send({code: 400, message: '登录失败,用户名或密码错误!'});
+    } else {
+      req.session.user = {
+        nickname: result.nickname
+      };
+      console.log(req.session);
+      res.redirect('/admin/waniuadmin');
+    }
+  });
+
+});
 
 module.exports = router;
