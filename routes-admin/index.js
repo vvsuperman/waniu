@@ -224,6 +224,10 @@ router.get('/applylist/:id', routerFilter.authorize, function (req, res, next) {
 
 });
 
+router.get('/reportforms', function (req, res) {
+  res.render('admin/report-forms');
+});
+
 //职位置顶
 router.post('/job/top', routerFilter.authorize, function (req, res) {
   var id = req.body.id;
