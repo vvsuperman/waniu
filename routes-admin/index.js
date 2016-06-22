@@ -6,7 +6,7 @@
 var express = require('express');
 var router = express.Router();
 var Job = require('../models/job');
-var JobTitle = require('../models/jobTitle');
+var JobType = require('../models/jobType');
 var IndustryModel = require('../models/industry');
 var ApplyModel = require('../models/apply');
 var Degree = require('../models/degree');
@@ -25,7 +25,7 @@ router.get('/waniuadmin', function (req, res, next) {
   async.parallel([
     function (callback) {
       Job.find(queryData)
-        .populate('jobTitle', 'name')
+        .populate('jobType', 'name')
         .populate('industry', 'name')
         .sort({weight: -1})
         .skip(startNum)
@@ -66,7 +66,7 @@ router.get('/waniuadmin', function (req, res, next) {
 router.get('/newjob', function (req, res, next) {
   async.parallel([
     function (callback) {
-      JobTitle.find({}, function (err, results) {
+      JobType.find({}, function (err, results) {
         if (err) {
           callback(err);
           return;
@@ -88,7 +88,7 @@ router.get('/newjob', function (req, res, next) {
       next(err);
       return;
     }
-    res.render("admin/newjob", {jobTitle: results[0], industry: results[1]});
+    res.render("admin/newjob", {jobType: results[0], industry: results[1]});
   });
 
 });
@@ -97,7 +97,7 @@ router.get('/editjob/:id', function (req, res, next) {
   async.parallel([
     function (callback) {
       Job.find({_id: req.params.id})
-        .populate('jobTitle', 'name')
+        .populate('jobType', 'name')
         .populate('industry', 'name')
         .exec(function (err, results) {
           if (err) {
@@ -108,7 +108,7 @@ router.get('/editjob/:id', function (req, res, next) {
         });
     },
     function (callback) {
-      JobTitle.find({}, function (err, results) {
+      JobType.find({}, function (err, results) {
         if (err) {
           callback(err);
           return;
@@ -131,7 +131,7 @@ router.get('/editjob/:id', function (req, res, next) {
       return;
     }
     if (results[0].length) {
-      var data = {job: results[0][0], jobTitle: results[1], industry: results[2]};
+      var data = {job: results[0][0], jobType: results[1], industry: results[2]};
       res.render('admin/editjob', data);
     } else {
       res.render('404');
@@ -141,7 +141,7 @@ router.get('/editjob/:id', function (req, res, next) {
 
 router.get('/lookjob/:id', function (req, res, next) {
   Job.find({_id: req.params.id})
-    .populate('jobTitle', 'name')
+    .populate('jobType', 'name')
     .populate('industry', 'name')
     .exec(function (err, results) {
       if (err) {
@@ -181,7 +181,7 @@ router.get('/applylist/:id', function (req, res, next) {
     function (callback) {
       Job
         .find({_id: req.params.id})
-        .populate('jobTitle', 'name')
+        .populate('jobType', 'name')
         .populate('industry', 'name')
         .exec(function (err, results) {
           if (err) {
@@ -262,7 +262,7 @@ router.post('/job', function (req, res) {
   var reqJob = req.body.job;
 
 
-  if (reqJob === undefined || reqJob.jobTitle === undefined || reqJob.minSalary === undefined
+  if (reqJob === undefined || reqJob.jobTitle === undefined || reqJob.jobType === undefined || reqJob.minSalary === undefined
     || reqJob.city === undefined || reqJob.industry === undefined) {
 
     res.sendStatus(400);
@@ -273,6 +273,7 @@ router.post('/job', function (req, res) {
 
   var job = new Job({
     jobTitle: reqJob.jobTitle,          //职位id
+    jobType: reqJob.jobType,          //职位id
     industry: reqJob.industry,          //所属行业id
     minSalary: reqJob.minSalary,         //最小薪水
     maxSalary: reqJob.maxSalary,         //最大薪水
@@ -313,8 +314,8 @@ router.put('/job', function (req, res) {
 
       return false;
     }
-
     job.jobTitle = reqJob.jobTitle;
+    job.jobType = reqJob.jobType;
     job.industry = reqJob.industry;
     job.minSalary = reqJob.minSalary;
     job.maxSalary = reqJob.maxSalary;

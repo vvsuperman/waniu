@@ -61,9 +61,9 @@
     <% for(var i = 0, len = jobs.length;i < len;i++){ %>
     <div class="content-item">
       <div class="content-item-title">
-        <%= jobs[i].jobTitle.name %>
+        <%= jobs[i].jobTitle %>
         <div class="am-show-md-up apply-job"
-             data-job-name="<%= jobs[i].jobTitle.name %>"
+             data-job-name="<%= jobs[i].jobTitle %>"
              data-job-id="<%= jobs[i]._id %>"
              data-am-modal="{target: '#applyPopup'}">
           <span class="content-item-title-right">占坑</span>
@@ -94,7 +94,7 @@
       <div class="mobile-apply am-text-center am-show-sm-down">
         <button type="button"
                 class="am-btn am-btn-primary am-radius apply-job"
-                data-job-name="<%= jobs[i].jobTitle.name %>"
+                data-job-name="<%= jobs[i].jobTitle %>"
                 data-job-id="<%= jobs[i]._id %>"
                 data-am-modal="{target: '#applyPopup'}">
           <img src="/images/keng2x.png" alt="">
@@ -143,9 +143,9 @@
   {{each jobs as job index}}
   <div class="content-item">
     <div class="content-item-title">
-      {{ job.jobTitle.name }}
+      {{ job.jobTitle }}
       <div class="am-show-md-up apply-job"
-           data-job-name="{{ job.jobTitle.name }}"
+           data-job-name="{{ job.jobTitle }}"
            data-job-id="{{ job.jobTitle._id }}"
            data-am-modal="{target: '#applyPopup'}">
         <span class="content-item-title-right">占坑</span>
@@ -177,7 +177,7 @@
     <div class="mobile-apply am-text-center am-show-sm-down">
       <button type="button"
               class="am-btn am-btn-primary am-radius apply-job"
-              data-job-name="{{ job.jobTitle.name }}"
+              data-job-name="{{ job.jobTitle }}"
               data-job-id="{{ job._id }}"
               data-am-modal="{target: '#applyPopup'}">
         <img src="/images/keng2x.png" alt="">

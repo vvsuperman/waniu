@@ -29,15 +29,26 @@
               <strong>职位名称</strong>
             </div>
             <div class="am-u-sm-10">
+              <input id="jobTitle" type="text" class="am-form-field" placeholder="请输入城市名"
+                     value="<%= job.jobTitle %>">
+            </div>
+          </div>
+        </li>
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
+              <strong>职位类型</strong>
+            </div>
+            <div class="am-u-sm-10">
               <form class="am-form">
-                <select id="jobTitle">
-                  <% for(var i = 0, len = jobTitle.length;i < len;i++){ %>
-                  <% if(job.jobTitle._id.toString() == jobTitle[i]._id.toString()){ %>
-                  <option value="<%= jobTitle[i]._id.toString() %>" selected>
-                    <%= jobTitle[i].name %></option>
+                <select id="jobType">
+                  <% for(var i = 0, len = jobType.length;i < len;i++){ %>
+                  <% if(job.jobType._id.toString() == jobType[i]._id.toString()){ %>
+                  <option value="<%= jobType[i]._id.toString() %>" selected>
+                    <%= jobType[i].name %></option>
                   <% }else{ %>
-                  <option value="<%= jobTitle[i]._id.toString() %>">
-                    <%= jobTitle[i].name %></option>
+                  <option value="<%= jobType[i]._id.toString() %>">
+                    <%= jobType[i].name %></option>
                   <% } %>
                   <% } %>
                 </select>
@@ -210,13 +221,14 @@
     $('#saveBtn').on('click', function (e) {
       var data = {
         id: $('#jobId').text(),
-        jobTitle: $('#jobTitle').val(),    //jobtitles的id
-        industry: $('#industry').val(),    //industry的id
-        minSalary: $('#minSalary').val(),         //最小薪水
-        maxSalary: $('#maxSalary').val(),         //最大薪水
-        city: $('#city').val(),           			 //期望城市
-        degree: $('#degree').val(),	        	     //学历要求
-        attraction: $('#attraction').val().split(','),         	 //职位诱惑
+        jobType: $('#jobType').val(),
+        jobTitle: $('#jobTitle').val(),
+        industry: $('#industry').val(),
+        minSalary: $('#minSalary').val(),
+        maxSalary: $('#maxSalary').val(),
+        city: $('#city').val(),
+        degree: $('#degree').val(),
+        attraction: $('#attraction').val().split(','),
         description: descEditor.getValue()
       };
       $.ajax({

@@ -1,12 +1,12 @@
 var mongoose = require('mongoose');
 
 
-var JobTitleSchema = new mongoose.Schema({
-	
+var JobTypeSchema = new mongoose.Schema({
+
     name:String,    							    //职位名称
     weight:{type:Number,default:0},    //权重，用于调整顺序
-	
-	
+
+
 	meta: {
 		createdAt: {
 			type: Date,
@@ -21,19 +21,19 @@ var JobTitleSchema = new mongoose.Schema({
 });
 
 
-JobTitleSchema.pre('save', function(next) {
+JobTypeSchema.pre('save', function(next) {
 	if (this.isNew) {
 		this.meta.createdAt = this.meta.updatedAt = Date.now();
 	} else {
 		this.meta.updatedAt = Date.now();
 	}
 
-	console.log("save jobtitle...........");
+	console.log("save jobtype...........");
 
 	next();
 })
 
-JobTitleSchema.statics = {
+JobTypeSchema.statics = {
 	fetch: function(callback) {
 		return this.find({}).sort('meta.updatedAt').exec(callback);
 	},
@@ -43,4 +43,4 @@ JobTitleSchema.statics = {
 	}
 }
 
-module.exports = JobTitleSchema;
+module.exports = JobTypeSchema;
