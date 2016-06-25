@@ -54,3 +54,34 @@ body {
 .am-btn:focus {
   outline-color: #FDC72E !important;
 }
+
+.am-topbar-inverse .am-topbar-nav > li.am-active > a, .am-topbar-inverse .am-topbar-nav > li.am-active > a:focus, .am-topbar-inverse .am-topbar-nav > li.am-active > a:hover {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+@media only screen and (min-width: 641px){
+  .am-topbar-nav > li > a:after {
+    position: absolute;
+    left: 0;
+    right:0;
+    margin-left: 0;
+    bottom: -1px;
+    content: "";
+    display: inline-block;
+    width: 100%;
+    height: 0;
+    vertical-align: middle;
+    border-bottom: none;
+    border-right: none;
+    border-left: none;
+    border-top: 3px solid #fff;
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+    opacity: 0;
+    -webkit-transition: opacity .1s;
+    transition: opacity .1s;
+  }
+}
+

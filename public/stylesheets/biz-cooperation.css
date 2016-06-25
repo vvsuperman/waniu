@@ -1,0 +1,219 @@
+body {
+  background-color: #fff;
+  font-family: "PingFang SC";
+}
+
+.header {
+  background-color: #FDC72E;
+  padding-bottom: 30px;
+}
+
+.am-topbar {
+  background-color: #FDC72E;
+  border-color: #FDC72E;
+  border-radius: 0;
+}
+
+.am-topbar .navbar-brand {
+  margin-left: 200px;
+}
+
+.am-topbar .logo {
+  width: 60px;
+}
+
+.am-topbar .header-title {
+  color: #FECF2D;
+  font-size: 1.8rem;
+}
+
+.am-topbar .topbar-title {
+  position: relative;
+  line-height: 50px;
+  padding: 0 10px;
+}
+
+.am-topbar-inverse .am-topbar-nav > li > a {
+  color: #fff;
+}
+
+.am-topbar-inverse .am-topbar-nav > li img {
+  height: 30px;
+}
+
+.header .header-content {
+  color: #fff;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header .am-form-field {
+  border: 1px solid #FDC72E;
+  padding-left: 20px;
+}
+
+.header .header-background {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.header .logo {
+  height: 25px;
+  width: auto;
+}
+
+.am-gotop-fixed .am-gotop-icon {
+  background-color: #FECF2D;
+  color: #fff;
+}
+
+.biz-list {
+  background-color: #fff;
+}
+
+.module1, .module2, .module3, .module4 {
+  background-color: #F7F7F7;
+  color: #8a8a8a;
+  height: 500px;
+  /*padding: 100px 0;*/
+}
+
+
+.module1 {
+  padding-top: 120px;
+}
+
+.module1 h1, .module2 h1, .module3 h1 {
+  color: #4a4a4a;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.module1 p, .module2 p, .module3 p {
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+.module1 p > span {
+  font-weight: bold;
+}
+
+.module2 {
+  background-color: #fff;
+  padding-top: 130px;
+}
+
+.module2 p > a {
+  background-color: #888;
+  color: #fff;
+  padding: 5px 15px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.module3 {
+  padding-top: 160px;
+}
+
+.module4 {
+  height: 500px;
+  /*color: #fff;*/
+  padding-top: 93px;
+}
+
+.module4 h1 {
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.module4 p {
+}
+
+.module5 {
+  background-color: #5A5A5A;
+  padding-top: 110px;
+  padding-bottom: 120px;
+  color: #fff;
+  font-size: 13px;
+}
+
+.module5 .logo-bottom {
+  margin-bottom: 70px;
+}
+
+
+@media (max-width: 640px) {
+
+  .module1, .module2, .module3, .module4 {
+    background-color: #F7F7F7;
+    color: #8a8a8a;
+    height: auto;
+    padding-top: 65px;
+    padding-bottom: 65px;
+  }
+
+
+  .module1 h1, .module2 h1, .module3 h1 {
+    color: #464646;
+    font-size: 25px;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  .module1 p, .module2 p, .module3 p {
+    font-size: 13px;
+    margin-bottom: 25px;
+  }
+
+  .module1 p > span {
+    font-weight: bold;
+  }
+
+  .module2 {
+    background-color: #fff;
+    /*padding-top: 65px;*/
+  }
+
+  .module2 p > a {
+    background-color: #888;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 12px;
+  }
+
+  .module3 {
+    /*padding-top: 160px;*/
+  }
+
+  .module4 {
+    /*height: 500px;*/
+    /*color: #fff;*/
+    /*padding-top: 93px;*/
+  }
+
+  .module4 h1 {
+    font-size: 30px;
+    font-weight: 400;
+  }
+
+  .module4 p {
+  }
+
+  .module5 {
+    background-color: #5A5A5A;
+    /*padding-top: 110px;*/
+    /*padding-bottom: 120px;*/
+    color: #fff;
+    font-size: 13px;
+  }
+
+  .module5 .logo-bottom {
+    margin-bottom: 70px;
+  }
+
+
+}

@@ -60,8 +60,8 @@ body {
 }
 
 .header .logo {
-  margin-top: 10px;
-  height: 30px;
+  /*margin-top: 10px;*/
+  height: 25px;
   width: auto;
   /*width: 120px;*/
 }
