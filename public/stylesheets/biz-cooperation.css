@@ -81,9 +81,12 @@ body {
   /*padding: 100px 0;*/
 }
 
-
 .module1 {
   padding-top: 120px;
+}
+
+.module1 .img1 {
+  width: 268px;
 }
 
 .module1 h1, .module2 h1, .module3 h1 {
@@ -106,6 +109,10 @@ body {
   padding-top: 130px;
 }
 
+.module2 .img1 {
+  width: 334px;
+}
+
 .module2 p > a {
   background-color: #888;
   color: #fff;
@@ -116,6 +123,10 @@ body {
 
 .module3 {
   padding-top: 160px;
+}
+
+.module3 .img1 {
+  width: 334px;
 }
 
 .module4 {
@@ -144,17 +155,16 @@ body {
   margin-bottom: 70px;
 }
 
-
 @media (max-width: 640px) {
 
-  .module1, .module2, .module3, .module4 {
+  .module1, .module2, .module3, .module4, .module5 {
     background-color: #F7F7F7;
     color: #8a8a8a;
     height: auto;
-    padding-top: 65px;
-    padding-bottom: 65px;
+    /*padding-top: 65px;*/
+    /*padding-bottom: 65px;*/
+    padding: 65px 20px;
   }
-
 
   .module1 h1, .module2 h1, .module3 h1 {
     color: #464646;
@@ -168,6 +178,10 @@ body {
     margin-bottom: 25px;
   }
 
+  .module1 .img1 {
+    width: 208px;
+  }
+
   .module1 p > span {
     font-weight: bold;
   }
@@ -175,6 +189,10 @@ body {
   .module2 {
     background-color: #fff;
     /*padding-top: 65px;*/
+  }
+
+  .module2 .img1 {
+    width: 259px;
   }
 
   .module2 p > a {
@@ -187,6 +205,10 @@ body {
 
   .module3 {
     /*padding-top: 160px;*/
+  }
+
+  .module3 .img1 {
+    width: 259px;
   }
 
   .module4 {
@@ -212,8 +234,7 @@ body {
   }
 
   .module5 .logo-bottom {
-    margin-bottom: 70px;
+    margin-bottom: 30px;
   }
-
 
 }
