@@ -1,0 +1,25 @@
+<!-- Created by Jason on 16/5/17. -->
+<header class="am-topbar am-topbar-inverse">
+  <div class="am-container">
+    <h1 class="am-topbar-brand">
+      <a href="/"><img src="/images/logo2.png" alt="logo" class="logo"></a>
+    </h1>
+    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-primary am-btn-sm am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+      <div class="am-topbar-right">
+        <ul class="am-nav am-nav-pills am-topbar-nav">
+          <li class="topbar-title <%= header.active=='index'?'am-active':'' %>">
+            <a href="/">
+              <strong>找工作</strong>
+            </a>
+          </li>
+          <li class="topbar-title <%= header.active=='biz'?'am-active':'' %>">
+            <a href="/biz-cooperation">
+              <strong>企业合作</strong>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>

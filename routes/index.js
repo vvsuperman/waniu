@@ -27,42 +27,39 @@ var pageSize = 10; //每页十条记录
 mongoose.connect('mongodb://localhost:27017/waniudb');
 
 
-
-
 //生成微信签名
-router.post('/wsjsdk',function(req,res){
+router.post('/wsjsdk', function (req, res) {
   var url = req.body.url;
-  console.log('url.......',url);
+  console.log('url.......', url);
   var APPID = "wxaae5c90f87df2f1b";
   var APPSECRET = "00aafd2544f3ed2ff9f4111e327cc97a";
-  var targetUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='+APPID+'&secret='+APPSECRET;
+  var targetUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + APPID + '&secret=' + APPSECRET;
 
-  request.get(targetUrl, function(err,response,body) {
-    var rt ={}
-    rt.token =  eval('(' + body+ ')').access_token;
-    var ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+rt.token+"&type=jsapi";
+  request.get(targetUrl, function (err, response, body) {
+    var rt = {}
+    rt.token = eval('(' + body + ')').access_token;
+    var ticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + rt.token + "&type=jsapi";
 
-    request.get(ticketUrl, function(err,response,body) {
+    request.get(ticketUrl, function (err, response, body) {
 
-      rt.token = eval('(' + body+ ')').ticket;
+      rt.token = eval('(' + body + ')').ticket;
 
-      console.log('ticket.........',rt.token);
+      console.log('ticket.........', rt.token);
 
       var pArray = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
       rt.nonce_arr = "";
-      for(var i=0;i<10;i++){
-       rt.nonce_arr += pArray.charAt(Math.floor( Math.random() * pArray.length ));
-     }
-     rt.timestamp = Date.parse(new Date());
-     var jsapi_ticket_arr = "jsapi_ticket=" + rt.token + '&noncestr=' + rt.nonce_arr + '&timestamp=' +
-     rt.timestamp + '&url=' + url;
-     rt.jsapi_ticket = hex.hex_sha1(jsapi_ticket_arr);
-     rt.appId = APPID;
-     res.json({state:0,result:rt});
-   })
+      for (var i = 0; i < 10; i++) {
+        rt.nonce_arr += pArray.charAt(Math.floor(Math.random() * pArray.length));
+      }
+      rt.timestamp = Date.parse(new Date());
+      var jsapi_ticket_arr = "jsapi_ticket=" + rt.token + '&noncestr=' + rt.nonce_arr + '&timestamp=' +
+        rt.timestamp + '&url=' + url;
+      rt.jsapi_ticket = hex.hex_sha1(jsapi_ticket_arr);
+      rt.appId = APPID;
+      res.json({state: 0, result: rt});
+    })
   })
 })
-
 
 
 router.get('/', function (req, res) {
@@ -76,9 +73,21 @@ router.get('/', function (req, res) {
         next(err);
         return;
       }
-      res.render("index", {jobs: results});
+      res.render("index", {
+        jobs: results,
+        header: {
+          active: 'index'
+        }
+      });
     });
+});
 
+router.get('/biz-cooperation', function (req, res) {
+  res.render("biz-cooperation", {
+    header: {
+      active: 'biz'
+    }
+  });
 });
 
 
