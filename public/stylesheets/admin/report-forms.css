@@ -1,0 +1,12 @@
+.container {
+  margin-top: 60px;
+}
+
+.container .am-panel-title img {
+  width: 18px;
+}
+
+.container .search-result-label {
+  color: #FDC72E;
+  font-size: 14px;
+}

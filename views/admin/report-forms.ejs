@@ -6,43 +6,85 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, minimal-ui"/>
   <title>报表 - 挖牛管理系统</title>
   <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.0/css/amazeui.min.css">
+  <style>
+
+    .am-btn-primary {
+      background-color: #FDC72E !important;
+      border-color: #FDC72E !important;
+    }
+
+    .am-btn-primary:focus, .am-btn-primary:hover {
+      background-color: #FDC72E !important;
+      border-color: #FDC72E !important;
+    }
+
+    .am-btn-primary:active {
+      background-color: #FDC72E !important;
+      border-color: #FDC72E !important;
+    }
+
+    .am-btn:focus {
+      outline-color: #FDC72E !important;
+    }
+
+  </style>
   <link rel="stylesheet" href="/stylesheets/base.css">
   <link rel="stylesheet" href="/stylesheets/header-layout.css">
-  <!--<link rel="stylesheet" href="/stylesheets/admin/job.css">-->
+  <link rel="stylesheet" href="/stylesheets/admin/report-forms.css">
 </head>
 <body>
 <% include header-layout %>
 
-<div class="am-container newjob">
-  <div id="chart" style="width: 100%;height: 500px"></div>
+<div class="container am-container">
+  <section class="am-panel am-panel-default">
+    <header class="am-panel-hd">
+      <h3 class="am-panel-title">
+        <img src="/images/newjob/table2x.png" class="">
+        报表
+      </h3>
+    </header>
+    <div class="am-panel-bd">
+      <form class="am-form-inline am-margin-bottom-sm" role="form" method="get">
+        <div class="am-form-group">
+          <input name="jobTitle" type="text" class="am-form-field" placeholder="职位名称">
+        </div>
+        <div class="am-form-group">
+          <input name="city" type="text" class="am-form-field" placeholder="城市">
+        </div>
+        <div class="am-form-group">
+          <input name="workExperience" type="text" class="am-form-field" placeholder="工作年限">
+        </div>
+
+        <button type="submit" class="am-btn am-btn-primary am-margin-left-sm">搜索</button>
+      </form>
+
+      <div class="search-result-label am-margin-bottom-sm">
+        搜索结果 | 16 候选人
+      </div>
+
+      <table class="am-table am-table-hover am-table-centered">
+        <thead>
+        <tr>
+          <th>职位名称</th>
+          <th>姓名</th>
+          <th>电话</th>
+          <th>电子邮件</th>
+          <th>地址</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
 </div>
 </body>
-<script src="/javascripts/echarts/echarts.min.js"></script>
-<script>
-  // 基于准备好的dom，初始化echarts实例
-  var myChart = echarts.init(document.getElementById('chart'));
-
-  // 指定图表的配置项和数据
-  var option = {
-    title: {
-      text: '职位投递情况'
-    },
-    tooltip: {},
-    legend: {
-      data:['销量']
-    },
-    xAxis: {
-      data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-    },
-    yAxis: {},
-    series: [{
-      name: '销量',
-      type: 'bar',
-      data: [5, 20, 36, 10, 10, 20]
-    }]
-  };
-
-  // 使用刚指定的配置项和数据显示图表。
-  myChart.setOption(option);
-</script>
 </html>
