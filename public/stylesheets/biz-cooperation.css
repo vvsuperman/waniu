@@ -70,8 +70,13 @@ body {
   color: #fff;
 }
 
-.biz-list {
-  background-color: #fff;
+
+.biz-list img {
+  max-width: 100px;
+}
+.biz-list .am-u-lg-2 {
+  height: 100px;
+  text-align: center;
 }
 
 .module1, .module2, .module3, .module4 {
