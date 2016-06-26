@@ -14,7 +14,7 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
 
 var Job = require('../models/job');
-var JobType = require('../models/JobType');
+var JobType = require('../models/jobType');
 var ApplyModel = require('../models/apply');
 var Degree = require('../models/degree');
 var hex = require('./hex');
