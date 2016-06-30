@@ -3,13 +3,13 @@ body {
 }
 
 .header {
-  background-color: #FDC72E;
+  background-color: #FDC933;
   padding-bottom: 30px;
 }
 
 .am-topbar {
-  background-color: #FDC72E;
-  border-color: #FDC72E;
+  background-color: #FDC933;
+  border-color: #FDC933;
   border-radius: 0;
 }
 
@@ -49,7 +49,7 @@ body {
 }
 
 .header .am-form-field {
-  border: 1px solid #FDC72E;
+  border: 1px solid #FDC933;
   padding-left: 20px;
 }
 

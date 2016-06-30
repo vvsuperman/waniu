@@ -14,7 +14,7 @@ var Degree = require('../models/degree');
 var routerFilter = require('../libs/router.filter');
 var async = require('async');
 
-var pageSize = 2;
+var pageSize = 10;
 
 router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
   var queryData = {};
@@ -68,13 +68,15 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
 router.get('/newjob', routerFilter.authorize, function (req, res, next) {
   async.parallel([
     function (callback) {
-      JobType.find({}, function (err, results) {
-        if (err) {
-          callback(err);
-          return;
-        }
-        callback(null, results);
-      });
+      JobType.find({})
+        .sort({weight: -1})
+        .exec(function (err, results) {
+          if (err) {
+            callback(err);
+            return;
+          }
+          callback(null, results);
+        });
     },
     function (callback) {
       IndustryModel.find({}, function (err, results) {
