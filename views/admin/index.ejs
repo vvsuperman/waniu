@@ -7,11 +7,10 @@
   <title>挖牛管理系统</title>
   <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.0/css/amazeui.min.css">
   <link rel="stylesheet" href="/stylesheets/base.css">
-  <link rel="stylesheet" href="/stylesheets/header-layout.css">
+  <link rel="stylesheet" href="/stylesheets/admin/header-layout.css">
   <link rel="stylesheet" href="/stylesheets/admin/home.css">
   <link rel="stylesheet" href="/javascripts/simditor-2.3.6/styles/simditor.css">
-  <style>
-  </style>
+  <link rel="stylesheet" type="text/css" href="/bower_components/sweetalert/dist/sweetalert.css">
 </head>
 <body>
 <% include header-layout %>
@@ -25,7 +24,7 @@
         </span>
         <input id="searchText" type="text" class="am-form-field search">
         <span class="am-input-group-btn">
-        <button id="searchBtn" class="am-btn am-btn-primary" type="button">手气还行</button>
+        <button id="searchBtn" class="am-btn am-btn-primary" type="button">搜索</button>
       </span>
       </div>
     </div>
@@ -42,10 +41,11 @@
       <tr>
         <th></th>
         <th>职位</th>
-        <th>行业</th>
-        <th>预览</th>
-        <th>修改</th>
-        <th>查看候选人</th>
+        <th class="am-text-center">行业</th>
+        <th class="am-text-center">预览</th>
+        <th class="am-text-center">修改</th>
+        <th class="am-text-center">查看候选人</th>
+        <th class="am-text-center">操作</th>
       </tr>
       </thead>
       <tbody>
@@ -57,20 +57,25 @@
           <!--<i class="am-icon-sort-desc am-icon-sm sort-down"></i>-->
         </td>
         <td><%= jobs[i].jobTitle %></td>
-        <td><%= jobs[i].industry.name %></td>
-        <td>
+        <td class="am-text-center"><%= jobs[i].industry.name %></td>
+        <td class="am-text-center">
           <a href="/admin/lookjob/<%= jobs[i]._id %>">
             <i class="am-icon-file-text"></i>
           </a>
         </td>
-        <td>
+        <td class="am-text-center">
           <a href="/admin/editjob/<%= jobs[i]._id %>">
             <i class="am-icon-edit"></i>
           </a>
         </td>
-        <td>
+        <td class="am-text-center">
           <a href="/admin/applylist/<%= jobs[i]._id %>">
             <i class="am-icon-eye"></i>
+          </a>
+        </td>
+        <td class="am-text-center">
+          <a href="javascript:;" title="删除职位" class="delete" data-id="<%= jobs[i]._id %>">
+            <i class="am-icon-trash"></i>
           </a>
         </td>
       </tr>
@@ -88,12 +93,46 @@
 <script type="text/javascript" src="http://cdn.amazeui.org/amazeui/2.7.0/js/amazeui.min.js"></script>
 <script type="text/javascript" src="/javascripts/template.js"></script>
 <script type="text/javascript" src="/javascripts/amazeui-pagination/amazeui-pagination.min.js"></script>
+<script src="/bower_components/sweetalert/dist/sweetalert.min.js"></script>
 <script>
   $(function () {
     $('#searchText').on('keypress', function (e) {
       if (e.keyCode === 13) {
         searchJob($(this).val());
       }
+    });
+    $('.delete').on('click', function (e) {
+      console.log(e);
+      swal({
+        title: "确定删除该职位?",
+        text: "删除后不可恢复!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        closeOnConfirm: false
+      }, function () {
+        $.ajax({
+          method: 'delete',
+          url: '/admin/job',
+          data: {jobId: e.currentTarget.attributes['data-id'].value},
+          success: function (res) {
+            swal({
+              title: '删除成功!',
+              text: '',
+              type: 'success'
+            }, function () {
+              location.reload();
+            });
+          },
+          error: function (err) {
+            var responseText = JSON.parse(err.responseText);
+            swal(responseText.message, "", "error");
+          }
+        });
+      });
+
     });
     $('#searchBtn').on('click', function () {
       searchJob($('#searchText').val());

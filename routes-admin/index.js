@@ -235,14 +235,12 @@ router.get('/reportforms', function (req, res) {
 router.post('/job/top', routerFilter.authorize, function (req, res) {
   var id = req.body.id;
   if (id === undefined) {
-    res.sendStatus(400);
-    res.send({code: 400, message: '参数错误,id不存在!'});
+    res.status(400).send({code: 400, message: '参数错误,id不存在!'});
     return false;
   } else {
     Job.findById(id, function (err, job) {
       if (job === undefined) {
-        res.sendStatus(400);
-        res.send({code: 400, message: '职位不存在!'});
+        res.status(400).send({code: 400, message: '职位不存在!'});
         return false;
       }
       //找到weight值最大的那个
@@ -252,8 +250,7 @@ router.post('/job/top', routerFilter.authorize, function (req, res) {
           job.weight = wJob.weight + 1;
           job.save(function (err, rtJob) {
             if (err) {
-              res.sendStatus(500);
-              res.send({code: 500, message: '保存数据错误!'});
+              res.status(500).send({code: 500, message: '保存数据错误!'});
             } else {
               //res.json({state: 0, job: rtJob});
               res.send(rtJob);
@@ -274,8 +271,7 @@ router.post('/job', routerFilter.authorize, function (req, res) {
   if (reqJob === undefined || reqJob.jobTitle === undefined || reqJob.jobType === undefined || reqJob.minSalary === undefined
     || reqJob.city === undefined || reqJob.industry === undefined) {
 
-    res.sendStatus(400);
-    res.send({code: 400, message: '输入均不得为空'});
+    res.status(400).send({code: 400, message: '输入均不得为空'});
 
     return false;
   }
@@ -294,10 +290,26 @@ router.post('/job', routerFilter.authorize, function (req, res) {
 
   job.save(function (error, pJob) {
     if (error) {
-      res.sendStatus(500);
-      res.send({code: 500, message: '保存job异常'});
+      res.status(500).send({code: 500, message: '保存job异常'});
     }
     res.send(pJob);
+  });
+});
+
+//删除职位
+router.delete('/job', routerFilter.authorize, function (req, res) {
+  console.log(req.body);
+  var jobId = req.body.jobId;
+  if (jobId === undefined) {
+    res.status(400).send({code: 400, message: '参数错误'});
+    return false;
+  }
+  Job.remove({_id: jobId}, function (err, docs) {
+    if (err) {
+      res.status(500).send({code: 500, message: '删除失败, 请稍后重试!'});
+    } else {
+      res.send();
+    }
   });
 });
 
@@ -307,8 +319,7 @@ router.put('/job', routerFilter.authorize, function (req, res) {
   var reqJob = req.body;
 
   if (reqJob.id === undefined) {
-    res.sendStatus(400);
-    res.send({code: 400, message: 'id不得为空'});
+    res.status(400).send({code: 400, message: 'id不得为空'});
     return false;
   }
 
@@ -318,8 +329,7 @@ router.put('/job', routerFilter.authorize, function (req, res) {
     // 未找到该id
 
     if (job === undefined) {
-      res.sendStatus(400);
-      res.send({code: 400, message: '该job不存在'});
+      res.status(400).send({code: 400, message: '该job不存在'});
 
       return false;
     }
@@ -336,8 +346,7 @@ router.put('/job', routerFilter.authorize, function (req, res) {
     //是否可以直接存，通过id reqJob.save?
     job.save(function (error, pJob) {
       if (error) {
-        res.sendStatus(500);
-        res.send({code: 500, message: '修改job异常'});
+        res.status(500).send({code: 500, message: '修改job异常'});
       }
       res.send(pJob);
     });
@@ -351,19 +360,16 @@ router.get('/login', function (req, res, next) {
 router.post('/dologin', function (req, res) {
   console.log(req.body);
   if (req.body.nickname === '' || req.body.pass === '') {
-    res.sendStatus(400);
-    res.send({code: 400, message: '登录失败,用户名或密码不能为空!'});
+    res.status(400).send({code: 400, message: '登录失败,用户名或密码不能为空!'});
     return;
   }
   UserModel.findOne({nickname: req.body.nickname, pass: req.body.pass}, function (err, result) {
     if (err) {
-      res.sendStatus(500);
-      res.send({code: 500, message: '登录失败,服务器忙,请稍后重试!'});
+      res.status(500).send({code: 500, message: '登录失败,服务器忙,请稍后重试!'});
       return;
     }
     if (result === null) {
-      res.sendStatus(400);
-      res.send({code: 400, message: '登录失败,用户名或密码错误!'});
+      res.status(400).send({code: 400, message: '登录失败,用户名或密码错误!'});
     } else {
       req.session.user = {
         nickname: result.nickname

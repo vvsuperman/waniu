@@ -58,3 +58,7 @@
   color: #FDC72E;
   cursor: pointer;
 }
+
+#content .delete:hover {
+  color: red !important;
+}

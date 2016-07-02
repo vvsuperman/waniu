@@ -169,21 +169,10 @@ body {
   margin-bottom: 55px;
 }
 
-.module5 {
-  background-color: #5A5A5A;
-  padding-top: 110px;
-  padding-bottom: 120px;
-  color: #fff;
-  font-size: 13px;
-}
-
-.module5 .logo-bottom {
-  margin-bottom: 70px;
-}
 
 @media (max-width: 640px) {
 
-  .module1, .module2, .module3, .module4, .module5 {
+  .module1, .module2, .module3, .module4 {
     background-color: #F7F7F7;
     color: #8a8a8a;
     height: auto;
@@ -251,17 +240,4 @@ body {
   .module4 p {
     margin-bottom: 60px;
   }
-
-  .module5 {
-    background-color: #5A5A5A;
-    /*padding-top: 110px;*/
-    /*padding-bottom: 120px;*/
-    color: #fff;
-    font-size: 13px;
-  }
-
-  .module5 .logo-bottom {
-    margin-bottom: 30px;
-  }
-
 }

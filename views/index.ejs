@@ -7,12 +7,13 @@
   <title>挖牛速聘-职位速递</title>
   <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.0/css/amazeui.min.css">
   <link rel="stylesheet" href="/stylesheets/base.css">
+  <link rel="stylesheet" href="/stylesheets/header-footer-layout.css">
   <link rel="stylesheet" href="/stylesheets/index.css">
 </head>
 <body>
 <div class="header">
   <% include header-layout %>
-  <img class="header-background am-show-md-up" src="/images/header_background.jpg" alt="背景">
+  <img class="header-background am-show-md-up" src="/images/header_background.png" alt="背景" width="880px">
   <div class="am-container am-show-sm-down am-text-center" style="margin-bottom: 40px;padding-top: 20px">
     <a href="/"><img src="/images/logo2.png" alt="logo" class="logo"></a>
   </div>
@@ -23,6 +24,20 @@
   <div class="am-g">
     <div class="am-u-md-6 am-u-md-offset-3 am-u-sm-12">
       <input id="searchInput" type="text" class="am-form-field am-round" placeholder="职位描述,前端工程师,地点,上海等"/>
+    </div>
+  </div>
+  <div class="am-g">
+    <div class="am-u-md-6 am-u-md-offset-3 am-u-sm-12">
+      <dl class="hot-search">
+        <dt>热门搜索:&nbsp;</dt>
+        <dd><a class="hot-search-item">Web前端</a></dd>
+        <dd><a class="hot-search-item">全栈</a></dd>
+        <dd><a class="hot-search-item">PHP</a></dd>
+        <dd><a class="hot-search-item">Java</a></dd>
+        <dd><a class="hot-search-item">Node.js</a></dd>
+        <dd><a class="hot-search-item">上海</a></dd>
+        <dd><a class="hot-search-item">杭州</a></dd>
+      </dl>
     </div>
   </div>
 </div>
@@ -100,7 +115,13 @@
     </div>
     <% } %>
   </div>
+  <div class="am-g am-margin-bottom-lg am-margin-top-lg">
+    <div class="am-u-md-12 am-text-center">
+      <button id="loadMore" class="am-btn am-btn-primary">加载更多</button>
+    </div>
+  </div>
 </div>
+<% include footer-layout %>
 <div class="am-popup" id="applyPopup">
   <div class="am-popup-inner">
     <div class="am-popup-hd">
@@ -194,29 +215,33 @@
       $('#applyJobId').val(attr['data-job-id'].value);
     });
     var loading = false;
-    var totalHeight;
-    $(window).scroll(function () {
-      totalHeight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
-      if ($(document).height() <= totalHeight) {
-        if (!loading) {
-          loading = true;
-          pageNum += 1;
-          $.ajax({
-            url: '/jobs/' + pageNum,
-            method: 'get',
-            success: function (res) {
-              loading = false;
+    $('#loadMore').on('click', function (e) {
+      if (!loading) {
+        loading = true;
+        pageNum += 1;
+        $.ajax({
+          url: '/jobs/' + pageNum,
+          method: 'get',
+          success: function (res) {
+            loading = false;
+            if(res.length) {
               var html = template('jobTpl', {jobs: res});
               $('#content').append(html);
+            }else{
+              $(e.currentTarget).text('没有更多了').addClass('am-disabled');
             }
-          });
-        }
+          }
+        });
       }
     });
 
+    $('.hot-search-item').on('click', function (e) {
+      $('#searchInput').val($(this).text());
+      $('#searchInput').trigger("keypress");
+    });
+
     $('#searchInput').on('keypress', function (e) {
-      if (e.keyCode === 13) {
-        console.log($(this).val());
+      if (e.keyCode === 13 || e.isTrigger) {
         $.ajax({
           url: '/search',
           method: 'post',
@@ -224,8 +249,12 @@
             key: $(this).val()
           },
           success: function (res) {
-            var html = template('jobTpl', {jobs: res});
-            $('#content').html(html);
+            if (res.length) {
+              var html = template('jobTpl', {jobs: res});
+              $('#content').html(html);
+            } else {
+              $('#content').html('<h4 style="text-align: center">暂无相关职位</h4>');
+            }
           }
         });
       }
