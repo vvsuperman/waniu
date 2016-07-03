@@ -26,6 +26,10 @@ var pageSize = 10; //每页十条记录
 //mongoose.connect('mongodb://localhost:12345/waniudb');
 mongoose.connect('mongodb://localhost:27017/waniudb');
 
+//加盐算法，用来加密
+
+
+
 
 //生成微信签名
 router.post('/wsjsdk', function (req, res) {

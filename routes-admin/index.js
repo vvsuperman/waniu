@@ -142,11 +142,14 @@ router.get('/editjob/:id', routerFilter.authorize, function (req, res, next) {
 });
 
 router.get('/lookjob/:id', routerFilter.authorize, function (req, res, next) {
+
+  console.log('lookjob...........',req.params.id);
   Job.find({_id: req.params.id})
     .populate('jobType', 'name')
     .populate('industry', 'name')
     .exec(function (err, results) {
       if (err) {
+        console.log(err);
         next(err);
         return;
       }
