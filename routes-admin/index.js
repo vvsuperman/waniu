@@ -18,13 +18,14 @@ var _ = require('lodash');
 var pageSize = 10;
 
 router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
-  if (req.query.search) {
-    //TODO: 方维 添加搜索功能
-  }
+  var key = req.query.key ? req.query.key.trim() : '';
   var page = req.query.page ? req.query.page - 1 : 0;
   var startNum = page * pageSize;
 
-  var queryData = {"isRemove": {"$ne": 1}};
+  var queryData = {
+    "isRemove": {$ne: 1},
+    $or: [{'description': {'$regex': key}}, {'city': {'$regex': key}}, {'name': {'$regex': key}}]
+  };
   async.parallel([
     function (callback) {
       Job.find(queryData)
@@ -70,32 +71,12 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
         }
         callback(null, results);
       });
-    },
-    function (callback) {
-      ApplyModel.find(queryData)
-        .populate('job', 'jobTitle')
-        .exec(function (err, results) {
-          if (err) {
-            callback(err);
-            return;
-          }
-          callback(null, results);
-        });
     }
   ], function (err, results) {
     if (err) {
       next(err);
       return;
     }
-    console.log(results[2].length);
-    _.forEach(results[0], function(item) {
-      var arr = _.find(results[2], function (findItem) {
-        console.log(findItem.job._id);
-        return item._id = findItem.job._id;
-      });
-      console.log('=====================');
-      console.log(arr.length);
-    });
 
     res.render("admin/index", {
       jobs: results[0],
@@ -271,18 +252,29 @@ router.get('/applylist/:id', routerFilter.authorize, function (req, res, next) {
 
 });
 
-router.get('/reportforms', routerFilter.authorize, function (req, res) {
-  if (req.query.search) {
-    //TODO: 方维 添加搜索功能
-  }
+router.get('/reportforms', routerFilter.authorize, function (req, res, next) {
+  var jobTitle = req.query.jobTitle ? req.query.jobTitle.trim() : '';
+  var city = req.query.city ? req.query.city.trim() : null;
+  var workExperience = req.query.workExperience ? req.query.workExperience.trim() : null;
+
   var page = req.query.page ? req.query.page - 1 : 0;
   var startNum = page * pageSize;
-
   var queryData = {};
+  var queryParams = [];
+  if (city) {
+    queryParams.push({'city': {'$regex': city}});
+  }
+  if (workExperience) {
+    queryParams.push({'workExperience': {'$regex': workExperience}});
+  }
+  if (queryParams.length) {
+    queryData.$or = queryParams;
+  }
+
   async.parallel([
     function (callback) {
       ApplyModel.find(queryData)
-        .populate('job', 'jobTitle')
+        .populate('job', 'jobTitle', {jobTitle: {$regex: jobTitle}})
         .sort({weight: -1})
         .skip(startNum)
         .limit(pageSize)
@@ -308,6 +300,9 @@ router.get('/reportforms', routerFilter.authorize, function (req, res) {
       next(err);
       return;
     }
+    results[0] = _.filter(results[0], function (item) {
+      return item.job != null;
+    });
     res.render('admin/report-forms', {
       applyList: results[0],
       pageData: {

@@ -18,15 +18,18 @@
 <div class="container am-container">
   <div class="am-g">
     <div class="am-u-sm-6">
-      <div class="am-input-group am-input-group-primary">
-        <span class="am-input-group-label">
-          <i class="am-icon-search"></i>
-        </span>
-        <input id="searchText" type="text" class="am-form-field search">
-        <span class="am-input-group-btn">
-        <button id="searchBtn" class="am-btn am-btn-primary" type="button">搜索</button>
-      </span>
-      </div>
+      <form class="am-form-inline" role="form">
+        <div class="am-input-group am-input-group-primary">
+          <span class="am-input-group-label">
+            <i class="am-icon-search"></i>
+          </span>
+          <input id="searchText" name="key" type="text" class="am-form-field search">
+          <span class="am-input-group-btn">
+            <button id="searchBtn" class="am-btn am-btn-primary" type="submit">搜索</button>
+          </span>
+        </div>
+      </form>
+
     </div>
     <div class="am-u-sm-2 am-u-sm-offset-4">
       <a href="/admin/newjob" class="am-btn am-btn-primary">
