@@ -37,7 +37,22 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
             callback(err);
             return;
           }
-          callback(null, results);
+          async.each(results, function (item, childCallback) {
+            ApplyModel.find({job: item._id}).exec(function (childError, childResults) {
+              if (childError) {
+                childCallback(childError);
+              } else {
+                item.applyList = childResults.length;
+                childCallback(null);
+              }
+            });
+          }, function (eachErr) {
+            if (eachErr) {
+              next(eachErr);
+            } else {
+              callback(null, results);
+            }
+          });
         });
     },
     function (callback) {
