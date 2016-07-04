@@ -43,6 +43,12 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
                 childCallback(childError);
               } else {
                 item.applyList = childResults.length;
+                item.newApplyList = 0;
+                childResults.forEach(function (childResultsItem) {
+                  if (!childResultsItem.isCheck) {
+                    item.newApplyList += 1;
+                  }
+                });
                 childCallback(null);
               }
             });
