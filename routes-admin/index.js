@@ -38,7 +38,28 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
             callback(err);
             return;
           }
-          callback(null, results);
+          async.each(results, function (item, childCallback) {
+            ApplyModel.find({job: item._id}).exec(function (childError, childResults) {
+              if (childError) {
+                childCallback(childError);
+              } else {
+                item.applyList = childResults.length;
+                item.newApplyList = 0;
+                childResults.forEach(function (childResultsItem) {
+                  if (!childResultsItem.isCheck) {
+                    item.newApplyList += 1;
+                  }
+                });
+                childCallback(null);
+              }
+            });
+          }, function (eachErr) {
+            if (eachErr) {
+              next(eachErr);
+            } else {
+              callback(null, results);
+            }
+          });
         });
     },
     function (callback) {
@@ -240,6 +261,8 @@ router.get('/applylist/:id', routerFilter.authorize, function (req, res, next) {
           currentPage: page + 1,
           totalPage: Math.ceil(results[2].length / pageSize)
         }
+      });
+      ApplyModel.update({job: results[1][0]._id}, {$set: {isCheck: 1}}, {multi: true}, function (update_err, update_count) {
       });
     } else {
       res.render('404');

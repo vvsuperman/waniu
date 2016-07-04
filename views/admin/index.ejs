@@ -45,6 +45,7 @@
         <th class="am-text-center">预览</th>
         <th class="am-text-center">修改</th>
         <th class="am-text-center">查看候选人</th>
+        <th class="am-text-center">新增申请人数</th>
         <th class="am-text-center">操作</th>
       </tr>
       </thead>
@@ -70,8 +71,12 @@
         </td>
         <td class="am-text-center">
           <a href="/admin/applylist/<%= jobs[i]._id %>">
+            <%= jobs[i].applyList %> &nbsp;
             <i class="am-icon-eye"></i>
           </a>
+        </td>
+        <td class="am-text-center">
+          <%= jobs[i].newApplyList %>
         </td>
         <td class="am-text-center">
           <a href="javascript:;" title="删除职位" class="delete" data-id="<%= jobs[i]._id %>">
