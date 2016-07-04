@@ -65,7 +65,7 @@
       <table class="am-table am-table-hover am-table-centered">
         <thead>
         <tr>
-          <th>职位名称</th>
+          <th class="am-text-left">职位名称</th>
           <th>姓名</th>
           <th>电话</th>
           <th>电子邮件</th>
@@ -73,15 +73,26 @@
         </tr>
         </thead>
         <tbody>
+        <% for(var i = 0, len = applyList.length;i < len;i++){ %>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td class="am-text-left">
+            <a href="/admin/lookjob/<%= applyList[i].job._id %>">
+              <%= applyList[i].job.jobTitle %>
+            </a>
+          </td>
+          <td><%= applyList[i].name %></td>
+          <td class="am-text-center"><%= applyList[i].phone %></td>
+          <td class="am-text-center"></td>
+          <td class="am-text-center"><%= applyList[i].city %></td>
         </tr>
+        <% } %>
         </tbody>
       </table>
+
+      <ul class="am-pagination am-pagination-centered"
+          data-page-total="<%= pageData.totalPage %>"
+          data-page-current="<%= pageData.currentPage %>">
+      </ul>
     </div>
   </section>
 

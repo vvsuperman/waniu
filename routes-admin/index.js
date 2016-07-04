@@ -13,17 +13,18 @@ var UserModel = require('../models/user');
 var Degree = require('../models/degree');
 var routerFilter = require('../libs/router.filter');
 var async = require('async');
+var _ = require('lodash');
 
 var pageSize = 10;
 
 router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
-  var queryData = {};
   if (req.query.search) {
     //TODO: 方维 添加搜索功能
   }
   var page = req.query.page ? req.query.page - 1 : 0;
   var startNum = page * pageSize;
 
+  var queryData = {"isRemove": {"$ne": 1}};
   async.parallel([
     function (callback) {
       Job.find(queryData)
@@ -48,12 +49,33 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
         }
         callback(null, results);
       });
+    },
+    function (callback) {
+      ApplyModel.find(queryData)
+        .populate('job', 'jobTitle')
+        .exec(function (err, results) {
+          if (err) {
+            callback(err);
+            return;
+          }
+          callback(null, results);
+        });
     }
   ], function (err, results) {
     if (err) {
       next(err);
       return;
     }
+    console.log(results[2].length);
+    _.forEach(results[0], function(item) {
+      var arr = _.find(results[2], function (findItem) {
+        console.log(findItem.job._id);
+        return item._id = findItem.job._id;
+      });
+      console.log('=====================');
+      console.log(arr.length);
+    });
+
     res.render("admin/index", {
       jobs: results[0],
       pageData: {
@@ -226,9 +248,52 @@ router.get('/applylist/:id', routerFilter.authorize, function (req, res, next) {
 
 });
 
-router.get('/reportforms', function (req, res) {
+router.get('/reportforms', routerFilter.authorize, function (req, res) {
+  if (req.query.search) {
+    //TODO: 方维 添加搜索功能
+  }
+  var page = req.query.page ? req.query.page - 1 : 0;
+  var startNum = page * pageSize;
 
-  res.render('admin/report-forms');
+  var queryData = {};
+  async.parallel([
+    function (callback) {
+      ApplyModel.find(queryData)
+        .populate('job', 'jobTitle')
+        .sort({weight: -1})
+        .skip(startNum)
+        .limit(pageSize)
+        .exec(function (err, results) {
+          if (err) {
+            callback(err);
+            return;
+          }
+          callback(null, results);
+        });
+    },
+    function (callback) {
+      ApplyModel.find({}, function (err, results) {
+        if (err) {
+          callback(err);
+          return;
+        }
+        callback(null, results);
+      });
+    }
+  ], function (err, results) {
+    if (err) {
+      next(err);
+      return;
+    }
+    res.render('admin/report-forms', {
+      applyList: results[0],
+      pageData: {
+        total: results[1].length,
+        currentPage: page + 1,
+        totalPage: Math.ceil(results[1].length / pageSize)
+      }
+    });
+  });
 });
 
 //职位置顶
@@ -298,18 +363,31 @@ router.post('/job', routerFilter.authorize, function (req, res) {
 
 //删除职位
 router.delete('/job', routerFilter.authorize, function (req, res) {
-  console.log(req.body);
   var jobId = req.body.jobId;
   if (jobId === undefined) {
     res.status(400).send({code: 400, message: '参数错误'});
     return false;
   }
-  Job.remove({_id: jobId}, function (err, docs) {
-    if (err) {
-      res.status(500).send({code: 500, message: '删除失败, 请稍后重试!'});
-    } else {
-      res.send();
+
+  Job.findById(jobId, function (err, job) {
+
+    // 未找到该id
+
+    if (job === undefined) {
+      res.status(400).send({code: 400, message: '该job不存在'});
+
+      return false;
     }
+    job.isRemove = 1;
+
+    //是否可以直接存，通过id reqJob.save?
+    job.save(function (error, pJob) {
+      if (err) {
+        res.status(500).send({code: 500, message: '删除失败, 请稍后重试!'});
+      } else {
+        res.send();
+      }
+    });
   });
 });
 
