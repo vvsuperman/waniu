@@ -11,6 +11,7 @@ var ApplySchema = new mongoose.Schema({
   phone: String,    							          //申请者手机号
   city: String,    							          //申请者所在城市
   job: {type: ObjectId, ref: 'Job'},         //职位id
+  isCheck: {type: Number, default: 0},         //查看标记, 0 未查看
 
   meta: {
     createdAt: {

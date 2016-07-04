@@ -234,6 +234,8 @@ router.get('/applylist/:id', routerFilter.authorize, function (req, res, next) {
           totalPage: Math.ceil(results[2].length / pageSize)
         }
       });
+      ApplyModel.update({job: results[1][0]._id}, {$set: {isCheck: 1}}, {multi: true}, function (update_err, update_count) {
+      });
     } else {
       res.render('404');
     }
