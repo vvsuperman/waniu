@@ -16,6 +16,7 @@ var routerFilter = require('../libs/router.filter');
 var async = require('async');
 var _ = require('lodash');
 
+require('../utils/incId.util');
 
 var pageSize = 10;
 
@@ -365,7 +366,6 @@ router.post('/job', routerFilter.authorize, function (req, res, next) {
     {new: true, upsert: true},
     function (err, updatedIdentity) {
       if (err) return next(err);
-      console.log(updatedIdentity.currentId);
 
       var job = new Job({
         id: updatedIdentity.currentId,
