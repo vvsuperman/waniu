@@ -10,10 +10,12 @@ var JobType = require('../models/jobType');
 var IndustryModel = require('../models/industry');
 var ApplyModel = require('../models/apply');
 var UserModel = require('../models/user');
+var IncIdModel = require('../models/incId');
 var Degree = require('../models/degree');
 var routerFilter = require('../libs/router.filter');
 var async = require('async');
 var _ = require('lodash');
+
 
 var pageSize = 10;
 
@@ -345,9 +347,7 @@ router.post('/job/top', routerFilter.authorize, function (req, res) {
 });
 
 //职位新增
-router.post('/job', routerFilter.authorize, function (req, res) {
-
-
+router.post('/job', routerFilter.authorize, function (req, res, next) {
   var reqJob = req.body.job;
 
 
@@ -359,24 +359,36 @@ router.post('/job', routerFilter.authorize, function (req, res) {
     return false;
   }
 
-  var job = new Job({
-    jobTitle: reqJob.jobTitle,          //职位id
-    jobType: reqJob.jobType,          //职位id
-    industry: reqJob.industry,          //所属行业id
-    minSalary: reqJob.minSalary,         //最小薪水
-    maxSalary: reqJob.maxSalary,         //最大薪水
-    city: reqJob.city,                 //期望城市
-    degree: reqJob.degree,                 //学历要求
-    attraction: reqJob.attraction,           //职位诱惑
-    description: reqJob.description
-  });
+  IncIdModel.findOneAndUpdate(
+    {name: 'job'},
+    {$inc: {'currentId': 1}},
+    {new: true, upsert: true},
+    function (err, updatedIdentity) {
+      if (err) return next(err);
+      console.log(updatedIdentity.currentId);
 
-  job.save(function (error, pJob) {
-    if (error) {
-      res.status(500).send({code: 500, message: '保存job异常'});
+      var job = new Job({
+        id: updatedIdentity.currentId,
+        jobTitle: reqJob.jobTitle,               //职位id
+        jobType: reqJob.jobType,                 //职位id
+        industry: reqJob.industry,               //所属行业id
+        minSalary: reqJob.minSalary,             //最小薪水
+        maxSalary: reqJob.maxSalary,             //最大薪水
+        city: reqJob.city,                       //期望城市
+        degree: reqJob.degree,                   //学历要求
+        attraction: reqJob.attraction,           //职位诱惑
+        description: reqJob.description
+      });
+
+      job.save(function (error, pJob) {
+        if (error) {
+          res.status(500).send({code: 500, message: '保存job异常'});
+        }
+        res.send(pJob);
+      });
     }
-    res.send(pJob);
-  });
+  );
+
 });
 
 //删除职位

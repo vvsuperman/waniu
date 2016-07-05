@@ -3,8 +3,9 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 
 var JobSchema = new mongoose.Schema({
+  id: String,         //职位id
   jobType: {type: ObjectId, ref: 'JobType'},         //职位id
-  jobTitle: String,         //职位id
+  jobTitle: String,         //职位名称
   industry: {type: ObjectId, ref: 'industry'},         //行业id
   minSalary: Number,                    				//最小薪水
   maxSalary: Number,     							    //最大薪水
