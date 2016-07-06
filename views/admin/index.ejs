@@ -43,6 +43,7 @@
       <thead>
       <tr>
         <th></th>
+        <th>编号</th>
         <th>职位</th>
         <th class="am-text-center">行业</th>
         <th class="am-text-center">预览</th>
@@ -60,6 +61,7 @@
              data-id="<%= jobs[i]._id %>"></i>
           <!--<i class="am-icon-sort-desc am-icon-sm sort-down"></i>-->
         </td>
+        <td><%= jobs[i].id %></td>
         <td><%= jobs[i].jobTitle %></td>
         <td class="am-text-center"><%= jobs[i].industry.name %></td>
         <td class="am-text-center">
