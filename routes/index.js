@@ -102,7 +102,12 @@ router.post('/search', function (req, res) {
   keys = _.uniq(key.trim().split(/\s/));
 
   async.map(keys, function (key, callback) {
-    Job.find({$or: [{'description': {'$regex': key}}, {'city': {'$regex': key}}, {'name': {'$regex': key}}]})
+    Job.find({
+        $or: [
+          {'description': {'$regex': key, $options: '$i'}},
+          {'city': {'$regex': key, $options: '$i'}},
+          {'name': {'$regex': key, $options: '$i'}}]
+      })
       .populate('JobType', 'name')
       .exec(function (err, jobs) {
         if (err) {
