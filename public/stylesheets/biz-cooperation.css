@@ -181,6 +181,18 @@ body {
   height: 500px;
 }
 
+#weixinQC {
+  position: absolute;
+  left: -80px;
+  bottom: 50px;
+  width: 200px;
+  height: 200px;
+}
+
+#weixinQC img{
+  width: 100%;
+}
+
 @media (max-width: 640px) {
 
   .module1, .module2, .module3, .module4 {
