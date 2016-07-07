@@ -10,21 +10,27 @@ var JobType = require('../models/jobType');
 var IndustryModel = require('../models/industry');
 var ApplyModel = require('../models/apply');
 var UserModel = require('../models/user');
+var IncIdModel = require('../models/incId');
 var Degree = require('../models/degree');
 var routerFilter = require('../libs/router.filter');
 var async = require('async');
 var crypto = require('crypto');
+var _ = require('lodash');
 
-var pageSize = 2;
+
+require('../utils/incId.util');
+
+var pageSize = 10;
 
 router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
-  var queryData = {};
-  if (req.query.search) {
-    //TODO: 方维 添加搜索功能
-  }
+  var key = req.query.key ? req.query.key.trim() : '';
   var page = req.query.page ? req.query.page - 1 : 0;
   var startNum = page * pageSize;
 
+  var queryData = {
+    "isRemove": {$ne: 1},
+    $or: [{'description': {'$regex': key}}, {'city': {'$regex': key}}, {'name': {'$regex': key}}]
+  };
   async.parallel([
     function (callback) {
       Job.find(queryData)
@@ -38,7 +44,28 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
             callback(err);
             return;
           }
-          callback(null, results);
+          async.each(results, function (item, childCallback) {
+            ApplyModel.find({job: item._id}).exec(function (childError, childResults) {
+              if (childError) {
+                childCallback(childError);
+              } else {
+                item.applyList = childResults.length;
+                item.newApplyList = 0;
+                childResults.forEach(function (childResultsItem) {
+                  if (!childResultsItem.isCheck) {
+                    item.newApplyList += 1;
+                  }
+                });
+                childCallback(null);
+              }
+            });
+          }, function (eachErr) {
+            if (eachErr) {
+              next(eachErr);
+            } else {
+              callback(null, results);
+            }
+          });
         });
     },
     function (callback) {
@@ -55,6 +82,7 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
       next(err);
       return;
     }
+
     res.render("admin/index", {
       jobs: results[0],
       pageData: {
@@ -69,13 +97,15 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
 router.get('/newjob', routerFilter.authorize, function (req, res, next) {
   async.parallel([
     function (callback) {
-      JobType.find({}, function (err, results) {
-        if (err) {
-          callback(err);
-          return;
-        }
-        callback(null, results);
-      });
+      JobType.find({})
+        .sort({weight: -1})
+        .exec(function (err, results) {
+          if (err) {
+            callback(err);
+            return;
+          }
+          callback(null, results);
+        });
     },
     function (callback) {
       IndustryModel.find({}, function (err, results) {
@@ -221,6 +251,8 @@ router.get('/applylist/:id', routerFilter.authorize, function (req, res, next) {
           totalPage: Math.ceil(results[2].length / pageSize)
         }
       });
+      ApplyModel.update({job: results[1][0]._id}, {$set: {isCheck: 1}}, {multi: true}, function (update_err, update_count) {
+      });
     } else {
       res.render('404');
     }
@@ -228,23 +260,78 @@ router.get('/applylist/:id', routerFilter.authorize, function (req, res, next) {
 
 });
 
-router.get('/reportforms', function (req, res) {
+router.get('/reportforms', routerFilter.authorize, function (req, res, next) {
+  var jobTitle = req.query.jobTitle ? req.query.jobTitle.trim() : '';
+  var city = req.query.city ? req.query.city.trim() : null;
+  var workExperience = req.query.workExperience ? req.query.workExperience.trim() : null;
 
-  res.render('admin/report-forms');
+  var page = req.query.page ? req.query.page - 1 : 0;
+  var startNum = page * pageSize;
+  var queryData = {};
+  var queryParams = [];
+  if (city) {
+    queryParams.push({'city': {'$regex': city}});
+  }
+  if (workExperience) {
+    queryParams.push({'workExperience': {'$regex': workExperience}});
+  }
+  if (queryParams.length) {
+    queryData.$or = queryParams;
+  }
+
+  async.parallel([
+    function (callback) {
+      ApplyModel.find(queryData)
+        .populate('job', 'jobTitle', {jobTitle: {$regex: jobTitle}})
+        .sort({weight: -1})
+        .skip(startNum)
+        .limit(pageSize)
+        .exec(function (err, results) {
+          if (err) {
+            callback(err);
+            return;
+          }
+          callback(null, results);
+        });
+    },
+    function (callback) {
+      ApplyModel.find({}, function (err, results) {
+        if (err) {
+          callback(err);
+          return;
+        }
+        callback(null, results);
+      });
+    }
+  ], function (err, results) {
+    if (err) {
+      next(err);
+      return;
+    }
+    results[0] = _.filter(results[0], function (item) {
+      return item.job != null;
+    });
+    res.render('admin/report-forms', {
+      applyList: results[0],
+      pageData: {
+        total: results[1].length,
+        currentPage: page + 1,
+        totalPage: Math.ceil(results[1].length / pageSize)
+      }
+    });
+  });
 });
 
 //职位置顶
 router.post('/job/top', routerFilter.authorize, function (req, res) {
   var id = req.body.id;
   if (id === undefined) {
-    res.sendStatus(400);
-    res.send({code: 400, message: '参数错误,id不存在!'});
+    res.status(400).send({code: 400, message: '参数错误,id不存在!'});
     return false;
   } else {
     Job.findById(id, function (err, job) {
       if (job === undefined) {
-        res.sendStatus(400);
-        res.send({code: 400, message: '职位不存在!'});
+        res.status(400).send({code: 400, message: '职位不存在!'});
         return false;
       }
       //找到weight值最大的那个
@@ -254,8 +341,7 @@ router.post('/job/top', routerFilter.authorize, function (req, res) {
           job.weight = wJob.weight + 1;
           job.save(function (err, rtJob) {
             if (err) {
-              res.sendStatus(500);
-              res.send({code: 500, message: '保存数据错误!'});
+              res.status(500).send({code: 500, message: '保存数据错误!'});
             } else {
               //res.json({state: 0, job: rtJob});
               res.send(rtJob);
@@ -267,39 +353,76 @@ router.post('/job/top', routerFilter.authorize, function (req, res) {
 });
 
 //职位新增
-router.post('/job', routerFilter.authorize, function (req, res) {
-
-
+router.post('/job', routerFilter.authorize, function (req, res, next) {
   var reqJob = req.body.job;
 
 
   if (reqJob === undefined || reqJob.jobTitle === undefined || reqJob.jobType === undefined || reqJob.minSalary === undefined
     || reqJob.city === undefined || reqJob.industry === undefined) {
 
-    res.sendStatus(400);
-    res.send({code: 400, message: '输入均不得为空'});
+    res.status(400).send({code: 400, message: '输入均不得为空'});
 
     return false;
   }
 
-  var job = new Job({
-    jobTitle: reqJob.jobTitle,          //职位id
-    jobType: reqJob.jobType,          //职位id
-    industry: reqJob.industry,          //所属行业id
-    minSalary: reqJob.minSalary,         //最小薪水
-    maxSalary: reqJob.maxSalary,         //最大薪水
-    city: reqJob.city,                 //期望城市
-    degree: reqJob.degree,                 //学历要求
-    attraction: reqJob.attraction,           //职位诱惑
-    description: reqJob.description
-  });
+  IncIdModel.findOneAndUpdate(
+    {name: 'job'},
+    {$inc: {'currentId': 1}},
+    {new: true, upsert: true},
+    function (err, updatedIdentity) {
+      if (err) return next(err);
 
-  job.save(function (error, pJob) {
-    if (error) {
-      res.sendStatus(500);
-      res.send({code: 500, message: '保存job异常'});
+      var job = new Job({
+        id: updatedIdentity.currentId,
+        jobTitle: reqJob.jobTitle,               //职位id
+        jobType: reqJob.jobType,                 //职位id
+        industry: reqJob.industry,               //所属行业id
+        minSalary: reqJob.minSalary,             //最小薪水
+        maxSalary: reqJob.maxSalary,             //最大薪水
+        city: reqJob.city,                       //期望城市
+        degree: reqJob.degree,                   //学历要求
+        attraction: reqJob.attraction,           //职位诱惑
+        description: reqJob.description
+      });
+
+      job.save(function (error, pJob) {
+        if (error) {
+          res.status(500).send({code: 500, message: '保存job异常'});
+        }
+        res.send(pJob);
+      });
     }
-    res.send(pJob);
+  );
+
+});
+
+//删除职位
+router.delete('/job', routerFilter.authorize, function (req, res) {
+  var jobId = req.body.jobId;
+  if (jobId === undefined) {
+    res.status(400).send({code: 400, message: '参数错误'});
+    return false;
+  }
+
+  Job.findById(jobId, function (err, job) {
+
+    // 未找到该id
+
+    if (job === undefined) {
+      res.status(400).send({code: 400, message: '该job不存在'});
+
+      return false;
+    }
+    job.isRemove = 1;
+
+    //是否可以直接存，通过id reqJob.save?
+    job.save(function (error, pJob) {
+      if (err) {
+        res.status(500).send({code: 500, message: '删除失败, 请稍后重试!'});
+      } else {
+        res.send();
+      }
+    });
   });
 });
 
@@ -309,8 +432,7 @@ router.put('/job', routerFilter.authorize, function (req, res) {
   var reqJob = req.body;
 
   if (reqJob.id === undefined) {
-    res.sendStatus(400);
-    res.send({code: 400, message: 'id不得为空'});
+    res.status(400).send({code: 400, message: 'id不得为空'});
     return false;
   }
 
@@ -320,8 +442,7 @@ router.put('/job', routerFilter.authorize, function (req, res) {
     // 未找到该id
 
     if (job === undefined) {
-      res.sendStatus(400);
-      res.send({code: 400, message: '该job不存在'});
+      res.status(400).send({code: 400, message: '该job不存在'});
 
       return false;
     }
@@ -338,8 +459,7 @@ router.put('/job', routerFilter.authorize, function (req, res) {
     //是否可以直接存，通过id reqJob.save?
     job.save(function (error, pJob) {
       if (error) {
-        res.sendStatus(500);
-        res.send({code: 500, message: '修改job异常'});
+        res.status(500).send({code: 500, message: '修改job异常'});
       }
       res.send(pJob);
     });
@@ -360,8 +480,7 @@ router.get('/login', function (req, res, next) {
 router.post('/dologin', function (req, res) {
   console.log(req.body);
   if (req.body.nickname === '' || req.body.pass === '') {
-    res.sendStatus(400);
-    res.send({code: 400, message: '登录失败,用户名或密码不能为空!'});
+    res.status(400).send({code: 400, message: '登录失败,用户名或密码不能为空!'});
     return;
   }
   //admin123 对应加密过的md5为f408d04e3a07f2df52664f93d4612eb7,请上线前更改
@@ -369,13 +488,11 @@ router.post('/dologin', function (req, res) {
 
   UserModel.findOne({nickname: req.body.nickname, pass: pwd}, function (err, result) {
     if (err) {
-      res.sendStatus(500);
-      res.send({code: 500, message: '登录失败,服务器忙,请稍后重试!'});
+      res.status(500).send({code: 500, message: '登录失败,服务器忙,请稍后重试!'});
       return;
     }
     if (result === null) {
-      res.sendStatus(400);
-      res.send({code: 400, message: '登录失败,用户名或密码错误!'});
+      res.status(400).send({code: 400, message: '登录失败,用户名或密码错误!'});
     } else {
       req.session.user = {
         nickname: result.nickname

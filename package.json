@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "backend-pro":"pm2 delete waniu; PORT=8080 pm2 start ./bin/www --name 'waniu' -i max; pm2 save"
   },
   "dependencies": {
     "async": "^2.0.0-rc.3",

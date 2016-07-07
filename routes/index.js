@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var underscore = require('underscore');
 var request = require('request');
+var _ = require('underscore');
 
 var http = require("http");
 
@@ -14,7 +14,7 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
 
 var Job = require('../models/job');
-var JobType = require('../models/JobType');
+var JobType = require('../models/jobType');
 var ApplyModel = require('../models/apply');
 var Degree = require('../models/degree');
 var hex = require('./hex');
@@ -103,52 +103,28 @@ router.post('/search', function (req, res) {
   }
 
   var keys = [];
-  keys = key.split(/\s./);
-
+  keys = _.uniq(key.trim().split(/\s/));
 
   async.map(keys, function (key, callback) {
-
-    //分别对description, city, JobType使用正则
-    async.parallel([
-      // description正则
-      function (cbParal) {
-        Job.find({'description': {'$regex': key}})
-          .populate('JobType', 'name')
-          .exec(function (err, jobs) {
-            console.log(jobs);
-            cbParal(null, jobs);
-          })
-      },
-      //对city使用正则
-      function (cbParal) {
-        Job.find({'city': {'$regex': key}})
-          .populate('JobType', 'name')
-          .exec(function (err, jobs) {
-            cbParal(null, jobs);
-          })
-      },
-      //对JobType使用正则
-      function (cbParal) {
-        JobType.find({'name': {'$regex': key}})
-          .populate('JobType', 'name')
-          .exec(function (err, JobTypes) {
-            if (JobTypes.length == 0) {
-              cbParal(null);
-            } else {
-              //分别对所有匹配的JobTypes使用正则
-              async.map(JobTypes, function (JobType, cbAs) {
-                Job.find({JobType: JobType}, function (err, jobs) {
-                  cbAs(null, jobs);
-                })
-              }, function (err, results) {
-                cbParal(null, results);
-              })
-            }
-          })
-      }], function (err, results) {
-      callback(null, results);
-    });
+    Job.find({
+        $or: [
+          {'description': {'$regex': key, $options: '$i'}},
+          {'city': {'$regex': key, $options: '$i'}},
+          {'name': {'$regex': key, $options: '$i'}}]
+      })
+      .populate('JobType', 'name')
+      .exec(function (err, jobs) {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, jobs);
+        }
+      })
   }, function (err, results) {
+    //console.log(results);
+    keys.forEach(function (value, key) {
+      console.log(key);
+    });
     var rtResult = [];
     //递归处理数组数据，将所有的job放到返回数组中去
     function getResult(a) {
@@ -166,9 +142,11 @@ router.post('/search', function (req, res) {
     }
 
     getResult(results);
+    rtResult = _.uniq(rtResult, false, function (item) {
+      return item._id.toString();
+    });
     res.json(rtResult)
   });
-
 });
 
 

@@ -3,13 +3,13 @@ body {
 }
 
 .header {
-  background-color: #FDC72E;
+  background-color: #FDC933;
   padding-bottom: 30px;
 }
 
 .am-topbar {
-  background-color: #FDC72E;
-  border-color: #FDC72E;
+  background-color: #FDC933;
+  border-color: #FDC933;
   border-radius: 0;
 }
 
@@ -49,13 +49,13 @@ body {
 }
 
 .header .am-form-field {
-  border: 1px solid #FDC72E;
+  border: 1px solid #FDC933;
   padding-left: 20px;
 }
 
 .header .header-background {
   display: block;
-  margin: 0 auto;
+  margin: 80px auto;
   max-width: 100%;
 }
 
@@ -68,6 +68,13 @@ body {
 
 .container {
   margin-top: 20px;
+}
+
+@media only screen and (min-width: 1000px) {
+  .container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
 }
 
 .container .container-header {
@@ -195,8 +202,8 @@ body {
   color: #fff;
 }
 
-.mobile-apply .am-btn img{
-  height:20px;
+.mobile-apply .am-btn img {
+  height: 20px;
 }
 
 .am-popup-bd .am-input-group {
@@ -206,4 +213,35 @@ body {
 .am-gotop-fixed .am-gotop-icon {
   background-color: #FECF2D;
   color: #fff;
+}
+
+.hot-search {
+  overflow: hidden;
+  margin: 6px 20px 18px;
+}
+
+.hot-search dt {
+  width: 70px;
+  font-size: 14px;
+}
+
+.hot-search dt, .hot-search dd {
+  float: left;
+}
+
+.hot-search dd {
+  margin-right: 20px;
+}
+
+.hot-search dd a {
+  color: #fff;
+  cursor: pointer;
+}
+
+.hot-search dd a:hover {
+  text-decoration: underline;
+}
+
+.hot-search dt + dd {
+  margin-top: 0;
 }
