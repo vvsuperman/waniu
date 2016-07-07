@@ -16,7 +16,7 @@ body {
 @media (max-width: 640px) {
   .header {
     padding-bottom: 30px;
-    background: url("/images/biz-cooperation/bg/header-mobile.jpg") no-repeat;
+    background: url("http://7xw3ob.com1.z0.glb.clouddn.com/biz-cooperation_bg_header-mobile.jpg") no-repeat;
     height: 550px;
     background-size: cover;
   }

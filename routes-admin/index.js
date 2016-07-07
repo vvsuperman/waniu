@@ -16,8 +16,6 @@ var routerFilter = require('../libs/router.filter');
 var async = require('async');
 var _ = require('lodash');
 
-require('../utils/incId.util');
-
 var pageSize = 10;
 
 router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {

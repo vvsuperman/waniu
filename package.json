@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "backend-pro":"pm2 delete waniu; PORT=8080 pm2 start ./bin/www --name 'waniu' -i max; pm2 save"
+    "backend-pro": "pm2 delete waniu; PORT=8080 pm2 start ./bin/www --name 'waniu' -i max; pm2 save",
+    "update-id": "node ./utils/updateId.util.js"
   },
   "dependencies": {
     "async": "^2.0.0-rc.3",
