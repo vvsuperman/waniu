@@ -200,12 +200,4 @@ function binb2b64(binarray) {
 exports.hex_sha1 = hex_sha1;
 
 
-//加盐，生产一个随机数，范围大一些
-// function getSalt = function(){
-//     return parseInt(math.random()*90000000+10000000)
-// }
 
-
-// exports.hex_sha1 = function(str){
-//     return hex_sha1(str+"#x123.(8^*"+getSalt());
-// }

@@ -13,6 +13,7 @@ var UserModel = require('../models/user');
 var Degree = require('../models/degree');
 var routerFilter = require('../libs/router.filter');
 var async = require('async');
+var crypto = require('crypto');
 
 var pageSize = 2;
 
@@ -346,6 +347,13 @@ router.put('/job', routerFilter.authorize, function (req, res) {
   })
 });
 
+
+router.get('/testmd5',function(req,res,next){
+
+  console.log(crypto.createHash('md5').update("admin123!*@898_+@)*ap}|").digest('hex'));
+
+})
+
 router.get('/login', function (req, res, next) {
   res.render('admin/login');
 });
@@ -356,7 +364,10 @@ router.post('/dologin', function (req, res) {
     res.send({code: 400, message: '登录失败,用户名或密码不能为空!'});
     return;
   }
-  UserModel.findOne({nickname: req.body.nickname, pass: req.body.pass}, function (err, result) {
+  //admin123 对应加密过的md5为f408d04e3a07f2df52664f93d4612eb7,请上线前更改
+  var pwd = crypto.createHash('md5').update(req.body.pass+"!*@898_+@)*ap}|").digest('hex');
+
+  UserModel.findOne({nickname: req.body.nickname, pass: pwd}, function (err, result) {
     if (err) {
       res.sendStatus(500);
       res.send({code: 500, message: '登录失败,服务器忙,请稍后重试!'});
