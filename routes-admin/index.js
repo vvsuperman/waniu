@@ -25,7 +25,10 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
 
   var queryData = {
     "isRemove": {$ne: 1},
-    $or: [{'description': {'$regex': key}}, {'city': {'$regex': key}}, {'name': {'$regex': key}}]
+    $or: [
+      {'description': {'$regex': key, $options: '$i'}},
+      {'city': {'$regex': key, $options: '$i'}},
+      {'name': {'$regex': key, $options: '$i'}}]
   };
   async.parallel([
     function (callback) {

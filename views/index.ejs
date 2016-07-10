@@ -276,6 +276,9 @@
         data: data,
         success: function (res) {
           $('#applyPopup').modal('close');
+        },
+        error: function (err) {
+          alert(JSON.parse(err.responseText).message);
         }
       });
     });

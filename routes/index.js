@@ -234,13 +234,23 @@ router.post('/applyjob', function (req, res, next) {
     city: reqData.city,
     job: reqData.jobId
   });
-
-  applyModel.save(function (err, result) {
+  ApplyModel.findOne({'job': reqData.jobId, 'phone': reqData.phone, 'name': reqData.name}, function (err, applyDoc) {
+    console.log(err);
     if (err) {
-      res.sendStatus(500);
-      res.send({code: 500, message: '服务器忙,请稍后重试'});
+      return next(err);
     }
-    res.send(result);
+    if (!applyDoc) {
+      applyModel.save(function (err, result) {
+        if (err) {
+          res.sendStatus(500);
+          res.send({code: 500, message: '服务器忙,请稍后重试'});
+        }
+        res.send(result);
+      });
+    } else {
+      res.send();
+      //res.status(400).send({code: 400, message: '您已申请该职位'});
+    }
   });
 });
 
