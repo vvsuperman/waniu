@@ -227,6 +227,7 @@ body {
 
 .hot-search dt, .hot-search dd {
   float: left;
+  color: #fff;
 }
 
 .hot-search dd {
