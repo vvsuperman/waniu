@@ -161,11 +161,8 @@ describe('routes/index.js', function () {
   describe('微信sdk', function () {
 
     it('测试sdk', function (done) {
-      request.post('/wsjsdk')
-        .send({
-           url:'51waniu.com'
-        })
-        .expect(200, function (err, res) {
+      request.get('/admin/testmd5')
+             .expect(200, function (err, res) {
           should.not.exist(err);
           res.body.state.should.containEql(0);
           console.log('weixin result...',res.body.result)
