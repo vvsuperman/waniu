@@ -17,9 +17,6 @@ var async = require('async');
 var crypto = require('crypto');
 var _ = require('lodash');
 
-
-require('../utils/incId.util');
-
 var pageSize = 10;
 
 router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
@@ -486,7 +483,7 @@ router.post('/dologin', function (req, res) {
     res.status(400).send({code: 400, message: '登录失败,用户名或密码不能为空!'});
     return;
   }
-  //admin123 对应加密过的md5为f408d04e3a07f2df52664f93d4612eb7,请上线前更改
+
   var pwd = crypto.createHash('md5').update(req.body.pass+"!*@898_+@)*ap}|").digest('hex');
 
   UserModel.findOne({nickname: req.body.nickname, pass: pwd}, function (err, result) {
