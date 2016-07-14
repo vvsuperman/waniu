@@ -13,48 +13,6 @@ body {
   /*background-color: #FDC72E;*/
 }
 
-@media (max-width: 640px) {
-  .header {
-    padding-bottom: 30px;
-    background: url("http://7xw3ob.com1.z0.glb.clouddn.com/biz-cooperation_bg_header-mobile.jpg") no-repeat;
-    height: 550px;
-    background-size: cover;
-  }
-}
-
-.am-topbar {
-  background-color: #FDC72E;
-  border-color: #FDC72E;
-  border-radius: 0;
-}
-
-.am-topbar .navbar-brand {
-  margin-left: 200px;
-}
-
-.am-topbar .logo {
-  width: 60px;
-}
-
-.am-topbar .header-title {
-  color: #FECF2D;
-  font-size: 1.8rem;
-}
-
-.am-topbar .topbar-title {
-  position: relative;
-  line-height: 50px;
-  padding: 0 10px;
-}
-
-.am-topbar-inverse .am-topbar-nav > li > a {
-  color: #fff;
-}
-
-.am-topbar-inverse .am-topbar-nav > li img {
-  height: 30px;
-}
-
 .header .header-content {
   color: #fff;
   font-size: 40px;
@@ -84,6 +42,62 @@ body {
 .header .logo {
   height: 25px;
   width: auto;
+}
+
+.header .get-job {
+  background-color: #EA8B27;
+  color: #fff;
+  border-color: #867960;
+  border-radius: 5px;
+  font-size: 23px;
+  font-weight: bolder;
+  padding: 6px 50px;
+  margin-top: -150px;
+  margin-left: -80px
+}
+
+@media (max-width: 640px) {
+  /*.header {*/
+  /*padding-bottom: 30px;*/
+  /*background: url("http://7xw3ob.com1.z0.glb.clouddn.com/biz-cooperation_bg_header-mobile.jpg") no-repeat;*/
+  /*height: 550px;*/
+  /*background-size: cover;*/
+  /*}*/
+  .header .get-job {
+    margin-top: 0;
+    margin-left: 0;
+    padding: 6px 30px;
+
+  }
+}
+
+.am-topbar {
+  background-color: #FDC72E;
+  border-color: #FDC72E;
+  border-radius: 0;
+}
+
+.am-topbar .navbar-brand {
+  margin-left: 200px;
+}
+
+.am-topbar .header-title {
+  color: #FECF2D;
+  font-size: 1.8rem;
+}
+
+.am-topbar .topbar-title {
+  position: relative;
+  line-height: 50px;
+  padding: 0 10px;
+}
+
+.am-topbar-inverse .am-topbar-nav > li > a {
+  color: #fff;
+}
+
+.am-topbar-inverse .am-topbar-nav > li img {
+  height: 30px;
 }
 
 .am-gotop-fixed .am-gotop-icon {
@@ -189,7 +203,7 @@ body {
   height: 200px;
 }
 
-#weixinQC img{
+#weixinQC img {
   width: 100%;
 }
 
