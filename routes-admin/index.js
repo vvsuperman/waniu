@@ -29,7 +29,8 @@ router.get('/waniuadmin', routerFilter.authorize, function (req, res, next) {
     $or: [
       {'description': {'$regex': key, $options: '$i'}},
       {'city': {'$regex': key, $options: '$i'}},
-      {'name': {'$regex': key, $options: '$i'}}]
+      {'name': {'$regex': key, $options: '$i'}},
+      {'jobTitle': {'$regex': key, $options: '$i'}}]
   };
   async.parallel([
     function (callback) {
@@ -358,7 +359,7 @@ router.post('/job', routerFilter.authorize, function (req, res, next) {
 
 
   if (reqJob === undefined || reqJob.jobTitle === undefined || reqJob.jobType === undefined || reqJob.minSalary === undefined
-    || reqJob.city === undefined || reqJob.industry === undefined) {
+    || reqJob.city === undefined || reqJob.industry === undefined || reqJob.finance === undefined) {
 
     res.status(400).send({code: 400, message: '输入均不得为空'});
 
@@ -377,6 +378,7 @@ router.post('/job', routerFilter.authorize, function (req, res, next) {
         jobTitle: reqJob.jobTitle,               //职位id
         jobType: reqJob.jobType,                 //职位id
         industry: reqJob.industry,               //所属行业id
+        finance: reqJob.finance,               //投融资阶段
         minSalary: reqJob.minSalary,             //最小薪水
         maxSalary: reqJob.maxSalary,             //最大薪水
         city: reqJob.city,                       //期望城市
@@ -452,6 +454,7 @@ router.put('/job', routerFilter.authorize, function (req, res) {
     job.minSalary = reqJob.minSalary;
     job.maxSalary = reqJob.maxSalary;
     job.city = reqJob.city;
+    job.finance = reqJob.finance;
     job.degree = reqJob.degree;
     job.attraction = reqJob.attraction;
     job.description = reqJob.description;
