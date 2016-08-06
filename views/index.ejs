@@ -76,6 +76,9 @@
     <div class="content-item">
       <div class="content-item-title">
         <%= jobs[i].jobTitle %>
+        <% if(jobs[i].isNew){ %>
+        <a class="am-badge am-badge-warning" style="background-color: red">New</a>
+        <% } %>
         <div class="am-show-md-up apply-job"
              data-job-name="<%= jobs[i].jobTitle %>"
              data-job-id="<%= jobs[i]._id %>"
@@ -101,7 +104,15 @@
           </div>
         </div>
         <% } %>
-        <div>所属行业:&nbsp;<%= jobs[i].industry.name %></div>
+        <div class="am-show-md-up">所属行业:&nbsp;<%= jobs[i].industry.name %> &nbsp;&nbsp;&nbsp;
+          <%= jobs[i].finance ? '融资阶段: ' + jobs[i].finance : '融资阶段: 未知' %>
+        </div>
+        <div class="am-show-sm-down">
+          所属行业:&nbsp;<%= jobs[i].industry.name %>
+        </div>
+        <div class="am-show-sm-down">
+          <%= jobs[i].finance ? '融资阶段: ' + jobs[i].finance : '融资阶段: 未知' %>
+        </div>
       </div>
       <div class="content-item-desc">
         <%- jobs[i].description %>
@@ -165,6 +176,9 @@
   <div class="content-item">
     <div class="content-item-title">
       {{ job.jobTitle }}
+      {{ if job.isNew }}
+      <a class="am-badge am-badge-warning" style="background-color: red">New</a>
+      {{/if}}
       <div class="am-show-md-up apply-job"
            data-job-name="{{ job.jobTitle }}"
            data-job-id="{{ job.jobTitle._id }}"
@@ -190,6 +204,15 @@
         </div>
       </div>
       {{/if}}
+      <div class="am-show-md-up">所属行业:&nbsp;{{ job.industry.name }} &nbsp;&nbsp;&nbsp;
+        {{ job.finance ? '融资阶段: ' + job.finance : '融资阶段: 未知' }}
+      </div>
+      <div class="am-show-sm-down">
+        所属行业:&nbsp;{{ job.industry.name }}
+      </div>
+      <div class="am-show-sm-down">
+        {{ job.finance ? '融资阶段: ' + job.finance : '融资阶段: 未知' }}
+      </div>
 
     </div>
     <div class="content-item-desc">

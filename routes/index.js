@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var request = require('request');
+var moment = require('moment');
 var _ = require('underscore');
 
 var http = require("http");
@@ -72,6 +73,10 @@ router.get('/', function (req, res) {
     .skip(0)
     .limit(20)
     .exec(function (err, results) {
+      var date = moment();
+      results.forEach(function (item) {
+        item.isNew = Number(date.diff(item.meta.createdAt)) <= 259200000;
+      });
       if (err) {
         next(err);
         return;
@@ -210,6 +215,7 @@ router.get('/jobs/:pageNum', function (req, res) {
 
   Job.find({})
     .populate('JobType', 'name')
+    .populate('industry', 'name')
     .sort({weight: -1})
     .skip((pageNum - 1) * pageSize)
     .limit(pageSize)
@@ -218,6 +224,10 @@ router.get('/jobs/:pageNum', function (req, res) {
         res.sendStatus(500);
         res.send({code: 500, message: '服务器错误,获取数据失败!'});
       } else {
+        var date = moment();
+        jobs.forEach(function (item) {
+          item.isNew = Number(date.diff(item.meta.createdAt)) <= 259200000;
+        });
         res.send(jobs);
       }
     })
