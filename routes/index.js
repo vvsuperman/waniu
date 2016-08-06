@@ -29,8 +29,6 @@ mongoose.connect('mongodb://localhost:27017/waniudb');
 //加盐算法，用来加密
 
 
-
-
 //生成微信签名
 router.post('/wsjsdk', function (req, res) {
   var url = req.body.url;
@@ -69,7 +67,8 @@ router.post('/wsjsdk', function (req, res) {
 router.get('/', function (req, res) {
   Job.find({})
     .populate('JobType', 'name')
-    .sort({weight: -1})
+    .populate('industry', 'name')
+    .sort({'meta.createdAt': -1})
     .skip(0)
     .limit(20)
     .exec(function (err, results) {

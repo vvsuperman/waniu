@@ -13,7 +13,8 @@
 <body>
 <div class="header">
   <% include header-layout %>
-  <img class="header-background am-show-md-up" src="http://7xw3ob.com1.z0.glb.clouddn.com/header_background.png" alt="背景" width="880px">
+  <img class="header-background am-show-md-up" src="http://7xw3ob.com1.z0.glb.clouddn.com/header_background.png"
+       alt="背景" width="880px">
   <div class="am-container am-show-sm-down am-text-center" style="padding-top: 20px">
     <!--<a href="/"><img src="http://7xw3ob.com1.z0.glb.clouddn.com/logo2.png" alt="logo" class="logo"></a>-->
     <h1 style="font-size: 30px;color: #fff;">挖一下</h1>
@@ -100,6 +101,7 @@
           </div>
         </div>
         <% } %>
+        <div>所属行业:&nbsp;<%= jobs[i].industry.name %></div>
       </div>
       <div class="content-item-desc">
         <%- jobs[i].description %>
@@ -229,10 +231,10 @@
           method: 'get',
           success: function (res) {
             loading = false;
-            if(res.length) {
+            if (res.length) {
               var html = template('jobTpl', {jobs: res});
               $('#content').append(html);
-            }else{
+            } else {
               $(e.currentTarget).text('没有更多了').addClass('am-disabled');
             }
           }
