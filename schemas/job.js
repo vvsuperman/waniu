@@ -10,6 +10,7 @@ var JobSchema = new mongoose.Schema({
   minSalary: Number,                    				//最小薪水
   maxSalary: Number,     							    //最大薪水
   city: String,           							//期望城市
+  finance: String,           							//投融资阶段
   degree: String,	        	//学历要求
   attraction: [],         							    //职位诱惑
   description: String,    							    //职位描述

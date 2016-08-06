@@ -109,7 +109,8 @@ router.post('/search', function (req, res) {
         $or: [
           {'description': {'$regex': key, $options: '$i'}},
           {'city': {'$regex': key, $options: '$i'}},
-          {'name': {'$regex': key, $options: '$i'}}]
+          {'name': {'$regex': key, $options: '$i'}},
+          {'jobTitle': {'$regex': key, $options: '$i'}}]
       })
       .populate('JobType', 'name')
       .exec(function (err, jobs) {

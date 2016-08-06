@@ -81,6 +81,28 @@
         <li class="">
           <div class="am-g">
             <div class="am-u-sm-2">
+              <strong>投融资阶段</strong>
+            </div>
+            <div class="am-u-sm-10">
+              <form class="am-form">
+                <select id="finance">
+                  <option <%= job.finance == '未融资' ? 'selected' : '' %>>未融资</option>
+                  <option <%= job.finance == '天使轮' ? 'selected' : '' %>>天使轮</option>
+                  <option <%= job.finance == 'A轮' ? 'selected' : '' %>>A轮</option>
+                  <option <%= job.finance == 'B轮' ? 'selected' : '' %>>B轮</option>
+                  <option <%= job.finance == 'C轮' ? 'selected' : '' %>>C轮</option>
+                  <option <%= job.finance == 'D轮' ? 'selected' : '' %>>D轮</option>
+                  <option <%= job.finance == 'E轮' ? 'selected' : '' %>>E轮</option>
+                  <option <%= job.finance == 'F轮' ? 'selected' : '' %>>F轮</option>
+                  <option <%= job.finance == '上市' ? 'selected' : '' %>>上市</option>
+                </select>
+              </form>
+            </div>
+          </div>
+        </li>
+        <li class="">
+          <div class="am-g">
+            <div class="am-u-sm-2">
               <strong>年薪范围</strong>
             </div>
             <div class="am-u-sm-10">
@@ -124,8 +146,8 @@
                 <select id="degree">
                   <option <%= job.degree == '本科' ? 'selected' : '' %>>本科</option>
                   <option <%= job.degree == '本科以下' ? 'selected' : '' %>>本科以下</option>
-                  <option <%= job.degree == '硕士研究生' ? 'selected' : '' %>>硕士研究生</option>
-                  <option <%= job.degree == '博士研究生' ? 'selected' : '' %>>博士研究生</option>
+                  <option <%= job.degree == '硕士' ? 'selected' : '' %>>硕士</option>
+                  <option <%= job.degree == '博士' ? 'selected' : '' %>>博士</option>
                 </select>
               </form>
             </div>
@@ -224,6 +246,7 @@
         jobType: $('#jobType').val(),
         jobTitle: $('#jobTitle').val(),
         industry: $('#industry').val(),
+        finance: $('#finance').val(),
         minSalary: $('#minSalary').val(),
         maxSalary: $('#maxSalary').val(),
         city: $('#city').val(),
