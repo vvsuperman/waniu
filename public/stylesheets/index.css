@@ -3,14 +3,17 @@ body {
 }
 
 .header {
-  background-color: #33CC99;
+  background-color: #060d2a;
   padding-bottom: 30px;
 }
 
-.am-topbar {
+/*.am-topbar {
   background-color: #FDC933;
   border-color: #FDC933;
   border-radius: 0;
+}*/
+.am-topbar{
+  margin-bottom: 0px;
 }
 
 .am-topbar .navbar-brand {
@@ -55,13 +58,12 @@ body {
 
 .header .header-background {
   display: block;
-  margin: 80px auto;
   max-width: 100%;
 }
 
 .header .logo {
   /*margin-top: 10px;*/
-  height: 25px;
+  height: 35px;
   width: auto;
   /*width: 120px;*/
 }

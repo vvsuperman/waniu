@@ -3,8 +3,9 @@ body {
   font-family: "PingFang SC";
 }
 
+
 .header {
-  background-color: #FDC72E;
+  background-color: #060d2a;
   padding-bottom: 30px;
   /*padding-bottom: 30px;*/
   /*background: url("/images/biz-cooperation/bg/header-pc.png") no-repeat;*/
@@ -23,7 +24,7 @@ body {
 }
 
 .header .am-form-field {
-  border: 1px solid #FDC72E;
+  border: 1px solid #060d2a;
   padding-left: 20px;
 }
 
@@ -40,7 +41,7 @@ body {
 }
 
 .header .logo {
-  height: 25px;
+  height: 35px;
   width: auto;
 }
 
@@ -72,9 +73,10 @@ body {
 }
 
 .am-topbar {
-  background-color: #FDC72E;
-  border-color: #FDC72E;
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
   border-radius: 0;
+  margin-bottom: 0px;
 }
 
 .am-topbar .navbar-brand {
@@ -106,7 +108,7 @@ body {
 }
 
 .biz-list img {
-  max-width: 100px;
+  max-width: 700px;
 }
 
 .biz-list .am-u-lg-2 {
@@ -129,6 +131,11 @@ body {
   width: 268px;
 }
 
+.module2 .img1 {
+  width: 268px;
+  margin-top: 80px
+}
+
 .module1 h1, .module2 h1, .module3 h1 {
   color: #4a4a4a;
   font-size: 30px;
@@ -137,7 +144,6 @@ body {
 
 .module1 p, .module2 p, .module3 p {
   font-size: 16px;
-  margin-bottom: 25px;
 }
 
 .module1 p > span {
@@ -146,7 +152,7 @@ body {
 
 .module2 {
   background-color: #fff;
-  padding-top: 130px;
+  padding-top: 20px;
 }
 
 .module2 .img1 {
