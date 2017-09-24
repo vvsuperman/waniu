@@ -46,9 +46,8 @@ body {
 }
 
 .header .get-job {
-  background-color: #EA8B27;
+  background-color: #8ebb5b;
   color: #fff;
-  border-color: #867960;
   border-radius: 5px;
   font-size: 23px;
   font-weight: bolder;
@@ -176,9 +175,9 @@ body {
 }
 
 .module4 {
-  height: 500px;
+  height: 600px;
   color: #fff;
-  background-color: #FDC72E;
+  background-color: #8ebb5b;
   /*padding-top: 93px;*/
   /*background: url("/images/biz-cooperation/bg/module4-pc.jpg") no-repeat;*/
   /*background-size: cover;*/

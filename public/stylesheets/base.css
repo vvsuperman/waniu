@@ -17,26 +17,26 @@ body {
 }
 
 .am-btn-primary {
-  background-color: #FDC72E !important;
-  border-color: #FDC72E !important;
+  background-color: #8ebb5b !important;
+  border-color: #8ebb5b !important;
 }
 
 .am-btn-primary:focus, .am-btn-primary:hover {
-  background-color: #FDC72E !important;
-  border-color: #FDC72E !important;
+  background-color: #8ebb5b !important;
+  border-color: #8ebb5b !important;
 }
 
 .am-btn-primary:active {
-  background-color: #FDC72E !important;
-  border-color: #FDC72E !important;
+  background-color: #8ebb5b !important;
+  border-color: #8ebb5b !important;
 }
 
 .am-topbar-inverse .am-topbar-nav > li > a:after {
-  border-bottom-color: #FDC72E;
+  border-bottom-color: #8ebb5b;
 }
 
 .am-topbar-inverse .am-topbar-nav > li > a:focus:after, .am-topbar-inverse .am-topbar-nav > li > a:hover:after {
-  border-bottom-color: #FDC72E !important;
+  border-bottom-color: #8ebb5b !important;
 }
 
 .w300 {
